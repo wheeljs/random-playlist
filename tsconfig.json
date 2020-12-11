@@ -10,6 +10,7 @@
     "strict": false,
     "pretty": true,
     "sourceMap": true,
+    "baseUrl": "./src",
     /* Additional Checks */
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -24,12 +25,5 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true
   },
-  "exclude": [
-    "test",
-    "release",
-    "app/main.prod.js",
-    "app/renderer.prod.js",
-    "app/dist",
-    "dll"
-  ]
+  "exclude": ["test", "build/release", "build/app/dist", ".erb/dll"]
 }

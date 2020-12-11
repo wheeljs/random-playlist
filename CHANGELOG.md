@@ -1,3 +1,37 @@
+# 2.1.0
+
+- Migrate to `css-minifier-webpack-plugin`
+
+# 2.0.1
+
+## Fixes
+
+- Fix broken css linking in production build
+
+# 2.0.0
+
+## Breaking Changes
+
+- drop redux
+- remove counter example app
+- simplify directory structure
+- move `dll` dir to `.erb` dir
+- fix icon/font import paths
+- migrate to `react-refresh` from `react-hot-loader`
+- migrate to webpack@5
+- migrate to electron@11
+- remove e2e tests and testcafe integration
+- rename `app` dir to more conventional `src` dir
+- rename `resources` dir to `assets`
+- simplify npm scripts
+- drop stylelint
+- simplify styling of boilerplate app
+- remove `START_HOT` env variable
+- notarize support
+- landing page boilerplate
+- docs updates
+- restore removed debugging support
+
 # 1.4.0
 
 - Migrate to `eslint-config-erb@2`
@@ -144,7 +178,7 @@ For full change list, see https://github.com/electron-react-boilerplate/electron
 #### Breaking
 
 - Changed node dev `__dirname` and `__filename` to node built in fn's (https://github.com/electron-react-boilerplate/electron-react-boilerplate/pull/1035)
-- Renamed `app/bundle.js` to `app/renderer.prod.js` for consistency
+- Renamed `src/bundle.js` to `src/renderer.prod.js` for consistency
 - Renamed `dll/vendor.js` to `dll/renderer.dev.dll.js` for consistency
 
 #### Additions
@@ -159,7 +193,7 @@ Yay! Another patch release. This release mostly includes refactorings and router
 
 #### Breaking
 
-- **Renamed `./app/main.development.js` => `./app/main.{dev,prod}.js`:** [#963](https://github.com/electron-react-boilerplate/electron-react-boilerplate/pull/963)
+- **Renamed `./src/main.development.js` => `./src/main.{dev,prod}.js`:** [#963](https://github.com/electron-react-boilerplate/electron-react-boilerplate/pull/963)
 
 #### Fixes
 
