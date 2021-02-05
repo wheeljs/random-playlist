@@ -131,7 +131,15 @@ if (process.env.E2E_BUILD === 'true') {
   // eslint-disable-next-line promise/catch-or-return
   app.whenReady().then(createWindow);
 } else {
-  app.on('ready', createWindow);
+  app.on('ready', async () => {
+    const conn = await connection({
+      migrations: [path.join(__dirname, 'migrations/*.ts')],
+    });
+    await Promise.all(await conn.runMigrations({ transaction: 'all' }));
+    await conn.close();
+
+    createWindow();
+  });
 }
 
 app.on('activate', () => {
