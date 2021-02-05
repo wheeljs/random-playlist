@@ -1519,6 +1519,13 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
+"@types/better-sqlite3@^5.4.1":
+  version "5.4.1"
+  resolved "https://registry.npm.taobao.org/@types/better-sqlite3/download/@types/better-sqlite3-5.4.1.tgz#d45600bc19f8f41397263d037ca9b0d05df85e58"
+  integrity sha1-1FYAvBn49BOXJj0DfKmw0F34Xlg=
+  dependencies:
+    "@types/integer" "*"
+
 "@types/cheerio@*", "@types/cheerio@^0.22.22":
   version "0.22.23"
   resolved "https://registry.npm.taobao.org/@types/cheerio/download/@types/cheerio-0.22.23.tgz#74bcfee9c5ee53f619711dca953a89fe5cfa4eb4"
@@ -1595,6 +1602,11 @@
   dependencies:
     "@types/react" "*"
     hoist-non-react-statics "^3.3.0"
+
+"@types/integer@*":
+  version "1.0.1"
+  resolved "https://registry.npm.taobao.org/@types/integer/download/@types/integer-1.0.1.tgz#025d87e30d97f539fcc6087372af7d3672ffbbe6"
+  integrity sha1-Al2H4w2X9Tn8xghzcq99NnL/u+Y=
 
 "@types/istanbul-lib-coverage@*", "@types/istanbul-lib-coverage@^2.0.0", "@types/istanbul-lib-coverage@^2.0.1":
   version "2.0.3"
@@ -2692,6 +2704,13 @@ babel-plugin-transform-react-remove-prop-types@^0.4.24:
   version "0.4.24"
   resolved "https://registry.npm.taobao.org/babel-plugin-transform-react-remove-prop-types/download/babel-plugin-transform-react-remove-prop-types-0.4.24.tgz#f2edaf9b4c6a5fbe5c1d678bfb531078c1555f3a"
   integrity sha1-8u2vm0xqX75cHWeL+1MQeMFVXzo=
+
+babel-plugin-transform-typescript-metadata@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.npm.taobao.org/babel-plugin-transform-typescript-metadata/download/babel-plugin-transform-typescript-metadata-0.3.1.tgz#d86599b7139131ba5e917f5f568d0c824a5cdfc3"
+  integrity sha1-2GWZtxORMbpekX9fVo0Mgkpc38M=
+  dependencies:
+    "@babel/helper-plugin-utils" "^7.0.0"
 
 babel-preset-current-node-syntax@^1.0.0:
   version "1.0.1"
@@ -10980,6 +10999,11 @@ redux@^4.0.0, redux@^4.0.5:
   dependencies:
     loose-envify "^1.4.0"
     symbol-observable "^1.2.0"
+
+reflect-metadata@^0.1.13:
+  version "0.1.13"
+  resolved "https://registry.npm.taobao.org/reflect-metadata/download/reflect-metadata-0.1.13.tgz#67ae3ca57c972a2aa1642b10fe363fe32d49dc08"
+  integrity sha1-Z648pXyXKiqhZCsQ/jY/4y1J3Ag=
 
 reflect.ownkeys@^0.2.0:
   version "0.2.0"

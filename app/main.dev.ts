@@ -10,10 +10,13 @@
  */
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
+import 'reflect-metadata';
 import path from 'path';
 import { app, BrowserWindow } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
+import { connection } from './models';
+
 import MenuBuilder from './menu';
 
 export default class AppUpdater {

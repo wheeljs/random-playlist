@@ -29,6 +29,7 @@ export default merge(baseConfig, {
   entry: [
     'core-js',
     'regenerator-runtime/runtime',
+    'reflect-metadata',
     path.join(__dirname, '..', 'app/index.tsx'),
   ],
 
