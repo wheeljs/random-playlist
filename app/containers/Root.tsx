@@ -3,6 +3,8 @@ import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import { hot } from 'react-hot-loader/root';
 import { History } from 'history';
+import { ConfigProvider } from 'antd';
+import zhCN from 'antd/lib/locale/zh_CN';
 import { Store } from '../store';
 import Routes from '../Routes';
 
@@ -14,7 +16,9 @@ type Props = {
 const Root = ({ store, history }: Props) => (
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <Routes />
+      <ConfigProvider locale={zhCN}>
+        <Routes />
+      </ConfigProvider>
     </ConnectedRouter>
   </Provider>
 );
