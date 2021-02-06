@@ -127,6 +127,10 @@ app.on('window-all-closed', () => {
   }
 });
 
+app.on('will-quit', async () => {
+  (await connection()).close();
+});
+
 if (process.env.E2E_BUILD === 'true') {
   // eslint-disable-next-line promise/catch-or-return
   app.whenReady().then(createWindow);
@@ -136,7 +140,6 @@ if (process.env.E2E_BUILD === 'true') {
       migrations: [path.join(__dirname, 'migrations/*.ts')],
     });
     await Promise.all(await conn.runMigrations({ transaction: 'all' }));
-    await conn.close();
 
     createWindow();
   });

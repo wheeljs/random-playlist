@@ -2,8 +2,10 @@
 import { join } from 'path';
 import { app, remote } from 'electron';
 import {
+  Connection,
   ConnectionOptions,
-  createConnection,
+  createConnection as _createConnection,
+  getConnection,
   getConnectionOptions,
 } from 'typeorm';
 
@@ -13,7 +15,7 @@ import { Workspace } from './Workspace';
 
 export { Workspace, Directory, File };
 
-export async function connection(options: Partial<ConnectionOptions> = {}) {
+async function createConnection(options: Partial<ConnectionOptions> = {}) {
   const userDataPath = (app || remote.app).getPath('userData');
 
   const defaultOptions = await getConnectionOptions();
@@ -23,5 +25,19 @@ export async function connection(options: Partial<ConnectionOptions> = {}) {
     entities: [Workspace, Directory, File],
     database: join(userDataPath, 'random-playlist.db'),
   } as unknown) as ConnectionOptions;
-  return createConnection(opts);
+  return _createConnection(opts);
+}
+
+export async function connection(
+  createOptions: Partial<ConnectionOptions> = {}
+) {
+  let conn: Connection;
+  try {
+    conn = getConnection();
+    if (conn != null && conn.isConnected) {
+      return conn;
+    }
+    // eslint-disable-next-line no-empty
+  } catch (e: unknown) {}
+  return createConnection(createOptions);
 }
