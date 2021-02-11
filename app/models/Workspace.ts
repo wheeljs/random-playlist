@@ -3,7 +3,12 @@ import { Entity, Column, OneToMany } from 'typeorm';
 import { BaseModel } from './BaseModel';
 import { Directory } from './Directory';
 
-@Entity('t_workspace')
+@Entity({
+  name: 't_workspace',
+  orderBy: {
+    order: 'ASC',
+  },
+})
 export class Workspace extends BaseModel {
   @OneToMany(() => Directory, (directory) => directory.workspace, {
     eager: true,
