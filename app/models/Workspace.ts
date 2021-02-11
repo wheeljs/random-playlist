@@ -5,7 +5,9 @@ import { Directory } from './Directory';
 
 @Entity('t_workspace')
 export class Workspace extends BaseModel {
-  @OneToMany(() => Directory, (directory) => directory.workspace)
+  @OneToMany(() => Directory, (directory) => directory.workspace, {
+    eager: true,
+  })
   directories: Directory[];
 
   @Column({ length: 50 })
