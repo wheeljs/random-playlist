@@ -18,10 +18,15 @@ const workspaceAdapter = createEntityAdapter<Workspace>();
 const workspaceSlice = createSlice({
   name: 'workspace',
   initialState: workspaceAdapter.getInitialState({
+    selectedWorkspaceId: null,
     status: 'idle',
     error: null,
   }),
-  reducers: {},
+  reducers: {
+    setSelectedId: (state, { payload }) => {
+      state.selectedWorkspaceId = payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchWorkspaces.pending, (state) => {
       state.status = 'loading';
@@ -30,6 +35,9 @@ const workspaceSlice = createSlice({
     builder.addCase(fetchWorkspaces.fulfilled, (state, { payload }) => {
       state.status = 'fulfilled';
 
+      if (!state.selectedWorkspaceId) {
+        state.selectedWorkspaceId = payload[0].id;
+      }
       workspaceAdapter.setAll(state, payload);
     });
 
@@ -41,8 +49,17 @@ const workspaceSlice = createSlice({
   },
 });
 
+export const { setSelectedId } = workspaceSlice.actions;
+
 export default workspaceSlice.reducer;
 
 export const {
   selectAll: selectWorkspaces,
+  selectById: selectWorkspace,
 } = workspaceAdapter.getSelectors<RootState>((state) => state.workspace);
+
+export const selectWorkspaceOrDefault = (state: RootState) =>
+  selectWorkspace(
+    state,
+    state.workspace.selectedWorkspaceId || state.workspace.ids[0]
+  );

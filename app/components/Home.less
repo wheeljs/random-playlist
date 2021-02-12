@@ -1,0 +1,16 @@
+@import (reference) '~antd/lib/style/themes/default.less';
+
+:global {
+  .ant-tabs {
+    padding: 0 16px;
+    > .ant-tabs-nav .ant-tabs-nav-wrap {
+      flex: initial;
+    }
+    .ant-tabs-tab .anticon:last-child {
+      margin-right: 0;
+    }
+    .ant-tabs-tab-btn .ant-typography-secondary:hover {
+      color: @primary-color;
+    }
+  }
+}
