@@ -1,6 +1,7 @@
 /* eslint-disable class-methods-use-this */
-import { classToPlain } from 'class-transformer';
 import { Workspace } from '../models';
+
+import { normalizeEntity } from './util';
 
 export interface SaveWorkspace {
   name: string;
@@ -13,12 +14,12 @@ export interface UpdateWorkspace extends SaveWorkspace {
 
 export class WorkspaceService {
   async list(): Promise<Workspace[]> {
-    return (classToPlain(await Workspace.find()) as unknown) as Workspace[];
+    return normalizeEntity(await Workspace.find());
   }
 
   async add(workspace: SaveWorkspace): Promise<Workspace> {
     const newWorkspace = Workspace.create(workspace);
-    return (classToPlain(newWorkspace.save()) as unknown) as Workspace;
+    return normalizeEntity(await newWorkspace.save());
   }
 
   async update(workspace: UpdateWorkspace): Promise<Workspace> {
@@ -27,7 +28,7 @@ export class WorkspaceService {
     dbWorkspace.name = workspace.name;
     dbWorkspace.order = workspace.order;
 
-    return dbWorkspace.save();
+    return normalizeEntity(await dbWorkspace.save());
   }
 }
 
