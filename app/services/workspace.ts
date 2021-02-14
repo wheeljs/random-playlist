@@ -30,6 +30,11 @@ export class WorkspaceService {
 
     return normalizeEntity(await dbWorkspace.save());
   }
+
+  async remove({ workspaceId }: { workspaceId: string }): Promise<Workspace> {
+    const workspace = await Workspace.findOne(workspaceId);
+    return normalizeEntity(await workspace.softRemove());
+  }
 }
 
 export default new WorkspaceService();

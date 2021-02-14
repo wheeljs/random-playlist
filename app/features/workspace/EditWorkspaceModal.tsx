@@ -1,8 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, InputNumber, message, Modal, ModalProps } from 'antd';
-import { InfoCircleOutlined } from '@ant-design/icons';
+import {
+  Button,
+  Form,
+  Input,
+  InputNumber,
+  message,
+  Modal,
+  ModalProps,
+  Popconfirm,
+} from 'antd';
+import { InfoCircleOutlined, CloseOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
-import { updateWorkspace } from './workspaceSlice';
+import { removeWorkspace, updateWorkspace } from './workspaceSlice';
 import { Workspace } from '../../models';
 import { UpdateWorkspace } from '../../services';
 
@@ -49,6 +58,19 @@ export default function EditWorkspaceModal({
     form.submit();
   };
 
+  const doRemove = async () => {
+    try {
+      setSaving(true);
+      await dispatch(removeWorkspace({ workspaceId: workspace.id }));
+
+      onCancel();
+    } catch (e) {
+      message.error(`删除集合失败：${e.message}`);
+    } finally {
+      setSaving(false);
+    }
+  };
+
   return (
     <Modal
       visible={visible}
@@ -87,6 +109,21 @@ export default function EditWorkspaceModal({
             <InfoCircleOutlined />
             排序最靠前的为默认集合
           </span>
+        </Form.Item>
+        <Form.Item wrapperCol={{ offset: 6, span: 18 }}>
+          <Popconfirm
+            overlayClassName="widthed-popconfirm"
+            icon={<CloseOutlined />}
+            title="确定要删除这个集合吗？该操作不会影响集合中的文件夹、文件"
+            okText="删除"
+            okButtonProps={{ loading: saving }}
+            okType="danger"
+            onConfirm={doRemove}
+          >
+            <Button danger type="text" icon={<CloseOutlined />}>
+              删除集合
+            </Button>
+          </Popconfirm>
         </Form.Item>
       </Form>
     </Modal>

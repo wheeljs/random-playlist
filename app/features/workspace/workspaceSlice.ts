@@ -51,6 +51,23 @@ export const updateWorkspace = createAsyncThunk(
   }
 );
 
+export const removeWorkspace = createAsyncThunk(
+  'workspace/remove',
+  async (params: { workspaceId: string }, { dispatch, rejectWithValue }) => {
+    try {
+      const deletedWorkspace = await workspaceService.remove(params);
+      dispatch(fetchWorkspaces());
+      return deletedWorkspace;
+    } catch (err: unknown) {
+      // eslint-disable-next-line no-console
+      console.error(err);
+      rejectWithValue(err);
+    }
+
+    return null;
+  }
+);
+
 const workspaceAdapter = createEntityAdapter<Workspace>();
 
 const workspaceSlice = createSlice({
@@ -90,6 +107,10 @@ const workspaceSlice = createSlice({
 
       .addCase(updateWorkspace.fulfilled, (state, { payload }) => {
         workspaceAdapter.upsertOne(state, payload);
+      })
+
+      .addCase(removeWorkspace.fulfilled, (state, { payload }) => {
+        workspaceAdapter.removeOne(state, payload.id);
       });
   },
 });
