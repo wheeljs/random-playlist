@@ -5,7 +5,11 @@ import {
 } from '@reduxjs/toolkit';
 import { Workspace } from '../../models';
 
-import { workspaceService, SaveWorkspace } from '../../services';
+import {
+  workspaceService,
+  SaveWorkspace,
+  UpdateWorkspace,
+} from '../../services';
 // eslint-disable-next-line import/no-cycle
 import { RootState } from '../../store';
 
@@ -17,9 +21,26 @@ export const addWorkspace = createAsyncThunk(
   'workspace/add',
   async (newWorkspace: SaveWorkspace, { dispatch, rejectWithValue }) => {
     try {
-      const addedWorkspace = await workspaceService.save(newWorkspace);
+      const addedWorkspace = await workspaceService.add(newWorkspace);
       dispatch(fetchWorkspaces());
       return addedWorkspace;
+    } catch (err: unknown) {
+      // eslint-disable-next-line no-console
+      console.error(err);
+      rejectWithValue(err);
+    }
+
+    return null;
+  }
+);
+
+export const updateWorkspace = createAsyncThunk(
+  'workspace/update',
+  async (workspace: UpdateWorkspace, { dispatch, rejectWithValue }) => {
+    try {
+      const updatedWorkspace = await workspaceService.update(workspace);
+      dispatch(fetchWorkspaces());
+      return updatedWorkspace;
     } catch (err: unknown) {
       // eslint-disable-next-line no-console
       console.error(err);
@@ -64,6 +85,10 @@ const workspaceSlice = createSlice({
       })
 
       .addCase(addWorkspace.fulfilled, (state, { payload }) => {
+        workspaceAdapter.upsertOne(state, payload);
+      })
+
+      .addCase(updateWorkspace.fulfilled, (state, { payload }) => {
         workspaceAdapter.upsertOne(state, payload);
       });
   },

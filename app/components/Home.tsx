@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import styles from './Home.less';
 import { RootState } from '../store';
+import { Workspace } from '../models';
 import {
   fetchWorkspaces,
   selectLastWorkspace,
@@ -13,6 +14,7 @@ import {
   setSelectedId,
 } from '../features/workspace/workspaceSlice';
 import CreateWorkspaceModal from '../features/workspace/CreateWorkspaceModal';
+import EditWorkspaceModal from '../features/workspace/EditWorkspaceModal';
 
 const { TabPane } = Tabs;
 
@@ -22,18 +24,25 @@ export default function Home(): JSX.Element {
   const workspaces = useSelector(selectWorkspaces);
   const fetchStatus = useSelector((state: RootState) => state.workspace.status);
 
-  const [showAddModal, setShowAddModal] = useState(false);
-  const lastWorkspace = useSelector(selectLastWorkspace);
-
   useEffect(() => {
     if (fetchStatus === 'idle') {
       dispatch(fetchWorkspaces());
     }
   }, [fetchStatus, dispatch]);
 
+  const [showAddModal, setShowAddModal] = useState(false);
+  const lastWorkspace = useSelector(selectLastWorkspace);
   const onWorkspaceTabClicked = (key: string) => dispatch(setSelectedId(key));
   const onAddWorkspaceClicked = () => setShowAddModal(true);
   const onCancelAddModal = () => setShowAddModal(false);
+
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editingWorkspace, setEditingWorkspace] = useState<Workspace>(null);
+  const editWorkspace = (workspace: Workspace) => {
+    setEditingWorkspace(workspace);
+    setShowEditModal(true);
+  };
+  const onCancelEditModal = () => setShowEditModal(false);
 
   return (
     <div className={styles['home-container']} data-tid="container">
@@ -55,7 +64,12 @@ export default function Home(): JSX.Element {
                 <>
                   {x.name}&nbsp;
                   <Typography.Text type="secondary">
-                    <EditOutlined />
+                    <EditOutlined
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        editWorkspace(x);
+                      }}
+                    />
                   </Typography.Text>
                 </>
               }
@@ -70,6 +84,12 @@ export default function Home(): JSX.Element {
         visible={showAddModal}
         addAfterWorkspace={lastWorkspace}
         onCancel={onCancelAddModal}
+      />
+
+      <EditWorkspaceModal
+        visible={showEditModal}
+        workspace={editingWorkspace}
+        onCancel={onCancelEditModal}
       />
     </div>
   );
