@@ -61,7 +61,7 @@ export default function Home(): JSX.Element {
           {workspaces.map((x) => (
             <TabPane
               tab={
-                <>
+                <Tooltip title={`排序: ${x.order}`}>
                   {x.name}&nbsp;
                   <Typography.Text type="secondary">
                     <EditOutlined
@@ -71,7 +71,7 @@ export default function Home(): JSX.Element {
                       }}
                     />
                   </Typography.Text>
-                </>
+                </Tooltip>
               }
               key={x.id}
             >
