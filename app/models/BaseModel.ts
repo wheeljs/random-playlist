@@ -9,7 +9,7 @@ import {
 
 export const DateTransformer: ValueTransformer = {
   from(value: Date) {
-    if (value == null) {
+    if (!(value instanceof Date)) {
       return value;
     }
     return value.getTime();
