@@ -7,6 +7,7 @@ import { Directory } from './Directory';
   name: 't_workspace',
   orderBy: {
     order: 'ASC',
+    created_at: 'DESC',
   },
 })
 export class Workspace extends BaseModel {
