@@ -4,6 +4,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Workspace } from '../../models';
 
 import styles from './WorkspaceItem.less';
+import ImportDirectoriesModal from '../directory/ImportDirectoriesModal';
 
 export default function WorkspaceItem({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -23,6 +24,10 @@ export default function WorkspaceItem({
         className="add-directory"
         icon={<PlusOutlined />}
         onClick={openImportModal}
+      />
+      <ImportDirectoriesModal
+        visible={showImportModal}
+        onClose={onImportModalClose}
       />
     </div>
   );
