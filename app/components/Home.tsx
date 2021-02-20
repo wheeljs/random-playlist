@@ -15,6 +15,7 @@ import {
 } from '../features/workspace/workspaceSlice';
 import CreateWorkspaceModal from '../features/workspace/CreateWorkspaceModal';
 import EditWorkspaceModal from '../features/workspace/EditWorkspaceModal';
+import WorkspaceItem from '../features/workspace/WorkspaceItem';
 
 const { TabPane } = Tabs;
 
@@ -75,7 +76,7 @@ export default function Home(): JSX.Element {
               }
               key={x.id}
             >
-              {Array.isArray(x.directories) ? x.directories.length : 'unknown'}
+              <WorkspaceItem workspace={x} />
             </TabPane>
           ))}
         </Tabs>
