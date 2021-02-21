@@ -7,7 +7,7 @@ import {
   BaseEntity,
 } from 'typeorm';
 
-const dateTransformer = ({ value }: TransformFnParams) => {
+export const dateTransformer = ({ value }: TransformFnParams) => {
   if (!(value instanceof Date)) {
     return value;
   }

@@ -9,11 +9,12 @@ import {
   getConnectionOptions,
 } from 'typeorm';
 
+import { Config, IConfig } from './Config';
 import { File } from './File';
 import { Directory } from './Directory';
 import { Workspace } from './Workspace';
 
-export { Workspace, Directory, File };
+export { Config, IConfig, Workspace, Directory, File };
 
 async function createConnection(options: Partial<ConnectionOptions> = {}) {
   const userDataPath = (app || remote.app).getPath('userData');
@@ -22,7 +23,7 @@ async function createConnection(options: Partial<ConnectionOptions> = {}) {
   const opts: ConnectionOptions = ({
     ...defaultOptions,
     ...options,
-    entities: [Workspace, Directory, File],
+    entities: [Config, Workspace, Directory, File],
     database: join(userDataPath, 'random-playlist.db'),
   } as unknown) as ConnectionOptions;
   return _createConnection(opts);
