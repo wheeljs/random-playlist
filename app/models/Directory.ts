@@ -16,6 +16,11 @@ export class Directory extends BaseModel {
   @OneToMany(() => File, (file) => file.directory)
   files: File[];
 
+  @Column({
+    type: 'text',
+  })
+  glob: string;
+
   @Column()
   path: string;
 
