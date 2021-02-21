@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button } from 'antd';
+import { Button, Popover } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { Workspace } from '../../models';
 
@@ -19,13 +19,16 @@ export default function WorkspaceItem({
 
   return (
     <div className={styles['directories-container']}>
-      <Button
-        type="primary"
-        className="add-directory"
-        icon={<PlusOutlined />}
-        onClick={openImportModal}
-      />
+      <Popover content="添加目录" placement="right">
+        <Button
+          type="primary"
+          className="add-directory"
+          icon={<PlusOutlined />}
+          onClick={openImportModal}
+        />
+      </Popover>
       <ImportDirectoriesModal
+        workspace={workspace}
         visible={showImportModal}
         onClose={onImportModalClose}
       />
