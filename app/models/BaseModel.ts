@@ -18,16 +18,16 @@ export abstract class BaseModel extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_at' })
   @Transform(dateTransformer)
-  created_at: Date;
+  createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updated_at' })
   @Transform(dateTransformer)
-  updated_at: Date;
+  updatedAt: Date;
 
-  @DeleteDateColumn()
+  @DeleteDateColumn({ name: 'deleted_at' })
   @Transform(dateTransformer)
-  deleted_at: Date;
+  deletedAt: Date;
 }
 export default BaseModel;
