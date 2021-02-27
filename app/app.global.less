@@ -13,6 +13,20 @@ body {
   overflow-y: hidden;
 }
 
+.h-100p {
+  height: 100%;
+}
+
+#root {
+  padding-bottom: @padding-sm;
+  .h-100p;
+}
+
+.ant-spin-nested-loading.h-100p .ant-spin-container,
+.ant-tabs.h-100p .ant-tabs-content {
+  .h-100p;
+}
+
 .ant-form-item-control-input-content > :first-child + span {
   margin: 0 8px;
 

@@ -1,9 +1,56 @@
+@import (reference) '~antd/lib/style/themes/default.less';
+
 :global {
   .ant-btn.add-directory {
+    margin: 0 @margin-sm;
     width: 128px;
     height: 128px;
     .anticon {
       font-size: 48px;
     }
+  }
+}
+
+.workspace-item {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.directories-container {
+  margin: 0 -@margin-sm;
+  padding-bottom: @padding-sm;
+  display: flex;
+  flex-flow: row wrap;
+}
+.directory-item {
+  margin: 0 @margin-sm;
+  padding: @padding-md 0;
+  width: 128px;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-end;
+  border: @border-width-base @border-style-base @border-color-split;
+  border-radius: @border-radius-base;
+  text-align: center;
+
+  &-summary {
+    font-size: 48px;
+  }
+  &-name {
+    font-size: 22px;
+  }
+}
+
+.workspace-item :global(.ant-card) {
+  flex: auto;
+  display: flex;
+  flex-flow: column nowrap;
+
+  :global(.ant-card-body) {
+    flex: auto;
+  }
+  :global(.ant-card-actions) li {
+    margin-right: @margin-sm;
+    margin-left: @margin-sm;
   }
 }

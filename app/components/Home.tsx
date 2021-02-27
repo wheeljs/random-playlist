@@ -46,9 +46,17 @@ export default function Home(): JSX.Element {
   const onCancelEditModal = () => setShowEditModal(false);
 
   return (
-    <div className={styles['home-container']} data-tid="container">
-      <Spin size="large" spinning={fetchStatus === 'loading'}>
+    <div
+      className={[styles['home-container'], 'h-100p'].join(' ')}
+      data-tid="container"
+    >
+      <Spin
+        wrapperClassName="h-100p"
+        size="large"
+        spinning={fetchStatus === 'loading'}
+      >
         <Tabs
+          className="h-100p"
           {...{
             activeKey: selectedWorkspace != null ? selectedWorkspace.id : '',
           }}
@@ -76,7 +84,7 @@ export default function Home(): JSX.Element {
               }
               key={x.id}
             >
-              <WorkspaceItem workspace={x} />
+              <WorkspaceItem className="h-100p" workspace={x} />
             </TabPane>
           ))}
         </Tabs>
