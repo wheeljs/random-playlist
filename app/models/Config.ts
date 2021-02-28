@@ -9,6 +9,7 @@ import {
   UpdateDateColumn,
   VersionColumn,
 } from 'typeorm';
+import { keyBy } from 'lodash';
 import { dateTransformer } from './BaseModel';
 
 export interface IConfig {
@@ -98,6 +99,18 @@ export class Config extends BaseEntity {
           throw e;
       }
     }
+  }
+
+  static async listByKeys(keys?: string[]): Promise<Record<string, IConfig>> {
+    const queryBuilder = this.createQueryBuilder('config').where(
+      'config.enabled = true'
+    );
+    if (Array.isArray(keys)) {
+      queryBuilder.andWhere('config.keys IN (:...keys)', { keys });
+    }
+
+    const configs = await queryBuilder.getMany();
+    return keyBy((classToPlain(configs) as unknown) as IConfig[], (x) => x.key);
   }
 }
 
