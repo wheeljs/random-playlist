@@ -64,6 +64,7 @@ export default function CreateWorkspaceModal({
       title="添加集合"
       okText="添加"
       keyboard={false}
+      maskClosable={false}
       onOk={save}
       confirmLoading={saving}
       onCancel={onCancel}

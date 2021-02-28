@@ -77,6 +77,7 @@ export default function EditWorkspaceModal({
       title="编辑集合"
       okText="保存"
       keyboard={false}
+      maskClosable={false}
       onOk={save}
       confirmLoading={saving}
       onCancel={onCancel}

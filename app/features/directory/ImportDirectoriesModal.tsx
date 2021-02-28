@@ -125,6 +125,7 @@ export default function ImportDirectoriesModal({
       okText="添加"
       okButtonProps={{ loading: busying }}
       keyboard={false}
+      maskClosable={false}
       onOk={doImport}
       onCancel={beforeClose}
       destroyOnClose
