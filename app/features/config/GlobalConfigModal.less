@@ -1,0 +1,20 @@
+@import (reference) '~antd/lib/style/themes/default.less';
+
+.config-category {
+  display: block;
+  margin-bottom: @margin-sm;
+  border-bottom: @border-width-base @border-style-base @border-color-split;
+  color: @text-color;
+  font-size: 18px;
+
+  &::before {
+    margin-right: 6px;
+    display: inline-block;
+    width: 6px;
+    height: 18px;
+    border-radius: @border-radius-base;
+    background: @primary-color;
+    vertical-align: -0.125em;
+    content: "";
+  }
+}
