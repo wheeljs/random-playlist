@@ -2,6 +2,13 @@
 import { Config, IConfig } from '../models';
 import { SaveOrUpdateConfig } from '../models/Config';
 
+export enum ConfigKeys {
+  PlayerExecutable = 'playerExecutable',
+  PlayerPassMode = 'playerPassMode',
+  PlayerParameter = 'playerParameter',
+  PlayerSeparateParameter = 'playerSeparateParameter',
+}
+
 export class ConfigService {
   get(
     key: string,

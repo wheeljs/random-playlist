@@ -19,6 +19,7 @@ import { fetchConfigs, selectConfigs, updateConfigs } from './configSlice';
 
 import styles from './GlobalConfigModal.less';
 import { SaveOrUpdateConfig } from '../../models';
+import { ConfigKeys } from '../../services';
 
 export default function GlobalConfigModal({
   visible,
@@ -35,7 +36,9 @@ export default function GlobalConfigModal({
   const [
     playerParameterRequired,
     setPlayerParameterRequired,
-  ] = useState<boolean>(form.getFieldValue('playerPassMode') === 'list');
+  ] = useState<boolean>(
+    form.getFieldValue(ConfigKeys.PlayerPassMode) === 'list'
+  );
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -59,7 +62,7 @@ export default function GlobalConfigModal({
 
   const handleFieldsChange = (changedFields) => {
     const playerPassMode = changedFields.find(
-      (x) => x.name[0] === 'playerPassMode'
+      (x) => x.name[0] === ConfigKeys.PlayerPassMode
     );
     if (playerPassMode == null) {
       return;
@@ -70,7 +73,8 @@ export default function GlobalConfigModal({
   const selectPlayerExecutable = async () => {
     const dialogResult = await remote.dialog.showOpenDialog({
       defaultPath:
-        form.getFieldValue('playerExecutable') || remote.app.getPath('home'),
+        form.getFieldValue(ConfigKeys.PlayerExecutable) ||
+        remote.app.getPath('home'),
       title: '选择播放器',
       message: '请选择播放器的可执行文件',
       properties: ['openFile', 'dontAddToRecent'],
@@ -148,7 +152,7 @@ export default function GlobalConfigModal({
             <Form.Item required label="播放器路径">
               <Input.Group compact className="auto-width">
                 <Form.Item
-                  name="playerExecutable"
+                  name={ConfigKeys.PlayerExecutable}
                   noStyle
                   rules={[{ required: true, message: '必须选择播放器路径' }]}
                 >
@@ -160,7 +164,7 @@ export default function GlobalConfigModal({
               </Input.Group>
             </Form.Item>
             <Form.Item
-              name="playerPassMode"
+              name={ConfigKeys.PlayerPassMode}
               label="文件参数传递方式"
               tooltip="不知道如何填写，请先不修改默认参数试一试"
             >
@@ -170,9 +174,9 @@ export default function GlobalConfigModal({
               </Radio.Group>
             </Form.Item>
             <Form.Item
-              name="playerParameter"
+              name={ConfigKeys.PlayerParameter}
               label="播放器参数"
-              dependencies={['playerPassMode']}
+              dependencies={[ConfigKeys.PlayerPassMode]}
               help={
                 <>
                   打开播放器的参数。&lsquo;文件参数传递方式&lsquo;为&lsquo;列表时&lsquo;使用
@@ -187,7 +191,7 @@ export default function GlobalConfigModal({
                 },
                 ({ getFieldValue }) => ({
                   validator(_, value) {
-                    const passMode = getFieldValue('playerPassMode');
+                    const passMode = getFieldValue(ConfigKeys.PlayerPassMode);
                     if (
                       passMode === 'list' &&
                       (!value || !value.includes('%f'))
@@ -211,9 +215,10 @@ export default function GlobalConfigModal({
               }
             >
               {() => {
-                return form.getFieldValue('playerPassMode') === 'separate' ? (
+                return form.getFieldValue(ConfigKeys.PlayerPassMode) ===
+                  'separate' ? (
                   <Form.Item
-                    name="playerSeparateParameter"
+                    name={ConfigKeys.PlayerSeparateParameter}
                     label="逐项参数"
                     help={
                       <>
