@@ -16,6 +16,12 @@ import {
 import CreateWorkspaceModal from '../features/workspace/CreateWorkspaceModal';
 import EditWorkspaceModal from '../features/workspace/EditWorkspaceModal';
 import WorkspaceItem from '../features/workspace/WorkspaceItem';
+import GlobalConfigModal from '../features/config/GlobalConfigModal';
+import {
+  setVisible,
+  selectShowing,
+  fetchConfigs,
+} from '../features/config/configSlice';
 
 const { TabPane } = Tabs;
 
@@ -24,12 +30,18 @@ export default function Home(): JSX.Element {
   const selectedWorkspace = useSelector(selectWorkspaceOrDefault);
   const workspaces = useSelector(selectWorkspaces);
   const fetchStatus = useSelector((state: RootState) => state.workspace.status);
+  const configFetchStatus = useSelector(
+    (state: RootState) => state.config.status
+  );
 
   useEffect(() => {
     if (fetchStatus === 'idle') {
       dispatch(fetchWorkspaces());
     }
-  }, [fetchStatus, dispatch]);
+    if (configFetchStatus === 'idle') {
+      dispatch(fetchConfigs());
+    }
+  }, [fetchStatus, dispatch, configFetchStatus]);
 
   const [showAddModal, setShowAddModal] = useState(false);
   const lastWorkspace = useSelector(selectLastWorkspace);
@@ -44,6 +56,9 @@ export default function Home(): JSX.Element {
     setShowEditModal(true);
   };
   const onCancelEditModal = () => setShowEditModal(false);
+
+  const showConfigModal = useSelector(selectShowing);
+  const closeConfigModal = () => dispatch(setVisible(false));
 
   return (
     <div
@@ -100,6 +115,8 @@ export default function Home(): JSX.Element {
         workspace={editingWorkspace}
         onCancel={onCancelEditModal}
       />
+
+      <GlobalConfigModal visible={showConfigModal} onClose={closeConfigModal} />
     </div>
   );
 }

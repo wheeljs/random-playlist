@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
 import path from 'path';
-import { Button, Card, Divider, Popover } from 'antd';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Button, Card, Divider, message, Popover } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import { shuffle } from 'lodash-es';
 import { Workspace } from '../../models';
 
 import styles from './WorkspaceItem.less';
 import ImportDirectoriesModal from '../directory/ImportDirectoriesModal';
+import { selectConfigs, setVisible } from '../config/configSlice';
+import { ConfigKeys } from '../../services';
+import { listFilesAndDirectories, play } from '../../utils/fileHelper';
 
 export default function WorkspaceItem({
   className,
@@ -17,10 +22,43 @@ export default function WorkspaceItem({
 > & {
   workspace: Workspace;
 }): JSX.Element {
+  const dispatch = useDispatch();
+
+  const configs = useSelector(selectConfigs);
+
   const [showImportModal, setShowImportModal] = useState(false);
+  const [generating, setGenerating] = useState(false);
 
   const openImportModal = () => setShowImportModal(true);
   const onImportModalClose = () => setShowImportModal(false);
+
+  const generateAndPlay = async () => {
+    if (!configs[ConfigKeys.PlayerExecutable]?.value) {
+      message.warning('请先配置播放器');
+      dispatch(setVisible(true));
+      return;
+    }
+
+    const files = (
+      await Promise.all(
+        workspace.directories.map((directory) => {
+          return listFilesAndDirectories({
+            root: directory.path,
+            patterns: directory.glob ?? configs[ConfigKeys.Glob]?.value,
+          }).then((imported) =>
+            imported.files.map((x) => path.join(directory.path, x))
+          );
+        })
+      )
+    ).flat();
+
+    setGenerating(true);
+    play({
+      configs,
+      fileList: shuffle(files).splice(0, 10),
+    });
+    setGenerating(false);
+  };
 
   return (
     <div className={[className, styles['workspace-item']].join(' ')}>
@@ -53,7 +91,12 @@ export default function WorkspaceItem({
       <Divider />
       <Card
         actions={[
-          <Button type="primary" key="generate">
+          <Button
+            type="primary"
+            key="generate"
+            loading={generating}
+            onClick={generateAndPlay}
+          >
             生成并播放
           </Button>,
         ]}

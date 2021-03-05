@@ -3,6 +3,7 @@ import { Config, IConfig } from '../models';
 import { SaveOrUpdateConfig } from '../models/Config';
 
 export enum ConfigKeys {
+  Glob = 'glob',
   PlayerExecutable = 'playerExecutable',
   PlayerPassMode = 'playerPassMode',
   PlayerParameter = 'playerParameter',

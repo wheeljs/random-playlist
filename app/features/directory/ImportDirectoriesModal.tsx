@@ -7,7 +7,7 @@ import {
   listFilesAndDirectories,
   openImportDialog,
   PathListed,
-} from '../../utils/importHelper';
+} from '../../utils/fileHelper';
 import NativeAnchor from '../../components/NativeAnchor';
 import { Workspace } from '../../models';
 import { configService, directoryService } from '../../services';

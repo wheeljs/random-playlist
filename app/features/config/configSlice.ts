@@ -1,10 +1,11 @@
 import {
   createAsyncThunk,
+  createSelector,
   createSlice,
   SliceCaseReducers,
 } from '@reduxjs/toolkit';
 import { IConfig, SaveOrUpdateConfig } from '../../models';
-import { configService } from '../../services';
+import { ConfigKeys, configService } from '../../services';
 // eslint-disable-next-line import/no-cycle
 import { RootState } from '../../store';
 
@@ -76,3 +77,9 @@ export default configSlice.reducer;
 
 export const selectShowing = (state: RootState) => state.config.showing;
 export const selectConfigs = (state: RootState) => state.config.configs;
+export const selectConfig = createSelector(
+  [selectConfigs, (_state: unknown, key: ConfigKeys) => key],
+  (configs, key) => {
+    return configs[key];
+  }
+);
