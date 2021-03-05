@@ -1,5 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import { Config, IConfig } from '../models';
+import { SaveOrUpdateConfig } from '../models/Config';
 
 export class ConfigService {
   get(
@@ -11,6 +12,12 @@ export class ConfigService {
 
   listByKeys(keys?: string[]): Promise<Record<string, IConfig>> {
     return Config.listByKeys(keys);
+  }
+
+  async update(
+    configs: SaveOrUpdateConfig[]
+  ): Promise<Record<string, IConfig>> {
+    return Config.saveOrUpdate(configs);
   }
 }
 

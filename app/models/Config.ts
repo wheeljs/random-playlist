@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  In,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
   VersionColumn,
@@ -12,17 +13,22 @@ import {
 import { keyBy } from 'lodash';
 import { dateTransformer } from './BaseModel';
 
+export type ConfigValueType = 'string' | 'separated-string';
+
 export interface IConfig {
   id: number;
   key: string;
   value: string | string[];
-  valueType: 'string' | 'separated-string';
+  valueType: ConfigValueType;
   version: number;
   enabled: boolean;
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date;
 }
+
+export type SaveOrUpdateConfig = Pick<IConfig, 'key' | 'value'> &
+  Partial<Pick<IConfig, 'valueType'>>;
 
 @Entity('t_config')
 export class Config extends BaseEntity {
@@ -43,8 +49,8 @@ export class Config extends BaseEntity {
   })
   value: string;
 
-  @Column({ name: 'value_type', default: 'string' })
-  valueType: 'string' | 'separated-string';
+  @Column({ name: 'value_type', type: 'text', default: 'string' })
+  valueType: ConfigValueType;
 
   @VersionColumn()
   version: number;
@@ -111,6 +117,41 @@ export class Config extends BaseEntity {
 
     const configs = await queryBuilder.getMany();
     return keyBy((classToPlain(configs) as unknown) as IConfig[], (x) => x.key);
+  }
+
+  static async saveOrUpdate(
+    configs: SaveOrUpdateConfig[]
+  ): Promise<Record<string, IConfig>> {
+    const configKeys = configs.map((x) => x.key);
+
+    const dbConfigs = await Config.find({
+      key: In(configKeys),
+    });
+    const toSaveConfigs = configs.map((config) => {
+      let dbConfig = dbConfigs.find((x) => x.key === config.key);
+      if (dbConfig == null) {
+        dbConfig = Config.create({
+          key: config.key,
+          valueType: config.valueType ?? 'string',
+        });
+      }
+
+      switch (dbConfig.valueType) {
+        case 'separated-string':
+          dbConfig.value = (config.value as string[]).join(',');
+          break;
+        default:
+          dbConfig.value = config.value as string;
+          break;
+      }
+
+      return dbConfig;
+    });
+
+    return keyBy(
+      (classToPlain(await Config.save(toSaveConfigs)) as unknown) as IConfig[],
+      (x) => x.key
+    );
   }
 }
 

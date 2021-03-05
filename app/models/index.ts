@@ -9,12 +9,20 @@ import {
   getConnectionOptions,
 } from 'typeorm';
 
-import { Config, IConfig } from './Config';
+import { Config, IConfig, ConfigValueType, SaveOrUpdateConfig } from './Config';
 import { File } from './File';
 import { Directory } from './Directory';
 import { Workspace } from './Workspace';
 
-export { Config, IConfig, Workspace, Directory, File };
+export {
+  Config,
+  IConfig,
+  ConfigValueType,
+  SaveOrUpdateConfig,
+  Workspace,
+  Directory,
+  File,
+};
 
 async function createConnection(options: Partial<ConnectionOptions> = {}) {
   const userDataPath = (app || remote.app).getPath('userData');

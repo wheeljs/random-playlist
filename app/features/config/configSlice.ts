@@ -3,7 +3,7 @@ import {
   createSlice,
   SliceCaseReducers,
 } from '@reduxjs/toolkit';
-import { IConfig } from '../../models';
+import { IConfig, SaveOrUpdateConfig } from '../../models';
 import { configService } from '../../services';
 // eslint-disable-next-line import/no-cycle
 import { RootState } from '../../store';
@@ -19,10 +19,17 @@ export const fetchConfigs = createAsyncThunk('config/fetch', async () =>
   configService.listByKeys()
 );
 
+export const updateConfigs = createAsyncThunk(
+  'config/update',
+  async (configs: SaveOrUpdateConfig[]) => {
+    return configService.update(configs);
+  }
+);
+
 const configSlice = createSlice<ConfigState, SliceCaseReducers<ConfigState>>({
   name: 'config',
   initialState: {
-    showing: true,
+    showing: false,
     configs: {},
     status: 'idle',
     error: null,
@@ -52,6 +59,13 @@ const configSlice = createSlice<ConfigState, SliceCaseReducers<ConfigState>>({
         state.status = 'rejected';
         state.error = error.message;
         state.configs = {};
+      })
+
+      .addCase(updateConfigs.fulfilled, (state, { payload }) => {
+        state.configs = {
+          ...state.configs,
+          ...payload,
+        };
       });
   },
 });

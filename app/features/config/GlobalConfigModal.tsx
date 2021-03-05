@@ -12,11 +12,13 @@ import {
   Typography,
   Radio,
   Anchor,
+  message,
 } from 'antd';
 import { RootState } from '../../store';
-import { fetchConfigs, selectConfigs } from './configSlice';
+import { fetchConfigs, selectConfigs, updateConfigs } from './configSlice';
 
 import styles from './GlobalConfigModal.less';
+import { SaveOrUpdateConfig } from '../../models';
 
 export default function GlobalConfigModal({
   visible,
@@ -34,16 +36,26 @@ export default function GlobalConfigModal({
     playerParameterRequired,
     setPlayerParameterRequired,
   ] = useState<boolean>(form.getFieldValue('playerPassMode') === 'list');
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     form.validateFields(['playerParameter']);
   }, [form, playerParameterRequired]);
 
   useEffect(() => {
-    if (fetchStatus === 'idle') {
-      dispatch(fetchConfigs());
+    if (visible) {
+      if (fetchStatus === 'idle') {
+        dispatch(fetchConfigs());
+      } else if (fetchStatus === 'fulfilled') {
+        const formValue = {};
+        Object.values(configs).forEach((config) => {
+          formValue[config.key] = config.value;
+        });
+
+        form.setFieldsValue(formValue);
+      }
     }
-  }, [dispatch, fetchStatus]);
+  }, [visible, configs, dispatch, fetchStatus, form]);
 
   const handleFieldsChange = (changedFields) => {
     const playerPassMode = changedFields.find(
@@ -74,8 +86,25 @@ export default function GlobalConfigModal({
     });
   };
 
-  const saveConfig = (values: any) => {
-    console.log(values);
+  const saveConfig = async (values: any) => {
+    const saveParams: SaveOrUpdateConfig[] = Object.keys(values).map(
+      (configKey) => ({
+        key: configKey,
+        value: values[configKey],
+      })
+    );
+    try {
+      setSaving(true);
+
+      await dispatch(updateConfigs(saveParams));
+
+      message.success('保存配置成功');
+      onClose();
+    } catch (e) {
+      message.error(`保存配置失败：${e.message}`);
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -83,16 +112,23 @@ export default function GlobalConfigModal({
       visible={visible}
       width={1040}
       title="全局配置"
+      wrapClassName="global-config-modal"
       keyboard={false}
       maskClosable={false}
       okText="保存"
+      okButtonProps={{ loading: saving }}
       onOk={() => form.submit()}
       onCancel={onClose}
       destroyOnClose
     >
       <Row gutter={32}>
         <Col span={6}>
-          <Anchor onClick={(e) => e.preventDefault()}>
+          <Anchor
+            onClick={(e) => e.preventDefault()}
+            getContainer={() =>
+              document.querySelector<HTMLDivElement>('.global-config-modal')
+            }
+          >
             <Anchor.Link href="#config-player" title="播放器设置" />
           </Anchor>
         </Col>
