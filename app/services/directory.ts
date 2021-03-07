@@ -11,12 +11,12 @@ export interface ImportDirectoriesToWorkspace {
 }
 
 export class DirectoryService {
-  importToWorkspace({
+  async importToWorkspace({
     workspaceId,
     directories,
   }: ImportDirectoriesToWorkspace): Promise<Directory[]> {
     return normalizeEntity(
-      Directory.save(
+      await Directory.save(
         Directory.create(
           directories.map((dir) => ({
             ...dir,

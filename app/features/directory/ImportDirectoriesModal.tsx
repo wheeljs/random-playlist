@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Button, Form, Input, message, Modal, ModalProps, Popover } from 'antd';
 import { CloseCircleOutlined, FolderOpenOutlined } from '@ant-design/icons';
 import { uniqBy } from 'lodash-es';
@@ -14,6 +15,7 @@ import { configService, directoryService } from '../../services';
 
 import styles from './ImportDirectoriesModal.less';
 import { ImportDirectoriesToWorkspace } from '../../services/directory';
+import { fetchWorkspaces } from '../workspace/workspaceSlice';
 
 interface ImportPath {
   path: string;
@@ -28,6 +30,8 @@ export default function ImportDirectoriesModal({
   workspace: Workspace;
   onClose: () => void;
 }): JSX.Element {
+  const dispatch = useDispatch();
+
   const [form] = Form.useForm();
 
   const [busying, setBusying] = useState(false);
@@ -110,6 +114,7 @@ export default function ImportDirectoriesModal({
     setBusying(true);
     try {
       await directoryService.importToWorkspace(importParams);
+      dispatch(fetchWorkspaces());
       beforeClose();
     } catch (err: any) {
       message.warn(`添加目录失败：${err.message}`);
