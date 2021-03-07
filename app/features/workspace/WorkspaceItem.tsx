@@ -1,16 +1,17 @@
 import path from 'path';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Card, Divider, message, Popover } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { Button, Card, Divider, message, Popconfirm, Popover } from 'antd';
+import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { shuffle } from 'lodash-es';
-import { Workspace } from '../../models';
+import { Directory, Workspace } from '../../models';
 
 import styles from './WorkspaceItem.less';
 import ImportDirectoriesModal from '../directory/ImportDirectoriesModal';
 import { selectConfigs, setVisible } from '../config/configSlice';
-import { ConfigKeys } from '../../services';
+import { ConfigKeys, directoryService } from '../../services';
 import { listFilesAndDirectories, play } from '../../utils/fileHelper';
+import { fetchWorkspaces } from './workspaceSlice';
 
 export default function WorkspaceItem({
   className,
@@ -60,6 +61,12 @@ export default function WorkspaceItem({
     setGenerating(false);
   };
 
+  const deleteDirectory = async (directory: Directory) => {
+    await directoryService.remove(directory.id);
+
+    dispatch(fetchWorkspaces());
+  };
+
   return (
     <div className={[className, styles['workspace-item']].join(' ')}>
       <div className={styles['directories-container']}>
@@ -78,7 +85,26 @@ export default function WorkspaceItem({
         />
         {Array.isArray(workspace.directories) &&
           workspace.directories.map((x) => (
-            <Popover key={x.id} visible={false}>
+            <Popover
+              key={x.id}
+              placement="right"
+              content={
+                <>
+                  {x.path}
+                  <div className={styles['directory-actions']}>
+                    <Popconfirm
+                      title="从集合中删除该目录，物理文件不受影响。"
+                      placement="bottom"
+                      okText="删除"
+                      okButtonProps={{ danger: true }}
+                      onConfirm={() => deleteDirectory(x)}
+                    >
+                      <Button type="link" danger icon={<DeleteOutlined />} />
+                    </Popconfirm>
+                  </div>
+                </>
+              }
+            >
               <div className={styles['directory-item']}>
                 {/* <span className={styles['directory-item-summary']}>0</span> */}
                 <span className={styles['directory-item-name']}>

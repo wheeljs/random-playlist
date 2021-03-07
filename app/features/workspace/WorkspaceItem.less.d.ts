@@ -1,6 +1,7 @@
 declare namespace WorkspaceItemLessNamespace {
   export interface IWorkspaceItemLess {
     'directories-container': string;
+    'directory-actions': string;
     'directory-item': string;
     'directory-item-name': string;
     'directory-item-summary': string;

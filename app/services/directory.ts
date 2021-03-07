@@ -26,6 +26,15 @@ export class DirectoryService {
       )
     );
   }
+
+  async remove(directoryId: string): Promise<Directory> {
+    const directory = await Directory.findOne(directoryId);
+    if (directory == null) {
+      return directory;
+    }
+
+    return normalizeEntity(directory.softRemove());
+  }
 }
 
 export default new DirectoryService();

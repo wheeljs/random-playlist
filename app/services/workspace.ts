@@ -14,7 +14,11 @@ export interface UpdateWorkspace extends SaveWorkspace {
 
 export class WorkspaceService {
   async list(): Promise<Workspace[]> {
-    return normalizeEntity(await Workspace.find());
+    return normalizeEntity(
+      await Workspace.find({
+        where: 'Workspace_directories_deleted_at IS NULL',
+      })
+    );
   }
 
   async add(workspace: SaveWorkspace): Promise<Workspace> {
