@@ -46,6 +46,13 @@ export default class MenuBuilder {
     });
   }
 
+  private openGlobalSettings() {
+    this.mainWindow.webContents.send('dispatch', {
+      type: 'config/setVisible',
+      payload: true,
+    });
+  }
+
   buildDarwinTemplate(): MenuItemConstructorOptions[] {
     const subMenuAbout: DarwinMenuItemConstructorOptions = {
       label: 'Generate and Play',
@@ -56,6 +63,11 @@ export default class MenuBuilder {
         },
         { type: 'separator' },
         { label: 'Services', submenu: [] },
+        {
+          label: 'Global Settings',
+          accelerator: 'Command+S',
+          click: () => this.openGlobalSettings(),
+        },
         { type: 'separator' },
         {
           label: 'Hide Generate and Play',
@@ -142,11 +154,12 @@ export default class MenuBuilder {
   buildDefaultTemplate() {
     const templateDefault: MenuItemConstructorOptions[] = [
       {
-        label: '&File',
+        label: '&Generate and Play',
         submenu: [
           {
-            label: '&Open',
-            accelerator: 'Ctrl+O',
+            label: 'Global Settings',
+            accelerator: 'Ctrl+S',
+            click: () => this.openGlobalSettings(),
           },
           {
             label: '&Close',
