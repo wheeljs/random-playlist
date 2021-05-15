@@ -1,5 +1,5 @@
 /* eslint-disable class-methods-use-this */
-import { Directory } from '../models';
+import { Directory, File } from '../models';
 import { normalizeEntity } from './util';
 
 export interface ImportDirectoriesToWorkspace {
@@ -8,6 +8,11 @@ export interface ImportDirectoriesToWorkspace {
     path: string;
     glob?: string;
   }[];
+}
+
+export interface SyncDirectoryFiles {
+  directoryId: string;
+  files: Pick<File, 'path' | 'extension' | 'duration' | 'thumb'>[];
 }
 
 export class DirectoryService {
@@ -34,6 +39,20 @@ export class DirectoryService {
     }
 
     return normalizeEntity(directory.softRemove());
+  }
+
+  async syncFiles(directories: SyncDirectoryFiles[]) {
+    return normalizeEntity(
+      await Directory.save(
+        await Promise.all(
+          directories.map(async (x) => {
+            const directory = await Directory.findOne(x.directoryId);
+            directory.files = x.files.map((file) => File.create(file));
+            return directory;
+          })
+        )
+      )
+    );
   }
 }
 

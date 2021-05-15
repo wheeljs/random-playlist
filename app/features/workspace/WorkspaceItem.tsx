@@ -1,16 +1,21 @@
 import path from 'path';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Card, Divider, message, Popconfirm, Popover } from 'antd';
+import { Button, message, Popconfirm, Popover } from 'antd';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { shuffle } from 'lodash-es';
 import { Directory, Workspace } from '../../models';
 
 import styles from './WorkspaceItem.less';
 import ImportDirectoriesModal from '../directory/ImportDirectoriesModal';
+import FileListCard from '../directory/FileListCard';
 import { selectConfigs, setVisible } from '../config/configSlice';
-import { ConfigKeys, directoryService } from '../../services';
-import { listFilesAndDirectories, play } from '../../utils/fileHelper';
+import { ConfigKeys, configService, directoryService } from '../../services';
+import {
+  listFilesAndDirectories,
+  play,
+  videoFileDetails,
+} from '../../utils/fileHelper';
 import { fetchWorkspaces } from './workspaceSlice';
 
 export default function WorkspaceItem({
@@ -29,6 +34,7 @@ export default function WorkspaceItem({
 
   const [showImportModal, setShowImportModal] = useState(false);
   const [generating, setGenerating] = useState(false);
+  const [syncing, setSyncing] = useState(false);
 
   const openImportModal = () => setShowImportModal(true);
   const onImportModalClose = () => setShowImportModal(false);
@@ -66,6 +72,45 @@ export default function WorkspaceItem({
 
     dispatch(fetchWorkspaces());
   };
+
+  const syncFiles = async (
+    directories: Directory[] = workspace.directories
+  ) => {
+    const globConfig = await configService.get('glob');
+
+    setSyncing(true);
+    try {
+      await directoryService.syncFiles(
+        await Promise.all(
+          directories.map(async (directory) => {
+            const files = (
+              await listFilesAndDirectories({
+                root: directory.path,
+                patterns: directory.glob ?? globConfig.value,
+              })
+            ).files.map((filePath) => path.join(directory.path, filePath));
+
+            const details = await videoFileDetails({
+              filePaths: files,
+              thumbDir: path.join(directory.path, '.rpcache'),
+              fallbackDirectory: path.basename(directory.path),
+            });
+
+            return {
+              directoryId: directory.id,
+              files: details,
+            };
+          })
+        )
+      );
+
+      dispatch(fetchWorkspaces());
+    } finally {
+      setSyncing(false);
+    }
+  };
+
+  const fileList = workspace.directories.flatMap((x) => x.files);
 
   return (
     <div className={[className, styles['workspace-item']].join(' ')}>
@@ -106,7 +151,9 @@ export default function WorkspaceItem({
               }
             >
               <div className={styles['directory-item']}>
-                {/* <span className={styles['directory-item-summary']}>0</span> */}
+                <span className={styles['directory-item-summary']}>
+                  {x.files.length}
+                </span>
                 <span className={styles['directory-item-name']}>
                   {path.basename(x.path)}
                 </span>
@@ -114,8 +161,10 @@ export default function WorkspaceItem({
             </Popover>
           ))}
       </div>
-      <Divider />
-      <Card
+
+      <FileListCard
+        fileList={fileList}
+        syncing={syncing}
         actions={[
           <Button
             type="primary"
@@ -126,6 +175,7 @@ export default function WorkspaceItem({
             生成并播放
           </Button>,
         ]}
+        onSyncFiles={syncFiles}
       />
     </div>
   );

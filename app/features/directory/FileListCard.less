@@ -1,0 +1,44 @@
+@import (reference) '~antd/lib/style/themes/default.less';
+
+:global {
+  .file-list-card {
+    flex: auto;
+    overflow: hidden;
+  }
+
+  .file-list-card .ant-card {
+    height: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+
+    .ant-card-head, .ant-card-actions {
+      flex-shrink: 0;
+      z-index: 1;
+    }
+
+    .ant-card-body {
+      flex: auto;
+      overflow: auto;
+    }
+  }
+}
+
+.file-item {
+  height: 100%;
+  padding: @padding-xs;
+  transition: box-shadow @animation-duration-base;
+  text-align: center;
+
+  img {
+    margin-bottom: @margin-xs;
+    width: 100%;
+  }
+
+  .file-name {
+    word-break: break-all;
+  }
+
+  &:hover {
+    box-shadow: @box-shadow-base;
+  }
+}
