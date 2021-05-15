@@ -43,7 +43,7 @@ export default function FileList({
   switch (view) {
     case 'thumb':
       listView = (
-        <Spin spinning={syncing}>
+        <Spin spinning={syncing} tip="正在同步中...">
           <Row gutter={12}>
             {Array.isArray(fileList) &&
               fileList.map((file) => (
@@ -63,7 +63,15 @@ export default function FileList({
     case 'list':
     default:
       listView = (
-        <Table<File> dataSource={fileList} pagination={false} loading={syncing}>
+        <Table<File>
+          rowKey={(row) => row.id}
+          dataSource={fileList}
+          pagination={false}
+          loading={{
+            spinning: syncing,
+            tip: '正在同步中...',
+          }}
+        >
           <Table.Column<File>
             title="文件名"
             dataIndex="path"
