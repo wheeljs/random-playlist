@@ -13,7 +13,10 @@ export class Directory extends BaseModel {
   })
   workspace: Workspace;
 
-  @OneToMany(() => File, (file) => file.directory)
+  @OneToMany(() => File, (file) => file.directory, {
+    cascade: true,
+    eager: true,
+  })
   files: File[];
 
   @Column({
