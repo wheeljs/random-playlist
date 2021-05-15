@@ -16,5 +16,8 @@ export class File extends BaseModel {
 
   @Column({ length: 50 })
   extension: string;
+
+  @Column()
+  thumb?: string;
 }
 export default File;
