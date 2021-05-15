@@ -111,12 +111,8 @@ export default function FileList({
           <Space size="middle">
             <Breadcrumb>
               <Breadcrumb.Item>
-                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                <a
-                  // eslint-disable-next-line no-script-url
-                  href="javascript:void(0);"
-                  onClick={onClearSelectedDirectory}
-                >
+                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid, jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
+                <a onClick={onClearSelectedDirectory}>
                   <Space>
                     <FolderOpenOutlined />
                     <span>默认空间</span>
@@ -131,7 +127,10 @@ export default function FileList({
               title="从硬盘同步（由于性能原因，您需要手动同步）"
               placement="right"
             >
-              <Button icon={<ReloadOutlined />} onClick={() => onSyncFiles()}>
+              <Button
+                icon={<ReloadOutlined />}
+                onClick={() => onSyncFiles(directory ? [directory] : undefined)}
+              >
                 刷新
               </Button>
             </Tooltip>
