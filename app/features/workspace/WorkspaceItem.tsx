@@ -32,6 +32,7 @@ export default function WorkspaceItem({
 
   const configs = useSelector(selectConfigs);
 
+  const [selectedDir, setSelectedDir] = useState(null);
   const [showImportModal, setShowImportModal] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [syncing, setSyncing] = useState(false);
@@ -110,7 +111,17 @@ export default function WorkspaceItem({
     }
   };
 
-  const fileList = workspace.directories.flatMap((x) => x.files);
+  const selectDir = (directory: Directory) => {
+    if (selectedDir === directory) {
+      setSelectedDir(null);
+      return;
+    }
+    setSelectedDir(directory);
+  };
+
+  const fileList = selectedDir
+    ? selectedDir.files
+    : workspace.directories.flatMap((x) => x.files);
 
   return (
     <div className={[className, styles['workspace-item']].join(' ')}>
@@ -150,7 +161,15 @@ export default function WorkspaceItem({
                 </>
               }
             >
-              <div className={styles['directory-item']}>
+              {/* eslint-disable-next-line jsx-a11y/interactive-supports-focus, jsx-a11y/click-events-have-key-events */}
+              <div
+                className={[
+                  styles['directory-item'],
+                  x === selectedDir ? styles.selected : '',
+                ].join(' ')}
+                role="button"
+                onClick={() => selectDir(x)}
+              >
                 <span className={styles['directory-item-summary']}>
                   {x.files.length}
                 </span>
@@ -165,6 +184,7 @@ export default function WorkspaceItem({
       <FileListCard
         fileList={fileList}
         syncing={syncing}
+        directory={selectedDir}
         actions={[
           <Button
             type="primary"
@@ -175,6 +195,7 @@ export default function WorkspaceItem({
             生成并播放
           </Button>,
         ]}
+        onClearSelectedDirectory={() => setSelectedDir(null)}
         onSyncFiles={syncFiles}
       />
     </div>

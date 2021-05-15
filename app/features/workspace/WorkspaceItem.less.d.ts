@@ -5,6 +5,7 @@ declare namespace WorkspaceItemLessNamespace {
     'directory-item': string;
     'directory-item-name': string;
     'directory-item-summary': string;
+    selected: string;
     'workspace-item': string;
   }
 }

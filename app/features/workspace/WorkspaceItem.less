@@ -33,12 +33,18 @@
   border: @border-width-base @border-style-base @border-color-split;
   border-radius: @border-radius-base;
   text-align: center;
+  cursor: pointer;
 
   &-summary {
     font-size: 48px;
   }
   &-name {
     font-size: 22px;
+  }
+
+  &:hover,
+  &.selected {
+    border-color: @primary-color;
   }
 }
 

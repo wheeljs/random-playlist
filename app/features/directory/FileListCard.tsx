@@ -29,11 +29,13 @@ export default function FileList({
   fileList,
   actions,
   syncing,
+  onClearSelectedDirectory,
   onSyncFiles,
 }: Pick<CardProps, 'actions'> & {
   directory?: Directory;
   fileList: VideoFile[];
   syncing?: boolean;
+  onClearSelectedDirectory: () => void;
   onSyncFiles: (directories?: Directory[]) => void;
 }): JSX.Element {
   const [view, setView] = useState('thumb');
@@ -43,19 +45,19 @@ export default function FileList({
     case 'thumb':
       listView = (
         <Spin spinning={syncing}>
-        <Row gutter={12}>
-          {Array.isArray(fileList) &&
-            fileList.map((file) => (
-              <Col span={3} key={file.path}>
-                <div className={styles['file-item']}>
-                  <img src={file.thumb} alt={file.path} />
-                  <span className={styles['file-name']}>
-                    {basename(file.path)}
-                  </span>
-                </div>
-              </Col>
-            ))}
-        </Row>
+          <Row gutter={12}>
+            {Array.isArray(fileList) &&
+              fileList.map((file) => (
+                <Col span={3} key={file.path}>
+                  <div className={styles['file-item']}>
+                    <img src={file.thumb} alt={file.path} />
+                    <span className={styles['file-name']}>
+                      {basename(file.path)}
+                    </span>
+                  </div>
+                </Col>
+              ))}
+          </Row>
         </Spin>
       );
       break;
@@ -106,8 +108,17 @@ export default function FileList({
           <Space size="middle">
             <Breadcrumb>
               <Breadcrumb.Item>
-                <FolderOpenOutlined />
-                <span>默认空间</span>
+                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                <a
+                  // eslint-disable-next-line no-script-url
+                  href="javascript:void(0);"
+                  onClick={onClearSelectedDirectory}
+                >
+                  <Space>
+                    <FolderOpenOutlined />
+                    <span>默认空间</span>
+                  </Space>
+                </a>
               </Breadcrumb.Item>
               {directory != null && (
                 <Breadcrumb.Item>{basename(directory.path)}</Breadcrumb.Item>
