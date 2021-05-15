@@ -15,7 +15,10 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.0.20",
+    "@ffprobe-installer/ffprobe": "^1.1.0",
     "better-sqlite3": "^7.1.2",
+    "fluent-ffmpeg": "^2.1.2",
     "typeorm": "^0.2.30"
   }
 }

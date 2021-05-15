@@ -1,4 +1,6 @@
 /* eslint-disable import/prefer-default-export */
+import { access, mkdir, constants } from 'fs-extra';
+import path from 'path';
 import { execFile } from 'child_process';
 import fg from 'fast-glob';
 import { uniq } from 'lodash-es';
@@ -49,6 +51,63 @@ export async function listFilesAndDirectories({
     files,
     directories,
   };
+}
+
+export function ensureThumbDir(
+  thumbDir: string,
+  fallbackDirectory?: string
+): Promise<string> {
+  return access(thumbDir, constants.W_OK)
+    .catch((err) => {
+      if (err.code === 'ENOENT') {
+        return mkdir(thumbDir);
+      }
+
+      throw err;
+    })
+    .then(() => thumbDir)
+    .catch(() => {
+      const fallbackPaths = [remote.app.getPath('cache'), 'random-playlist/'];
+      if (fallbackDirectory) {
+        fallbackPaths.push(fallbackDirectory);
+      }
+
+      return path.join(...fallbackPaths);
+    }) as Promise<string>;
+}
+
+export interface VideoFile {
+  path: string;
+  extension: string;
+  thumb?: string;
+  duration: number;
+}
+
+export async function videoFileDetails({
+  filePaths,
+  thumbDir,
+  fallbackDirectory,
+}: {
+  filePaths: string[];
+  thumbDir: string;
+  fallbackDirectory?: string;
+}): Promise<VideoFile[]> {
+  const ensuredThumbDir = await ensureThumbDir(thumbDir, fallbackDirectory);
+
+  let worker = new Worker('utils/videoFileDetails.js');
+  const promise = new Promise<VideoFile[]>((resolve) => {
+    worker.onmessage = (event: MessageEvent<VideoFile[]>) => {
+      worker.terminate();
+      worker = null;
+      resolve(event.data);
+    };
+  });
+  worker.postMessage({
+    filePaths,
+    thumbDir: ensuredThumbDir,
+  });
+
+  return promise;
 }
 
 export function play({

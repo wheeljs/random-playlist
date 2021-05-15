@@ -2,6 +2,102 @@
 # yarn lockfile v1
 
 
+"@ffmpeg-installer/darwin-x64@4.1.0":
+  version "4.1.0"
+  resolved "https://registry.nlark.com/@ffmpeg-installer/darwin-x64/download/@ffmpeg-installer/darwin-x64-4.1.0.tgz#48e1706c690e628148482bfb64acb67472089aaa"
+  integrity sha1-SOFwbGkOYoFISCv7ZKy2dHIImqo=
+
+"@ffmpeg-installer/ffmpeg@^1.0.20":
+  version "1.0.20"
+  resolved "https://registry.nlark.com/@ffmpeg-installer/ffmpeg/download/@ffmpeg-installer/ffmpeg-1.0.20.tgz#d3c9c2bbcd76149468fb0886c2b3fe9e4795490b"
+  integrity sha1-08nCu812FJRo+wiGwrP+nkeVSQs=
+  optionalDependencies:
+    "@ffmpeg-installer/darwin-x64" "4.1.0"
+    "@ffmpeg-installer/linux-arm" "4.1.3"
+    "@ffmpeg-installer/linux-arm64" "4.1.4"
+    "@ffmpeg-installer/linux-ia32" "4.1.0"
+    "@ffmpeg-installer/linux-x64" "4.1.0"
+    "@ffmpeg-installer/win32-ia32" "4.1.0"
+    "@ffmpeg-installer/win32-x64" "4.1.0"
+
+"@ffmpeg-installer/linux-arm64@4.1.4":
+  version "4.1.4"
+  resolved "https://registry.nlark.com/@ffmpeg-installer/linux-arm64/download/@ffmpeg-installer/linux-arm64-4.1.4.tgz#7219f3f901bb67f7926cb060b56b6974a6cad29f"
+  integrity sha1-chnz+QG7Z/eSbLBgtWtpdKbK0p8=
+
+"@ffmpeg-installer/linux-arm@4.1.3":
+  version "4.1.3"
+  resolved "https://registry.nlark.com/@ffmpeg-installer/linux-arm/download/@ffmpeg-installer/linux-arm-4.1.3.tgz#c554f105ed5f10475ec25d7bec94926ce18db4c1"
+  integrity sha1-xVTxBe1fEEdewl177JSSbOGNtME=
+
+"@ffmpeg-installer/linux-ia32@4.1.0":
+  version "4.1.0"
+  resolved "https://registry.nlark.com/@ffmpeg-installer/linux-ia32/download/@ffmpeg-installer/linux-ia32-4.1.0.tgz#adad70b0d0d9d8d813983d6e683c5a338a75e442"
+  integrity sha1-ra1wsNDZ2NgTmD1uaDxaM4p15EI=
+
+"@ffmpeg-installer/linux-x64@4.1.0":
+  version "4.1.0"
+  resolved "https://registry.nlark.com/@ffmpeg-installer/linux-x64/download/@ffmpeg-installer/linux-x64-4.1.0.tgz#b4a5d89c4e12e6d9306dbcdc573df716ec1c4323"
+  integrity sha1-tKXYnE4S5tkwbbzcVz33FuwcQyM=
+
+"@ffmpeg-installer/win32-ia32@4.1.0":
+  version "4.1.0"
+  resolved "https://registry.nlark.com/@ffmpeg-installer/win32-ia32/download/@ffmpeg-installer/win32-ia32-4.1.0.tgz#6eac4fb691b64c02e7a116c1e2d167f3e9b40638"
+  integrity sha1-bqxPtpG2TALnoRbB4tFn8+m0Bjg=
+
+"@ffmpeg-installer/win32-x64@4.1.0":
+  version "4.1.0"
+  resolved "https://registry.nlark.com/@ffmpeg-installer/win32-x64/download/@ffmpeg-installer/win32-x64-4.1.0.tgz#17e8699b5798d4c60e36e2d6326a8ebe5e95a2c5"
+  integrity sha1-F+hpm1eY1MYONuLWMmqOvl6VosU=
+
+"@ffprobe-installer/darwin-x64@4.1.0":
+  version "4.1.0"
+  resolved "https://registry.nlark.com/@ffprobe-installer/darwin-x64/download/@ffprobe-installer/darwin-x64-4.1.0.tgz#025c5108faf3e456e6a407dd65b798f8dcc805dd"
+  integrity sha1-AlxRCPrz5FbmpAfdZbeY+NzIBd0=
+
+"@ffprobe-installer/ffprobe@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.nlark.com/@ffprobe-installer/ffprobe/download/@ffprobe-installer/ffprobe-1.1.0.tgz#a2f6fbd383f90d9359dc6c0552dca9793a884b3c"
+  integrity sha1-ovb704P5DZNZ3GwFUtypeTqISzw=
+  optionalDependencies:
+    "@ffprobe-installer/darwin-x64" "4.1.0"
+    "@ffprobe-installer/linux-arm" "4.3.2"
+    "@ffprobe-installer/linux-arm64" "4.3.2"
+    "@ffprobe-installer/linux-ia32" "4.1.0"
+    "@ffprobe-installer/linux-x64" "4.1.0"
+    "@ffprobe-installer/win32-ia32" "4.1.0"
+    "@ffprobe-installer/win32-x64" "4.1.0"
+
+"@ffprobe-installer/linux-arm64@4.3.2":
+  version "4.3.2"
+  resolved "https://registry.nlark.com/@ffprobe-installer/linux-arm64/download/@ffprobe-installer/linux-arm64-4.3.2.tgz#a64ed27672d55460bdea59bc63da0cf3731f19e8"
+  integrity sha1-pk7SdnLVVGC96lm8Y9oM83MfGeg=
+
+"@ffprobe-installer/linux-arm@4.3.2":
+  version "4.3.2"
+  resolved "https://registry.nlark.com/@ffprobe-installer/linux-arm/download/@ffprobe-installer/linux-arm-4.3.2.tgz#09347e67539544168d9815486cd543c3e88cba29"
+  integrity sha1-CTR+Z1OVRBaNmBVIbNVDw+iMuik=
+
+"@ffprobe-installer/linux-ia32@4.1.0":
+  version "4.1.0"
+  resolved "https://registry.nlark.com/@ffprobe-installer/linux-ia32/download/@ffprobe-installer/linux-ia32-4.1.0.tgz#50b5952927b8b1bc42c3f2edd788b995e8470d17"
+  integrity sha1-ULWVKSe4sbxCw/Lt14i5lehHDRc=
+
+"@ffprobe-installer/linux-x64@4.1.0":
+  version "4.1.0"
+  resolved "https://registry.nlark.com/@ffprobe-installer/linux-x64/download/@ffprobe-installer/linux-x64-4.1.0.tgz#b67c96748457677171ca31b0fb83e4bd3c644ab5"
+  integrity sha1-tnyWdIRXZ3FxyjGw+4PkvTxkSrU=
+
+"@ffprobe-installer/win32-ia32@4.1.0":
+  version "4.1.0"
+  resolved "https://registry.nlark.com/@ffprobe-installer/win32-ia32/download/@ffprobe-installer/win32-ia32-4.1.0.tgz#19cc6d1043f7e54c2764ada6af8f7f26f98bbad8"
+  integrity sha1-GcxtEEP35UwnZK2mr49/JvmLutg=
+
+"@ffprobe-installer/win32-x64@4.1.0":
+  version "4.1.0"
+  resolved "https://registry.nlark.com/@ffprobe-installer/win32-x64/download/@ffprobe-installer/win32-x64-4.1.0.tgz#ed3e8a329eeb6c0625ac439e31ad9ec43001b33c"
+  integrity sha1-7T6KMp7rbAYlrEOeMa2exDABszw=
+
 "@sqltools/formatter@1.2.2":
   version "1.2.2"
   resolved "https://registry.npm.taobao.org/@sqltools/formatter/download/@sqltools/formatter-1.2.2.tgz#9390a8127c0dcba61ebd7fdcc748655e191bdd68"
@@ -63,6 +159,11 @@ argparse@^1.0.7:
   integrity sha1-vNZ5HqWuCXJeF+WtmIE0zUCz2RE=
   dependencies:
     sprintf-js "~1.0.2"
+
+async@>=0.2.9:
+  version "3.2.0"
+  resolved "https://registry.npm.taobao.org/async/download/async-3.2.0.tgz#b3a2685c5ebb641d3de02d161002c60fc9f85720"
+  integrity sha1-s6JoXF67ZB094C0WEALGD8n4VyA=
 
 balanced-match@^1.0.0:
   version "1.0.0"
@@ -273,6 +374,14 @@ file-uri-to-path@1.0.0:
   resolved "https://registry.npm.taobao.org/file-uri-to-path/download/file-uri-to-path-1.0.0.tgz#553a7b8446ff6f684359c445f1e37a05dacc33dd"
   integrity sha1-VTp7hEb/b2hDWcRF8eN6BdrMM90=
 
+fluent-ffmpeg@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.npm.taobao.org/fluent-ffmpeg/download/fluent-ffmpeg-2.1.2.tgz#c952de2240f812ebda0aa8006d7776ee2acf7d74"
+  integrity sha1-yVLeIkD4EuvaCqgAbXd27irPfXQ=
+  dependencies:
+    async ">=0.2.9"
+    which "^1.1.1"
+
 fs-constants@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npm.taobao.org/fs-constants/download/fs-constants-1.0.0.tgz#6be0de9be998ce16af8afc24497b9ee9b7ccd9ad"
@@ -392,6 +501,11 @@ isarray@~1.0.0:
   version "1.0.0"
   resolved "https://registry.npm.taobao.org/isarray/download/isarray-1.0.0.tgz#bb935d48582cba168c06834957a54a3e07124f11"
   integrity sha1-u5NdSFgsuhaMBoNJV6VKPgcSTxE=
+
+isexe@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npm.taobao.org/isexe/download/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
+  integrity sha1-6PvzdNxVb/iUehDcsFctYz8s+hA=
 
 js-yaml@^3.14.0:
   version "3.14.1"
@@ -829,6 +943,13 @@ which-pm-runs@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npm.taobao.org/which-pm-runs/download/which-pm-runs-1.0.0.tgz#670b3afbc552e0b55df6b7780ca74615f23ad1cb"
   integrity sha1-Zws6+8VS4LVd9rd4DKdGFfI60cs=
+
+which@^1.1.1:
+  version "1.3.1"
+  resolved "https://registry.npm.taobao.org/which/download/which-1.3.1.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fwhich%2Fdownload%2Fwhich-1.3.1.tgz#a45043d54f5805316da8d62f9f50918d3da70b0a"
+  integrity sha1-pFBD1U9YBTFtqNYvn1CRjT2nCwo=
+  dependencies:
+    isexe "^2.0.0"
 
 wide-align@^1.1.0:
   version "1.1.3"

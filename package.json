@@ -60,7 +60,10 @@
       "main.prod.js",
       "main.prod.js.map",
       "package.json",
-      "migrations/"
+      "migrations/",
+      "app/node_modules/@ffmpeg-installer/",
+      "app/node_modules/@ffprobe-installer/",
+      "app/utils/videoFileDetails.js"
     ],
     "dmg": {
       "contents": [
