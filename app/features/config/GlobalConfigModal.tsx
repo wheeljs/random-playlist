@@ -179,9 +179,9 @@ export default function GlobalConfigModal({
               dependencies={[ConfigKeys.PlayerPassMode]}
               help={
                 <>
-                  打开播放器的参数。&lsquo;文件参数传递方式&lsquo;为&lsquo;列表时&lsquo;使用
+                  打开播放器的参数。“文件参数传递方式”为“列表”时使用
                   <Typography.Text code>%f</Typography.Text>
-                  来代替文件列表；为&lsquo;逐项&lsquo;时在这里忽略文件列表。
+                  来代替文件列表；为“逐项”时在这里忽略文件列表。
                 </>
               }
               rules={[
