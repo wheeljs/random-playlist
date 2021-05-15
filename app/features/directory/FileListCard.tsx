@@ -19,10 +19,9 @@ import {
   UnorderedListOutlined,
   AppstoreOutlined,
 } from '@ant-design/icons';
-import { Directory } from '../../models';
+import { Directory, File } from '../../models';
 
 import styles from './FileListCard.less';
-import { VideoFile } from '../../utils/fileHelper';
 
 export default function FileList({
   directory,
@@ -33,7 +32,7 @@ export default function FileList({
   onSyncFiles,
 }: Pick<CardProps, 'actions'> & {
   directory?: Directory;
-  fileList: VideoFile[];
+  fileList: File[];
   syncing?: boolean;
   onClearSelectedDirectory: () => void;
   onSyncFiles: (directories?: Directory[]) => void;
@@ -64,17 +63,13 @@ export default function FileList({
     case 'list':
     default:
       listView = (
-        <Table<VideoFile>
-          dataSource={fileList}
-          pagination={false}
-          loading={syncing}
-        >
-          <Table.Column<VideoFile>
+        <Table<File> dataSource={fileList} pagination={false} loading={syncing}>
+          <Table.Column<File>
             title="文件名"
             dataIndex="path"
             render={(value) => basename(value)}
           />
-          <Table.Column<VideoFile>
+          <Table.Column<File>
             title="持续时间"
             dataIndex="duration"
             width={150}
@@ -88,7 +83,7 @@ export default function FileList({
                 .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
             }}
           />
-          <Table.Column<VideoFile>
+          <Table.Column<File>
             title="可加入播单"
             dataIndex="generatable"
             width={110}
