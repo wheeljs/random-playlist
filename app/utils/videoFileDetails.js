@@ -18,24 +18,33 @@ onmessage = function videoFileDetails(event) {
       const filePending = Promise.all([
         new Promise((resolve) =>
           ffmpegInstance.on('filenames', (filename) => {
-            ffmpegInstance.on('end', () => resolve(filename[0]));
+            ffmpegInstance
+              .on('end', () => resolve(filename[0]))
+              .on('error', () => resolve(null));
           })
         ),
-        new Promise((resolve) =>
-          // eslint-disable-next-line consistent-return
-          ffmpegInstance.ffprobe((err, metadata) => {
-            if (err) {
-              return resolve({
+        new Promise((resolve) => {
+          ffmpegInstance
+            .on('error', (err) =>
+              resolve({
                 success: false,
                 error: err,
+              })
+            )
+            // eslint-disable-next-line consistent-return
+            .ffprobe((err, metadata) => {
+              if (err) {
+                return resolve({
+                  success: false,
+                  error: err,
+                });
+              }
+              resolve({
+                success: true,
+                metadata,
               });
-            }
-            resolve({
-              success: true,
-              metadata,
             });
-          })
-        ),
+        }),
       ]).then(([thumbFilename, metadataResult]) => {
         const file = {
           path: filePath,
@@ -46,7 +55,7 @@ onmessage = function videoFileDetails(event) {
         }
         file.duration = metadataResult.success
           ? metadataResult.metadata.format.duration
-          : -1;
+          : null;
 
         return file;
       });
