@@ -68,12 +68,12 @@ export default function ImportDirectoriesModal({
     }
     const globPatterns = globText.split('\n');
 
-    setBusying(true);
     const { canceled, filePaths } = await openImportDialog();
     if (canceled) {
       message.warn('用户取消了导入');
       return;
     }
+    setBusying(true);
     const pathsImported = await Promise.all(
       filePaths.map((x) =>
         listFilesAndDirectories({
