@@ -71,7 +71,8 @@ export default function WorkspaceItem({
   const deleteDirectory = async (directory: Directory) => {
     await directoryService.remove(directory.id);
 
-    dispatch(fetchWorkspaces());
+    await dispatch(fetchWorkspaces());
+    setSelectedDir(null);
   };
 
   const syncFiles = async (
