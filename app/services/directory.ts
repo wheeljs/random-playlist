@@ -44,7 +44,7 @@ export class DirectoryService {
       return directory;
     }
 
-    return normalizeEntity(directory.softRemove());
+    return normalizeEntity(await directory.softRemove());
   }
 
   async syncFiles(directories: SyncDirectoryFiles[]) {
