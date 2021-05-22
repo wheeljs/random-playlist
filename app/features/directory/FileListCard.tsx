@@ -8,7 +8,6 @@ import {
   Col,
   Row,
   Space,
-  Spin,
   Switch,
   Table,
   Tooltip,
@@ -21,6 +20,7 @@ import {
 } from '@ant-design/icons';
 import { Directory, File } from '../../models';
 
+import SyncingSpin from '../../components/SyncingSpin';
 import styles from './FileListCard.less';
 
 export default function FileList({
@@ -43,7 +43,7 @@ export default function FileList({
   switch (view) {
     case 'thumb':
       listView = (
-        <Spin spinning={syncing} tip="正在同步中...">
+        <SyncingSpin spinning={syncing}>
           <Row gutter={12}>
             {Array.isArray(fileList) &&
               fileList.map((file) => (
@@ -57,7 +57,7 @@ export default function FileList({
                 </Col>
               ))}
           </Row>
-        </Spin>
+        </SyncingSpin>
       );
       break;
     case 'list':
