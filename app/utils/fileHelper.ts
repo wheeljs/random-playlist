@@ -1,7 +1,8 @@
 /* eslint-disable import/prefer-default-export */
+import { exec, execFile } from 'child_process';
 import { access, mkdir, constants } from 'fs-extra';
+import os from 'os';
 import path from 'path';
-import { execFile } from 'child_process';
 import fg from 'fast-glob';
 import { uniq } from 'lodash-es';
 import { OpenDialogReturnValue, remote } from 'electron';
@@ -60,7 +61,18 @@ export function ensureThumbDir(
   return access(thumbDir, constants.W_OK)
     .catch((err) => {
       if (err.code === 'ENOENT') {
-        return mkdir(thumbDir);
+        /* eslint-disable consistent-return, default-case, promise/always-return, promise/no-nesting */
+        return mkdir(thumbDir).then(() => {
+          switch (os.platform()) {
+            case 'win32':
+              return new Promise<void>((resolve) => {
+                exec(`attrib +H "${thumbDir}"`, { windowsHide: true }, () => {
+                  resolve();
+                });
+              });
+          }
+        });
+        /* eslint-enable consistent-return, default-case, promise/always-return, promise/no-nesting */
       }
 
       throw err;
