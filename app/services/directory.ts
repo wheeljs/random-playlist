@@ -1,4 +1,5 @@
 /* eslint-disable class-methods-use-this */
+import { getManager } from 'typeorm';
 import { Directory, File } from '../models';
 import { normalizeEntity } from './util';
 
@@ -39,12 +40,21 @@ export class DirectoryService {
   }
 
   async remove(directoryId: string): Promise<Directory> {
-    const directory = await Directory.findOne(directoryId);
+    const entityManager = getManager();
+    const directory = await entityManager.findOne(Directory, directoryId);
     if (directory == null) {
       return directory;
     }
 
-    return normalizeEntity(await directory.softRemove());
+    await entityManager.transaction(async (tEntityManager) => {
+      if (Array.isArray(directory.files) && directory.files.length > 0) {
+        await tEntityManager.remove(directory.files);
+      }
+
+      await tEntityManager.softRemove(directory);
+    });
+
+    return normalizeEntity(directory);
   }
 
   async syncFiles(directories: SyncDirectoryFiles[]) {
