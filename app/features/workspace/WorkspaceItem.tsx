@@ -47,18 +47,9 @@ export default function WorkspaceItem({
       return;
     }
 
-    const files = (
-      await Promise.all(
-        workspace.directories.map((directory) => {
-          return listFilesAndDirectories({
-            root: directory.path,
-            patterns: directory.glob ?? configs[ConfigKeys.Glob]?.value,
-          }).then((imported) =>
-            imported.files.map((x) => path.join(directory.path, x))
-          );
-        })
-      )
-    ).flat();
+    const files = workspace.directories.flatMap((x) =>
+      x.files.map((file) => file.path)
+    );
 
     setGenerating(true);
     play({
