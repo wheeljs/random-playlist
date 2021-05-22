@@ -1,3 +1,4 @@
+import path from 'path';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Button, Form, Input, message, Modal, ModalProps, Popover } from 'antd';
@@ -8,6 +9,7 @@ import {
   listFilesAndDirectories,
   openImportDialog,
   PathListed,
+  videoFileDetails,
 } from '../../utils/fileHelper';
 import NativeAnchor from '../../components/NativeAnchor';
 import { Workspace } from '../../models';
@@ -16,6 +18,7 @@ import { configService, directoryService } from '../../services';
 import styles from './ImportDirectoriesModal.less';
 import { ImportDirectoriesToWorkspace } from '../../services/directory';
 import { fetchWorkspaces } from '../workspace/workspaceSlice';
+import SyncingSpin from '../../components/SyncingSpin';
 
 interface ImportPath {
   path: string;
@@ -108,11 +111,24 @@ export default function ImportDirectoriesModal({
       directories: importPaths.map((x) => ({
         path: x.path,
         glob: specifyGlob,
+        files: videoFileDetails({
+          filePaths: x.imported.files.map((file) => path.join(x.path, file)),
+          thumbDir: path.join(x.path, '.rpcache'),
+          fallbackDirectory: path.basename(x.path),
+        }),
       })),
     };
 
     setBusying(true);
     try {
+      const results = await Promise.all(
+        importParams.directories.map((x) => x.files)
+      );
+      results.forEach(
+        // eslint-disable-next-line no-return-assign
+        (files, index) => (importParams.directories[index].files = files)
+      );
+
       await directoryService.importToWorkspace(importParams);
       dispatch(fetchWorkspaces());
       beforeClose();
@@ -135,71 +151,74 @@ export default function ImportDirectoriesModal({
       onCancel={beforeClose}
       destroyOnClose
     >
-      <Form form={form} wrapperCol={{ offset: 6, span: 18 }} preserve={false}>
-        <Form.Item
-          label="匹配规则(glob)"
-          name="glob"
-          labelCol={{ span: 6 }}
-          wrapperCol={{ span: 18 }}
-          tooltip={
-            <>
-              使用
-              <NativeAnchor href="https://en.wikipedia.org/wiki/Glob_(programming)">
-                glob
-              </NativeAnchor>{' '}
-              匹配选中目录的内容，不要改动除非你明确知道结果
-              <br />
-              若在此修改了匹配规则，则每次刷新该目录时都会使用修改后的规则（优先级高于全局规则）。
-            </>
-          }
-        >
-          <Input.TextArea autoSize={{ minRows: 8, maxRows: 8 }} />
-        </Form.Item>
-        <Form.Item>
-          <Button
-            type="primary"
-            icon={<FolderOpenOutlined />}
-            loading={busying}
-            onClick={showDirectorySelect}
+      <SyncingSpin spinning={busying}>
+        <Form form={form} wrapperCol={{ offset: 6, span: 18 }} preserve={false}>
+          <Form.Item
+            label="匹配规则(glob)"
+            name="glob"
+            labelCol={{ span: 6 }}
+            wrapperCol={{ span: 18 }}
+            tooltip={
+              <>
+                使用
+                <NativeAnchor href="https://en.wikipedia.org/wiki/Glob_(programming)">
+                  glob
+                </NativeAnchor>{' '}
+                匹配选中目录的内容，不要改动除非你明确知道结果
+                <br />
+                若在此修改了匹配规则，则每次刷新该目录时都会使用修改后的规则（优先级高于全局规则）。
+              </>
+            }
           >
-            选择目录
-          </Button>
-        </Form.Item>
-        {importPaths.length > 0 && (
-          <Form.Item>
-            <span className="ant-form-text">
-              <ul className={styles['import-path-container']}>
-                {importPaths.map((x) => (
-                  <li key={x.path}>
-                    <span className={styles['import-path-path']}>{x.path}</span>
-                    <span className={styles['import-path-summary']}>
-                      匹配到
-                      <span className={styles['import-path-summary-count']}>
-                        {x.imported.files.length}
-                      </span>
-                      个文件，在
-                      <span className={styles['import-path-summary-count']}>
-                        {x.imported.directories.length}
-                      </span>
-                      个目录中。
-                    </span>
-                    <Popover content="删除" placement="right">
-                      <Button
-                        type="text"
-                        danger
-                        size="small"
-                        onClick={() => removeImportPath(x)}
-                      >
-                        <CloseCircleOutlined />
-                      </Button>
-                    </Popover>
-                  </li>
-                ))}
-              </ul>
-            </span>
+            <Input.TextArea autoSize={{ minRows: 8, maxRows: 8 }} />
           </Form.Item>
-        )}
-      </Form>
+          <Form.Item>
+            <Button
+              type="primary"
+              icon={<FolderOpenOutlined />}
+              onClick={showDirectorySelect}
+            >
+              选择目录
+            </Button>
+          </Form.Item>
+          {importPaths.length > 0 && (
+            <Form.Item>
+              <span className="ant-form-text">
+                <ul className={styles['import-path-container']}>
+                  {importPaths.map((x) => (
+                    <li key={x.path}>
+                      <span className={styles['import-path-path']}>
+                        {x.path}
+                      </span>
+                      <span className={styles['import-path-summary']}>
+                        匹配到
+                        <span className={styles['import-path-summary-count']}>
+                          {x.imported.files.length}
+                        </span>
+                        个文件，在
+                        <span className={styles['import-path-summary-count']}>
+                          {x.imported.directories.length}
+                        </span>
+                        个目录中。
+                      </span>
+                      <Popover content="删除" placement="right">
+                        <Button
+                          type="text"
+                          danger
+                          size="small"
+                          onClick={() => removeImportPath(x)}
+                        >
+                          <CloseCircleOutlined />
+                        </Button>
+                      </Popover>
+                    </li>
+                  ))}
+                </ul>
+              </span>
+            </Form.Item>
+          )}
+        </Form>
+      </SyncingSpin>
     </Modal>
   );
 }

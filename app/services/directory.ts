@@ -2,17 +2,20 @@
 import { Directory, File } from '../models';
 import { normalizeEntity } from './util';
 
+type FileForAdd = Pick<File, 'path' | 'extension' | 'duration' | 'thumb'>;
+
 export interface ImportDirectoriesToWorkspace {
   workspaceId: string;
   directories: {
     path: string;
     glob?: string;
+    files?: Promise<FileForAdd[]> | FileForAdd[];
   }[];
 }
 
 export interface SyncDirectoryFiles {
   directoryId: string;
-  files: Pick<File, 'path' | 'extension' | 'duration' | 'thumb'>[];
+  files: FileForAdd[];
 }
 
 export class DirectoryService {
@@ -26,6 +29,9 @@ export class DirectoryService {
           directories.map((dir) => ({
             ...dir,
             workspace: { id: workspaceId },
+            files: Array.isArray(dir.files)
+              ? dir.files.map((file) => File.create(file))
+              : [],
           }))
         )
       )
