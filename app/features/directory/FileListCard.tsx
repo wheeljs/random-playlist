@@ -6,6 +6,7 @@ import {
   Card,
   CardProps,
   Col,
+  Popover,
   Row,
   Space,
   Switch,
@@ -103,6 +104,8 @@ export default function FileList({
       break;
   }
 
+  const dirName = directory ? basename(directory.path) : '';
+
   return (
     <div className="file-list-card">
       <Card
@@ -120,11 +123,12 @@ export default function FileList({
                 </a>
               </Breadcrumb.Item>
               {directory != null && (
-                <Breadcrumb.Item>{basename(directory.path)}</Breadcrumb.Item>
+                <Breadcrumb.Item>{dirName}</Breadcrumb.Item>
               )}
             </Breadcrumb>
-            <Tooltip
-              title="从硬盘同步（由于性能原因，您需要手动同步）"
+            <Popover
+              title={`同步${directory ? dirName : '工作空间'}`}
+              content="从硬盘同步（由于性能原因，您需要在新增/删除视频后手动同步）"
               placement="right"
             >
               <Button
@@ -133,7 +137,7 @@ export default function FileList({
               >
                 刷新
               </Button>
-            </Tooltip>
+            </Popover>
           </Space>
         }
         extra={
