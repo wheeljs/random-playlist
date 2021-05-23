@@ -1,5 +1,5 @@
 import { remote } from 'electron';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Form,
@@ -14,12 +14,14 @@ import {
   Anchor,
   message,
 } from 'antd';
+import { UnorderedListOutlined, AppstoreOutlined } from '@ant-design/icons';
 import { RootState } from '../../store';
 import { fetchConfigs, selectConfigs, updateConfigs } from './configSlice';
 
 import styles from './GlobalConfigModal.less';
 import { SaveOrUpdateConfig } from '../../models';
 import { ConfigKeys } from '../../services';
+import NativeAnchor from '../../components/NativeAnchor';
 
 export default function GlobalConfigModal({
   visible,
@@ -52,13 +54,22 @@ export default function GlobalConfigModal({
       } else if (fetchStatus === 'fulfilled') {
         const formValue = {};
         Object.values(configs).forEach((config) => {
-          formValue[config.key] = config.value;
+          switch (config.key) {
+            case ConfigKeys.Glob:
+              formValue[config.key] = (config.value as string[]).join('\n');
+              break;
+            default:
+              formValue[config.key] = config.value;
+              break;
+          }
         });
 
         form.setFieldsValue(formValue);
       }
     }
   }, [visible, configs, dispatch, fetchStatus, form]);
+
+  const scrollContainer = useRef(null);
 
   const handleFieldsChange = (changedFields) => {
     const playerPassMode = changedFields.find(
@@ -92,10 +103,21 @@ export default function GlobalConfigModal({
 
   const saveConfig = async (values: any) => {
     const saveParams: SaveOrUpdateConfig[] = Object.keys(values).map(
-      (configKey) => ({
-        key: configKey,
-        value: values[configKey],
-      })
+      (configKey) => {
+        switch (configKey) {
+          case ConfigKeys.Glob:
+            return {
+              key: configKey,
+              value: values.glob.split('\n'),
+            };
+            break;
+          default:
+            return {
+              key: configKey,
+              value: values[configKey],
+            };
+        }
+      }
     );
     try {
       setSaving(true);
@@ -111,12 +133,12 @@ export default function GlobalConfigModal({
     }
   };
 
+  /* eslint-disable jsx-a11y/anchor-is-valid */
   return (
     <Modal
       visible={visible}
       width={1040}
       title="全局配置"
-      wrapClassName="global-config-modal"
       keyboard={false}
       maskClosable={false}
       okText="保存"
@@ -130,13 +152,21 @@ export default function GlobalConfigModal({
           <Anchor
             onClick={(e) => e.preventDefault()}
             getContainer={() =>
-              document.querySelector<HTMLDivElement>('.global-config-modal')
+              scrollContainer.current ||
+              document.querySelector<HTMLDivElement>('.config-modal-scroll') ||
+              window
             }
           >
             <Anchor.Link href="#config-player" title="播放器设置" />
+            <Anchor.Link href="#config-match" title="匹配设置" />
+            <Anchor.Link href="#config-view" title="视图设置" />
           </Anchor>
         </Col>
-        <Col span={18}>
+        <Col
+          span={18}
+          className={styles['config-modal-scroll']}
+          ref={scrollContainer}
+        >
           <Form
             form={form}
             layout="vertical"
@@ -145,7 +175,6 @@ export default function GlobalConfigModal({
             onFieldsChange={handleFieldsChange}
             onFinish={saveConfig}
           >
-            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
             <a className={styles['config-category']} id="config-player">
               播放器设置
             </a>
@@ -243,6 +272,45 @@ export default function GlobalConfigModal({
                   </Form.Item>
                 ) : null;
               }}
+            </Form.Item>
+
+            <a className={styles['config-category']} id="config-match">
+              匹配规则
+            </a>
+            <Form.Item
+              name={ConfigKeys.Glob}
+              label="匹配规则(glob)"
+              tooltip={
+                <>
+                  使用
+                  <NativeAnchor href="https://en.wikipedia.org/wiki/Glob_(programming)">
+                    glob
+                  </NativeAnchor>{' '}
+                  匹配选中目录的内容，不要改动除非你明确知道结果
+                </>
+              }
+            >
+              <Input.TextArea autoSize={{ minRows: 8, maxRows: 8 }} />
+            </Form.Item>
+
+            <a className={styles['config-category']} id="config-view">
+              视图设置
+            </a>
+            <Form.Item
+              label="视图模式"
+              name={ConfigKeys.ViewMode}
+              tooltip="改动全局设置不会重置已经选择过视图模式的工作空间/目录"
+            >
+              <Radio.Group>
+                <Radio.Button value="thumb">
+                  <AppstoreOutlined />
+                  &nbsp;缩略图
+                </Radio.Button>
+                <Radio.Button value="list">
+                  <UnorderedListOutlined />
+                  &nbsp;列表
+                </Radio.Button>
+              </Radio.Group>
             </Form.Item>
           </Form>
         </Col>
