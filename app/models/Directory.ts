@@ -1,6 +1,6 @@
 /* eslint-disable import/no-cycle */
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
-import { BaseModel } from './BaseModel';
+import { BaseModel, ViewMode } from './BaseModel';
 import { File } from './File';
 import { Workspace } from './Workspace';
 
@@ -29,5 +29,11 @@ export class Directory extends BaseModel {
 
   @Column()
   order: number;
+
+  @Column({
+    name: 'view_mode',
+    type: 'varchar',
+  })
+  viewMode: ViewMode;
 }
 export default Directory;

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button, message, Popconfirm, Popover } from 'antd';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { shuffle } from 'lodash-es';
-import { Directory, Workspace } from '../../models';
+import { Directory, Workspace, ViewMode } from '../../models';
 
 import styles from './WorkspaceItem.less';
 import ImportDirectoriesModal from '../directory/ImportDirectoriesModal';
@@ -16,7 +16,8 @@ import {
   play,
   videoFileDetails,
 } from '../../utils/fileHelper';
-import { fetchWorkspaces } from './workspaceSlice';
+import { fetchWorkspaces, updateWorkspace } from './workspaceSlice';
+import { updateDirectory } from '../directory/directorySlice';
 
 export default function WorkspaceItem({
   className,
@@ -32,7 +33,7 @@ export default function WorkspaceItem({
 
   const configs = useSelector(selectConfigs);
 
-  const [selectedDir, setSelectedDir] = useState(null);
+  const [selectedDirId, setSelectedDirId] = useState<string>(null);
   const [showImportModal, setShowImportModal] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [syncing, setSyncing] = useState(false);
@@ -63,7 +64,7 @@ export default function WorkspaceItem({
     await directoryService.remove(directory.id);
 
     await dispatch(fetchWorkspaces());
-    setSelectedDir(null);
+    setSelectedDirId(null);
   };
 
   const syncFiles = async (
@@ -104,16 +105,54 @@ export default function WorkspaceItem({
   };
 
   const selectDir = (directory: Directory) => {
-    if (selectedDir === directory) {
-      setSelectedDir(null);
+    if (selectedDirId === directory.id) {
+      setSelectedDirId(null);
       return;
     }
-    setSelectedDir(directory);
+    setSelectedDirId(directory.id);
   };
 
+  const setViewMode = ({
+    directory,
+    viewMode,
+  }: {
+    directory?: Directory;
+    viewMode: ViewMode;
+  }) => {
+    if (directory != null) {
+      dispatch(
+        updateDirectory({
+          id: directory.id,
+          viewMode,
+          workspace: { id: workspace.id },
+        })
+      );
+    } else {
+      dispatch(
+        updateWorkspace({
+          id: workspace.id,
+          viewMode,
+        })
+      );
+    }
+  };
+
+  const selectedDir =
+    selectedDirId != null
+      ? workspace.directories.find((x) => x.id === selectedDirId)
+      : null;
   const fileList = selectedDir
     ? selectedDir.files
     : workspace.directories.flatMap((x) => x.files);
+
+  let viewMode: ViewMode;
+  if (selectedDir != null && selectedDir.viewMode) {
+    viewMode = selectedDir.viewMode;
+  } else if (workspace.viewMode) {
+    viewMode = workspace.viewMode;
+  } else {
+    viewMode = configs.viewMode.value as ViewMode;
+  }
 
   return (
     <div className={[className, styles['workspace-item']].join(' ')}>
@@ -157,7 +196,7 @@ export default function WorkspaceItem({
               <div
                 className={[
                   styles['directory-item'],
-                  x === selectedDir ? styles.selected : '',
+                  x.id === selectedDirId ? styles.selected : '',
                 ].join(' ')}
                 role="button"
                 onClick={() => selectDir(x)}
@@ -187,7 +226,9 @@ export default function WorkspaceItem({
             生成并播放
           </Button>,
         ]}
-        onClearSelectedDirectory={() => setSelectedDir(null)}
+        viewMode={viewMode}
+        onViewModeChange={setViewMode}
+        onClearSelectedDirectory={() => setSelectedDirId(null)}
         onSyncFiles={syncFiles}
       />
     </div>

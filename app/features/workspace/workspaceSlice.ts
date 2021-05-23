@@ -3,6 +3,7 @@ import {
   createEntityAdapter,
   createSlice,
 } from '@reduxjs/toolkit';
+import { omit } from 'lodash-es';
 import { Workspace } from '../../models';
 
 import {
@@ -12,6 +13,8 @@ import {
 } from '../../services';
 // eslint-disable-next-line import/no-cycle
 import { RootState } from '../../store';
+// eslint-disable-next-line import/no-cycle
+import { updateDirectory } from '../directory/directorySlice';
 
 export const fetchWorkspaces = createAsyncThunk('workspace/fetch', async () => {
   return workspaceService.list();
@@ -111,6 +114,25 @@ const workspaceSlice = createSlice({
 
       .addCase(removeWorkspace.fulfilled, (state, { payload }) => {
         workspaceAdapter.removeOne(state, payload.id);
+      })
+
+      .addCase(updateDirectory.fulfilled, (state, { payload }) => {
+        const workspace = state.entities[payload.workspace.id];
+        workspaceAdapter.updateOne(state, {
+          id: workspace.id,
+          changes: {
+            directories: workspace.directories.map((directory) => {
+              if (directory.id === payload.id) {
+                return {
+                  ...directory,
+                  ...omit(payload, 'workspace'),
+                };
+              }
+
+              return directory;
+            }),
+          },
+        });
       });
   },
 });

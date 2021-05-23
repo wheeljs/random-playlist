@@ -14,6 +14,8 @@ export const dateTransformer = ({ value }: TransformFnParams) => {
   return value.getTime();
 };
 
+export type ViewMode = 'list' | 'thumb';
+
 export abstract class BaseModel extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;

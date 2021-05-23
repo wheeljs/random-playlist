@@ -1,4 +1,5 @@
 /* eslint-disable class-methods-use-this */
+import { omit } from 'lodash';
 import { getManager } from 'typeorm';
 import { Directory, File } from '../models';
 import { normalizeEntity } from './util';
@@ -18,6 +19,11 @@ export interface SyncDirectoryFiles {
   directoryId: string;
   files: FileForAdd[];
 }
+
+export type UpdateDirectory = Pick<Directory, 'id'> &
+  Partial<Omit<Directory, 'id' | 'workspace'>> & {
+    workspace: { id: string };
+  };
 
 export class DirectoryService {
   async importToWorkspace({
@@ -69,6 +75,30 @@ export class DirectoryService {
         )
       )
     );
+  }
+
+  async update(directory: UpdateDirectory) {
+    const dir = await Directory.findOne(directory.id);
+    if (dir == null) {
+      return dir;
+    }
+
+    let changed = false;
+    Object.entries(omit(directory, 'id')).forEach(([key, value]) => {
+      if (!Object.prototype.hasOwnProperty.call(dir, key)) {
+        return;
+      }
+
+      changed = true;
+      dir[key] = value;
+    });
+
+    let result = dir;
+    if (changed) {
+      result = await dir.save();
+    }
+
+    return normalizeEntity(result);
   }
 }
 

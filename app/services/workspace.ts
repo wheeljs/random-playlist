@@ -1,5 +1,6 @@
 /* eslint-disable class-methods-use-this */
-import { Workspace } from '../models';
+import { omit } from 'lodash-es';
+import { ViewMode, Workspace } from '../models';
 
 import { normalizeEntity } from './util';
 
@@ -8,8 +9,9 @@ export interface SaveWorkspace {
   order: number;
 }
 
-export interface UpdateWorkspace extends SaveWorkspace {
+export interface UpdateWorkspace extends Partial<SaveWorkspace> {
   id: string;
+  viewMode: ViewMode;
 }
 
 export class WorkspaceService {
@@ -29,10 +31,26 @@ export class WorkspaceService {
   async update(workspace: UpdateWorkspace): Promise<Workspace> {
     const dbWorkspace = await Workspace.findOne(workspace.id);
 
-    dbWorkspace.name = workspace.name;
-    dbWorkspace.order = workspace.order;
+    let changed = false;
+    Object.entries(omit(workspace, 'id')).forEach(([key, value]) => {
+      if (!Object.prototype.hasOwnProperty.call(dbWorkspace, key)) {
+        return;
+      }
 
-    return normalizeEntity(await dbWorkspace.save());
+      changed = true;
+      dbWorkspace[key] = value;
+
+      if (key === 'viewMode') {
+        // eslint-disable-next-line no-return-assign
+        dbWorkspace.directories.forEach((x) => (x.viewMode = null));
+      }
+    });
+
+    let result = dbWorkspace;
+    if (changed) {
+      result = await dbWorkspace.save();
+    }
+    return normalizeEntity(result);
   }
 
   async remove({ workspaceId }: { workspaceId: string }): Promise<Workspace> {

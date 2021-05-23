@@ -8,6 +8,7 @@ export enum ConfigKeys {
   PlayerPassMode = 'playerPassMode',
   PlayerParameter = 'playerParameter',
   PlayerSeparateParameter = 'playerSeparateParameter',
+  ViewMode = 'viewMode',
 }
 
 export class ConfigService {

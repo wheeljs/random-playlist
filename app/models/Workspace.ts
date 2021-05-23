@@ -1,6 +1,6 @@
 /* eslint-disable import/no-cycle */
 import { Entity, Column, OneToMany } from 'typeorm';
-import { BaseModel } from './BaseModel';
+import { BaseModel, ViewMode } from './BaseModel';
 import { Directory } from './Directory';
 
 @Entity({
@@ -13,6 +13,7 @@ import { Directory } from './Directory';
 export class Workspace extends BaseModel {
   @OneToMany(() => Directory, (directory) => directory.workspace, {
     eager: true,
+    cascade: ['update'],
   })
   directories: Directory[];
 
@@ -23,5 +24,11 @@ export class Workspace extends BaseModel {
     nullable: true,
   })
   order: number;
+
+  @Column({
+    name: 'view_mode',
+    type: 'varchar',
+  })
+  viewMode: ViewMode;
 }
 export default Workspace;

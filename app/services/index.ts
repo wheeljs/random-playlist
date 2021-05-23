@@ -3,6 +3,7 @@ import workspaceService from './workspace';
 import directoryService from './directory';
 
 export { SaveWorkspace, UpdateWorkspace } from './workspace';
+export { UpdateDirectory } from './directory';
 export { ConfigKeys } from './config';
 
 export { configService, workspaceService, directoryService };

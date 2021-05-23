@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { basename } from 'path';
 import {
   Breadcrumb,
@@ -19,7 +19,7 @@ import {
   UnorderedListOutlined,
   AppstoreOutlined,
 } from '@ant-design/icons';
-import { Directory, File } from '../../models';
+import { Directory, File, ViewMode } from '../../models';
 
 import SyncingSpin from '../../components/SyncingSpin';
 import styles from './FileListCard.less';
@@ -29,19 +29,24 @@ export default function FileList({
   fileList,
   actions,
   syncing,
+  viewMode,
+  onViewModeChange,
   onClearSelectedDirectory,
   onSyncFiles,
 }: Pick<CardProps, 'actions'> & {
   directory?: Directory;
   fileList: File[];
   syncing?: boolean;
+  viewMode: ViewMode;
+  onViewModeChange: (event: {
+    directory?: Directory;
+    viewMode: ViewMode;
+  }) => void;
   onClearSelectedDirectory: () => void;
   onSyncFiles: (directories?: Directory[]) => void;
 }): JSX.Element {
-  const [view, setView] = useState('thumb');
-
   let listView: JSX.Element;
-  switch (view) {
+  switch (viewMode) {
     case 'thumb':
       listView = (
         <SyncingSpin spinning={syncing}>
@@ -104,12 +109,20 @@ export default function FileList({
       break;
   }
 
+  // eslint-disable-next-line no-shadow
+  const setViewMode = (viewMode: ViewMode) => {
+    onViewModeChange({
+      directory,
+      viewMode,
+    });
+  };
+
   const dirName = directory ? basename(directory.path) : '';
 
   return (
     <div className="file-list-card">
       <Card
-        bodyStyle={view === 'list' ? { padding: 0 } : {}}
+        bodyStyle={viewMode === 'list' ? { padding: 0 } : {}}
         title={
           <Space size="middle">
             <Breadcrumb>
@@ -142,19 +155,18 @@ export default function FileList({
         }
         extra={
           <>
-            {/* TODO save user's choice */}
             <Tooltip title="列表" key="list-view">
               <Button
-                type={view === 'list' ? 'link' : 'text'}
+                type={viewMode === 'list' ? 'link' : 'text'}
                 icon={<UnorderedListOutlined />}
-                onClick={() => setView('list')}
+                onClick={() => setViewMode('list')}
               />
             </Tooltip>
             <Tooltip title="缩略图" key="thumb-view">
               <Button
-                type={view === 'thumb' ? 'link' : 'text'}
+                type={viewMode === 'thumb' ? 'link' : 'text'}
                 icon={<AppstoreOutlined />}
-                onClick={() => setView('thumb')}
+                onClick={() => setViewMode('thumb')}
               />
             </Tooltip>
           </>

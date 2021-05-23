@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 
 import { Config, IConfig, ConfigValueType, SaveOrUpdateConfig } from './Config';
+import { ViewMode } from './BaseModel';
 import { File } from './File';
 import { Directory } from './Directory';
 import { Workspace } from './Workspace';
@@ -22,6 +23,7 @@ export {
   Workspace,
   Directory,
   File,
+  ViewMode,
 };
 
 async function createConnection(options: Partial<ConnectionOptions> = {}) {
