@@ -11,6 +11,23 @@
       "preLaunchTask": "Start Webpack Dev"
     },
     {
+      "type": "node",
+      "name": "Debug Electron Main Process",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+      "windows": {
+        "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
+      },
+      "runtimeArgs": ["-r", "./internals/scripts/BabelRegister"],
+      "args": ["./app/main.dev.ts"],
+      "env": {
+        "Start_HOT": "1",
+        "NODE_ENV": "development"
+      },
+      "outputCapture": "std"
+    },
+    {
       "name": "Electron: Renderer",
       "type": "chrome",
       "request": "attach",
