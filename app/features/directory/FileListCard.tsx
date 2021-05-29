@@ -9,7 +9,6 @@ import {
   Popover,
   Row,
   Space,
-  Switch,
   Table,
   Tooltip,
 } from 'antd';
@@ -96,13 +95,6 @@ export default function FileList({
                 .toString()
                 .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
             }}
-          />
-          <Table.Column<File>
-            title="可加入播单"
-            dataIndex="generatable"
-            width={110}
-            align="center"
-            render={() => <Switch checked />}
           />
         </Table>
       );
