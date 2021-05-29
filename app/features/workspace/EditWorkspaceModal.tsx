@@ -11,6 +11,8 @@ import {
 } from 'antd';
 import { InfoCircleOutlined, CloseOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+
 import { removeWorkspace, updateWorkspace } from './workspaceSlice';
 import { Workspace } from '../../models';
 import { UpdateWorkspace } from '../../services';
@@ -25,6 +27,7 @@ export default function EditWorkspaceModal({
 }): JSX.Element {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
+  const { t } = useTranslation();
 
   const [saving, setSaving] = useState(false);
 
@@ -48,7 +51,7 @@ export default function EditWorkspaceModal({
 
       onCancel();
     } catch (e) {
-      message.error(`保存集合失败：${e.message}`);
+      message.error(`${t('edit workspace.save failed')}：${e.message}`);
     } finally {
       setSaving(false);
     }
@@ -65,7 +68,7 @@ export default function EditWorkspaceModal({
 
       onCancel();
     } catch (e) {
-      message.error(`删除集合失败：${e.message}`);
+      message.error(`${t('edit workspace.remove failed')}：${e.message}`);
     } finally {
       setSaving(false);
     }
@@ -74,8 +77,8 @@ export default function EditWorkspaceModal({
   return (
     <Modal
       visible={visible}
-      title="编辑集合"
-      okText="保存"
+      title={t('edit workspace.title')}
+      okText={t('common.save')}
       keyboard={false}
       maskClosable={false}
       onOk={save}
@@ -92,37 +95,37 @@ export default function EditWorkspaceModal({
         onFinish={doSave}
       >
         <Form.Item
-          label="集合名称"
+          label={t('workspace.name.label')}
           name="name"
-          rules={[{ required: true, message: '请输入集合名称' }]}
+          rules={[{ required: true, message: t('workspace.name.required') }]}
         >
-          <Input placeholder="集合名称" />
+          <Input placeholder={t('workspace.name.label')} />
         </Form.Item>
-        <Form.Item label="排序" required>
+        <Form.Item label={t('workspace.order.label')} required>
           <Form.Item
             noStyle
             name="order"
-            rules={[{ required: true, message: '请指定排序' }]}
+            rules={[{ required: true, message: t('workspace.order.required') }]}
           >
             <InputNumber min={1} step={10} />
           </Form.Item>
           <span>
             <InfoCircleOutlined />
-            排序最靠前的为默认集合
+            {t('workspace.order.extra')}
           </span>
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 6, span: 18 }}>
           <Popconfirm
             overlayClassName="widthed-popconfirm"
             icon={<CloseOutlined />}
-            title="确定要删除这个集合吗？该操作不会影响集合中的文件夹、文件"
-            okText="删除"
+            title={t('edit workspace.remove confirm')}
+            okText={t('common.remove')}
             okButtonProps={{ loading: saving }}
             okType="danger"
             onConfirm={doRemove}
           >
             <Button danger type="text" icon={<CloseOutlined />}>
-              删除集合
+              {t('edit workspace.remove')}
             </Button>
           </Popconfirm>
         </Form.Item>

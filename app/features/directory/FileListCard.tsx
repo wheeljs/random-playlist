@@ -18,6 +18,7 @@ import {
   UnorderedListOutlined,
   AppstoreOutlined,
 } from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
 import { Directory, File, ViewMode } from '../../models';
 
 import SyncingSpin from '../../components/SyncingSpin';
@@ -46,6 +47,8 @@ export default function FileList({
   onClearSelectedDirectory: () => void;
   onSyncFiles: (directories?: Directory[]) => void;
 }): JSX.Element {
+  const { t } = useTranslation();
+
   let listView: JSX.Element;
   switch (viewMode) {
     case 'thumb':
@@ -76,16 +79,16 @@ export default function FileList({
           pagination={false}
           loading={{
             spinning: syncing,
-            tip: '正在同步中...',
+            tip: t('syncing.0'),
           }}
         >
           <Table.Column<File>
-            title="文件名"
+            title={t('file list.file name')}
             dataIndex="path"
             render={(value) => basename(value)}
           />
           <Table.Column<File>
-            title="持续时间"
+            title={t('file list.duration')}
             dataIndex="duration"
             width={150}
             align="center"
@@ -134,29 +137,31 @@ export default function FileList({
               )}
             </Breadcrumb>
             <Popover
-              title={`同步${directory ? dirName : '工作空间'}`}
-              content="从硬盘同步（由于性能原因，您需要在新增/删除视频后手动同步）"
+              title={t('file list.sync.title', {
+                name: directory ? dirName : t('workspace name'),
+              })}
+              content={t('file list.sync.popover')}
               placement="right"
             >
               <Button
                 icon={<ReloadOutlined />}
                 onClick={() => onSyncFiles(directory ? [directory] : undefined)}
               >
-                刷新
+                {t('file list.sync.button')}
               </Button>
             </Popover>
           </Space>
         }
         extra={
           <>
-            <Tooltip title="列表" key="list-view">
+            <Tooltip title={t('config.viewMode.list')} key="list-view">
               <Button
                 type={viewMode === 'list' ? 'link' : 'text'}
                 icon={<UnorderedListOutlined />}
                 onClick={() => setViewMode('list')}
               />
             </Tooltip>
-            <Tooltip title="缩略图" key="thumb-view">
+            <Tooltip title={t('config.viewMode.thumb')} key="thumb-view">
               <Button
                 type={viewMode === 'thumb' ? 'link' : 'text'}
                 icon={<AppstoreOutlined />}

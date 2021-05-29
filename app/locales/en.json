@@ -1,0 +1,163 @@
+{
+  "appName": "Generate, Play",
+
+  "common": {
+    "order": "Order",
+    "add": "Add",
+    "remove": "Remove",
+    "save": "Save",
+    "choose": "Choose"
+  },
+
+  "language": {
+    "en": "English",
+    "zh-CN": "Simplified Chinese"
+  },
+
+  "workspace name": "Workspace",
+
+  "workspace": {
+    "name": {
+      "label": "Name",
+      "required": "Workspace's name is required"
+    },
+    "order": {
+      "label": "Order",
+      "required": "Must specify order",
+      "extra": "The minimum order is the default workspace",
+      "next": "The default value is obtained by the current last workspace {{name}}($t(common.order): {{order}}) + 10."
+    }
+  },
+
+  "workspace item": {
+    "ensure player": "Please configure the player first",
+
+    "generate and play": "Generate and Play"
+  },
+
+  "create workspace": {
+    "title": "Add Workspace"
+  },
+
+  "edit workspace": {
+    "title": "Edit Workspace",
+
+    "save failed": "Failed to save workspace",
+    "remove": "Remove Workspace",
+    "remove failed": "Failed to remove workspace",
+    "remove confirm": "Are you sure? This operation won't remove hard drive directories or files"
+  },
+
+  "delete directory": "Remove from workspace, won't remove hard disk directories or files.",
+
+  "import directory": {
+    "title": "Add Directory",
+
+    "canceled": "User canceledthe import",
+    "have not selected": "Least choose one directory to import",
+    "failed": "Failed to add directory",
+
+    "glob extra": "Takes high priority if modified, will be used on every syncing.",
+
+    "importPath": {
+      "label": "Choose Directory",
+      "result": "Matched$t(import directory.importPath.file result, {\"count\": {{filesLength}} }), $t(import directory.importPath.directory result, {\"count\": {{directoriesLength}} })",
+      "file result": "<1>{{count}}</1>file",
+      "file result_plural": "<1>{{count}}</1>files",
+      "directory result": "<3>{{count}}</3>directory",
+      "directory result_plural": "<3>{{count}}</3>directories"
+    }
+  },
+
+  "config": {
+    "player": "Player",
+
+    "select player": {
+      "title": "Choose player",
+      "message": "$t(config.playerExecutable.placeholder)",
+      "exe filter": "Executable file"
+    },
+
+    "playerExecutable": {
+      "label": "Path to player executable",
+      "required": "Must specify player executable",
+      "placeholder": "Choose player executable file"
+    },
+
+    "playerPassMode": {
+      "label": "File parameter pass mode",
+      "tooltip": "Don't know how to? Try without modifying the defaults",
+      "list": "List",
+      "separate": "Separate"
+    },
+
+    "playerParameter": {
+      "label": "Player parameters",
+      "help": "Pass to player executable. Use <1>%f</1> for file list when choosing `list` pass mode.",
+      "required": "Required when using `list` pass mode",
+      "invalid list": "Must contain `%f` when using `list` pass mode"
+    },
+
+    "playerSeparateParameter": {
+      "label": "Separate file list parameter",
+      "help": "Use <1>%fi</1> for file item",
+      "required": "Required",
+      "invalid separate": "Must contain `%fi`"
+    },
+
+    "match": "Match",
+    "glob": {
+      "label": "Glob Rules",
+      "tooltip": "Use <1>glob</1> to match contents in directories, DON'T change unless you know the result explicity"
+    },
+
+    "view": "View",
+    "viewMode": {
+      "label": "View Mode",
+      "tooltip": "Changing the global setting will not reset view mode in workspace/directory which it has been selected",
+      "thumb": "Thumbnail",
+      "list": "List"
+    },
+
+    "localization": "Localization",
+    "language": {
+      "label": "Language",
+      "required": "Please choose language first"
+    }
+  },
+
+  "global config": {
+    "title": "Global Configuration",
+
+    "save success": "Save configurations successfully",
+    "save failed": "Failed to save configurations"
+  },
+
+  "file helper": {
+    "choose directory": "Choose directory to import",
+    "recursive import": "Will be import recursively",
+    "import button": "Import"
+  },
+
+  "file list": {
+    "file name": "File Name",
+    "duration": "Duration",
+
+    "sync": {
+      "button": "Sync",
+      "title": "Sync {{name}}",
+      "popover": "Sync from hard drive (due to performance reasons, you need to manually sync after adding/deleting videos)"
+    }
+  },
+
+  "syncing": [
+    "Syncing...",
+    "Reading global glob configuration...",
+    "Generating thumbnails...",
+    "Getting duration...",
+    "Converting [1] to [0]...",
+    "Compressing thumbnails...",
+    "Learning blob...",
+    "Opening shell..."
+  ]
+}

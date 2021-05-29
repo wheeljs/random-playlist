@@ -2,6 +2,7 @@
 import React, { useState, useEffect, PropsWithChildren } from 'react';
 import { Spin, SpinProps } from 'antd';
 import { random } from 'lodash-es';
+import { useTranslation } from 'react-i18next';
 
 const MediaExtensionMaps = [
   ['avi', 'AVI'],
@@ -12,20 +13,14 @@ const MediaExtensionMaps = [
   ['ogg', 'OGG'],
   ['rmvb', 'RMVB'],
 ];
-const SyncingTips = [
-  '正在读取全局Glob 配置...',
-  '正在生成缩略图...',
-  '正在获取持续时间...',
-  '正在将 [1] 转换为 [0]...',
-  '正在压缩缩略图...',
-  '正在学习Glob...',
-  '正在开启Shell...',
-];
 const TipsContainsVariablesExp = /\[(\d+)\]/g;
 
 export default function SyncingSpin(
   props: PropsWithChildren<SpinProps>
 ): JSX.Element {
+  const { t } = useTranslation();
+
+  const SyncingTips = t('syncing', { returnObjects: true });
   const [syncingTip, setSyncingTip] = useState<string>();
 
   const nextSyncingTip = () => {

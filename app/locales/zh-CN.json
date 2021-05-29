@@ -1,0 +1,160 @@
+{
+  "appName": "生成，播放",
+
+  "common": {
+    "order": "排序",
+    "add": "添加",
+    "remove": "删除",
+    "delete": "$t(common.remove)",
+    "save": "保存",
+    "choose": "选择"
+  },
+
+  "language": {
+    "en": "英语",
+    "zh-CN": "简体中文"
+  },
+
+  "workspace name": "集合",
+
+  "workspace": {
+    "name": {
+      "label": "$t(workspace name)名称",
+      "required": "请输入$t(workspace name)名称"
+    },
+    "order": {
+      "label": "排序",
+      "required": "请指定排序",
+      "extra": "排序最靠前的为默认$t(workspace name)",
+      "next": "默认值由当前最后的$t(workspace name){{name}}($t(common.order)：{{order}}) + 10 得到。"
+    }
+  },
+
+  "workspace item": {
+    "ensure player": "请先配置播放器",
+
+    "generate and play": "生成并播放"
+  },
+
+  "create workspace": {
+    "title": "添加$t(workspace name)"
+  },
+
+  "edit workspace": {
+    "title": "编辑$t(workspace name)",
+
+    "save failed": "保存$t(workspace name)失败",
+    "remove": "删除$t(workspace name)",
+    "remove failed": "删除$t(workspace name)失败",
+    "remove confirm": "确定要删除这个$t(workspace name)吗？该操作不会影响物理文件夹、文件"
+  },
+
+  "delete directory": "从$t(workspace name)中删除该目录，物理文件不受影响。",
+
+  "import directory": {
+    "title": "添加目录",
+
+    "canceled": "用户取消了导入",
+    "have not selected": "至少选择一个目录",
+    "failed": "添加目录失败",
+
+    "glob extra": "若在此修改了匹配规则，则每次同步该目录时都会使用修改后的规则（优先级高于全局规则）。",
+
+    "importPath": {
+      "label": "选择目录",
+      "result": "匹配到<1>{{filesLength}}</1>个文件，在<3>{{directoriesLength}}</3>个目录中。"
+    }
+  },
+
+  "config": {
+    "player": "播放器设置",
+
+    "select player": {
+      "title": "选择播放器",
+      "message": "$t(config.playerExecutable.placeholder)",
+      "exe filter": "可执行文件"
+    },
+
+    "playerExecutable": {
+      "label": "播放器路径",
+      "required": "必须选择播放器路径",
+      "placeholder": "请选择播放器的可执行文件"
+    },
+
+    "playerPassMode": {
+      "label": "文件参数传递方式",
+      "tooltip": "不知道如何填写，请先不修改默认参数试一试",
+      "list": "列表",
+      "separate": "逐项"
+    },
+
+    "playerParameter": {
+      "label": "播放器参数",
+      "help": "打开播放器的参数。“文件参数传递方式”为“列表”时使用<1>%f</1>来代替文件列表；为“逐项”时在这里忽略文件列表。",
+      "required": "请填写播放器参数",
+      "invalid list": "参数传递方式为列表时参数必须包含`%f`"
+    },
+
+    "playerSeparateParameter": {
+      "label": "逐项参数",
+      "help": "使用<1>%fi</1>代替文件名",
+      "required": "请填写逐项参数",
+      "invalid separate": "必须包含`%fi`"
+    },
+
+    "match": "匹配设置",
+    "glob": {
+      "label": "匹配规则(glob)",
+      "tooltip": "使用<1>glob</1> 匹配选中目录的内容，不要改动除非你明确知道结果"
+    },
+
+    "view": "视图设置",
+    "viewMode": {
+      "label": "视图模式",
+      "tooltip": "改动全局设置不会重置已经选择过视图模式的工作空间/目录",
+      "thumb": "缩略图",
+      "list": "列表"
+    },
+
+    "localization": "本地化",
+    "language": {
+      "label": "语言",
+      "required": "请先选择要使用的语言"
+    }
+  },
+
+  "global config": {
+    "title": "全局配置",
+
+    "save success": "保存配置成功",
+    "save failed": "保存配置失败"
+  },
+
+  "file helper": {
+    "choose directory": "选择文件夹进行导入",
+    "recursive import": "文件夹中的视频将被递归导入",
+    "import button": "导入"
+  },
+
+  "file list": {
+    "file name": "文件名",
+    "duration": "持续时间",
+
+    "sync": {
+      "button": "同步",
+      "title": "同步{{name}}",
+      "popover": "从硬盘同步（由于性能原因，您需要在新增/删除视频后手动同步）"
+    }
+  },
+
+  "syncing": [
+    "正在同步中...",
+    "正在读取全局Glob 配置...",
+    "正在生成缩略图...",
+    "正在获取持续时间...",
+    "正在将[1] 转换为[0]...",
+    "正在压缩缩略图...",
+    "正在学习Glob...",
+    "正在开启Shell..."
+  ]
+}

@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { Button, Form, Input, message, Modal, ModalProps, Popover } from 'antd';
 import { CloseCircleOutlined, FolderOpenOutlined } from '@ant-design/icons';
 import { uniqBy } from 'lodash-es';
+import { useTranslation, Trans } from 'react-i18next';
 
 import {
   listFilesAndDirectories,
@@ -34,8 +35,8 @@ export default function ImportDirectoriesModal({
   onClose: () => void;
 }): JSX.Element {
   const dispatch = useDispatch();
-
   const [form] = Form.useForm();
+  const { t } = useTranslation();
 
   const [busying, setBusying] = useState(false);
   const [glob, setGlob] = useState('');
@@ -70,7 +71,7 @@ export default function ImportDirectoriesModal({
 
     const { canceled, filePaths } = await openImportDialog();
     if (canceled) {
-      message.warn('用户取消了导入');
+      message.warn(t('import directory.canceled'));
       return;
     }
     setBusying(true);
@@ -100,7 +101,7 @@ export default function ImportDirectoriesModal({
       return;
     }
     if (importPaths.length === 0) {
-      message.warn('至少选择一个目录');
+      message.warn(t('import directory.have not selected'));
       return;
     }
 
@@ -133,7 +134,7 @@ export default function ImportDirectoriesModal({
       dispatch(fetchWorkspaces());
       beforeClose();
     } catch (err: any) {
-      message.warn(`添加目录失败：${err.message}`);
+      message.warn(`${t('import directory.failed')}：${err.message}`);
     } finally {
       setBusying(false);
     }
@@ -142,8 +143,8 @@ export default function ImportDirectoriesModal({
   return (
     <Modal
       visible={visible}
-      title="添加目录"
-      okText="添加"
+      title={t('import directory.title')}
+      okText={t('common.add')}
       okButtonProps={{ loading: busying }}
       keyboard={false}
       maskClosable={false}
@@ -154,19 +155,21 @@ export default function ImportDirectoriesModal({
       <SyncingSpin spinning={busying}>
         <Form form={form} wrapperCol={{ offset: 6, span: 18 }} preserve={false}>
           <Form.Item
-            label="匹配规则(glob)"
+            label={t('config.glob.label')}
             name="glob"
             labelCol={{ span: 6 }}
             wrapperCol={{ span: 18 }}
             tooltip={
               <>
-                使用
-                <NativeAnchor href="https://en.wikipedia.org/wiki/Glob_(programming)">
-                  glob
-                </NativeAnchor>{' '}
-                匹配选中目录的内容，不要改动除非你明确知道结果
-                <br />
-                若在此修改了匹配规则，则每次刷新该目录时都会使用修改后的规则（优先级高于全局规则）。
+                <Trans i18nKey="config.glob.tooltip">
+                  使用
+                  <NativeAnchor href="https://en.wikipedia.org/wiki/Glob_(programming)">
+                    glob
+                  </NativeAnchor>{' '}
+                  匹配选中目录的内容，不要改动除非你明确知道结果
+                  <br />
+                </Trans>
+                {t('import directory.extra')}
               </>
             }
           >
@@ -178,7 +181,7 @@ export default function ImportDirectoriesModal({
               icon={<FolderOpenOutlined />}
               onClick={showDirectorySelect}
             >
-              选择目录
+              {t('import directory.importPath.label')}
             </Button>
           </Form.Item>
           {importPaths.length > 0 && (
@@ -191,17 +194,25 @@ export default function ImportDirectoriesModal({
                         {x.path}
                       </span>
                       <span className={styles['import-path-summary']}>
-                        匹配到
-                        <span className={styles['import-path-summary-count']}>
-                          {x.imported.files.length}
-                        </span>
-                        个文件，在
-                        <span className={styles['import-path-summary-count']}>
-                          {x.imported.directories.length}
-                        </span>
-                        个目录中。
+                        <Trans
+                          i18nKey="import directory.importPath.result"
+                          values={{
+                            filesLength: x.imported.files.length,
+                            directoriesLength: x.imported.directories.length,
+                          }}
+                        >
+                          匹配到
+                          <span
+                            className={styles['import-path-summary-count']}
+                          />
+                          个文件，在
+                          <span
+                            className={styles['import-path-summary-count']}
+                          />
+                          个目录中。
+                        </Trans>
                       </span>
-                      <Popover content="删除" placement="right">
+                      <Popover content={t('common.remove')} placement="right">
                         <Button
                           type="text"
                           danger

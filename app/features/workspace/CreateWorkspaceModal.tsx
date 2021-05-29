@@ -10,6 +10,7 @@ import {
 } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
+import { Trans, useTranslation } from 'react-i18next';
 import { SaveWorkspace } from '../../services';
 import { addWorkspace } from './workspaceSlice';
 import { Workspace } from '../../models';
@@ -24,6 +25,7 @@ export default function CreateWorkspaceModal({
 }): JSX.Element {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
+  const { t } = useTranslation();
 
   const [saving, setSaving] = useState(false);
 
@@ -38,7 +40,7 @@ export default function CreateWorkspaceModal({
 
       onCancel();
     } catch (e) {
-      message.error(`保存集合失败：${e.message}`);
+      message.error(`${t('edit workspace.save failed')}：${e.message}`);
     } finally {
       setSaving(false);
     }
@@ -52,8 +54,10 @@ export default function CreateWorkspaceModal({
   if (addAfterWorkspace != null) {
     orderFieldProps.tooltip = (
       <span>
-        默认值由当前最后的集合 {addAfterWorkspace.name}(排序:
-        {` ${addAfterWorkspace.order}`}) + 10 得到。
+        <Trans i18nKey="workspace.order.next" values={addAfterWorkspace}>
+          默认值由当前最后的集合 {addAfterWorkspace.name}(排序:
+          {` ${addAfterWorkspace.order}`}) + 10 得到。
+        </Trans>
       </span>
     );
   }
@@ -61,8 +65,8 @@ export default function CreateWorkspaceModal({
   return (
     <Modal
       visible={visible}
-      title="添加集合"
-      okText="添加"
+      title={t('create workspace.title')}
+      okText={t('common.add')}
       keyboard={false}
       maskClosable={false}
       onOk={save}
@@ -83,14 +87,14 @@ export default function CreateWorkspaceModal({
         onFinish={doSave}
       >
         <Form.Item
-          label="集合名称"
+          label={t('workspace.name.label')}
           name="name"
-          rules={[{ required: true, message: '请输入集合名称' }]}
+          rules={[{ required: true, message: t('workspace.name.required') }]}
         >
-          <Input placeholder="集合名称" />
+          <Input placeholder={t('workspace.name.label')} />
         </Form.Item>
         <Form.Item
-          label="排序"
+          label={t('workspace.order.label')}
           required
           // eslint-disable-next-line react/jsx-props-no-spreading
           {...orderFieldProps}
@@ -98,13 +102,13 @@ export default function CreateWorkspaceModal({
           <Form.Item
             noStyle
             name="order"
-            rules={[{ required: true, message: '请指定排序' }]}
+            rules={[{ required: true, message: t('workspace.order.required') }]}
           >
             <InputNumber min={1} step={10} />
           </Form.Item>
           <span>
             <InfoCircleOutlined />
-            排序最靠前的为默认集合
+            {t('workspace.order.extra')}
           </span>
         </Form.Item>
       </Form>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Spin, Tabs, Tooltip, Typography } from 'antd';
 import { PlusOutlined, EditOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import styles from './Home.less';
 import { RootState } from '../store';
@@ -33,6 +34,8 @@ export default function Home(): JSX.Element {
   const configFetchStatus = useSelector(
     (state: RootState) => state.config.status
   );
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (fetchStatus === 'idle') {
@@ -76,7 +79,7 @@ export default function Home(): JSX.Element {
             activeKey: selectedWorkspace != null ? selectedWorkspace.id : '',
           }}
           tabBarExtraContent={
-            <Tooltip title="添加集合">
+            <Tooltip title={t('create workspace.title')}>
               <Button icon={<PlusOutlined />} onClick={onAddWorkspaceClicked} />
             </Tooltip>
           }
@@ -85,7 +88,7 @@ export default function Home(): JSX.Element {
           {workspaces.map((x) => (
             <TabPane
               tab={
-                <Tooltip title={`排序: ${x.order}`}>
+                <Tooltip title={`${t('common.order')}: ${x.order}`}>
                   {x.name}&nbsp;
                   <Typography.Text type="secondary">
                     <EditOutlined

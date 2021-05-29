@@ -9,7 +9,13 @@ import {
   getConnectionOptions,
 } from 'typeorm';
 
-import { Config, IConfig, ConfigValueType, SaveOrUpdateConfig } from './Config';
+import {
+  Config,
+  IConfig,
+  ConfigValueType,
+  SaveOrUpdateConfig,
+  SupportedLngs,
+} from './Config';
 import { ViewMode } from './BaseModel';
 import { File } from './File';
 import { Directory } from './Directory';
@@ -20,6 +26,7 @@ export {
   IConfig,
   ConfigValueType,
   SaveOrUpdateConfig,
+  SupportedLngs,
   Workspace,
   Directory,
   File,

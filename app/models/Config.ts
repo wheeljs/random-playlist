@@ -13,6 +13,8 @@ import {
 import { keyBy } from 'lodash';
 import { dateTransformer } from './BaseModel';
 
+export type SupportedLngs = 'zh-CN' | 'en' | string;
+
 export type ConfigValueType = 'string' | 'separated-string';
 
 export interface IConfig {

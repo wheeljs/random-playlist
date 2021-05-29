@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button, message, Popconfirm, Popover } from 'antd';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { shuffle } from 'lodash-es';
+import { useTranslation } from 'react-i18next';
 import { Directory, Workspace, ViewMode } from '../../models';
 
 import styles from './WorkspaceItem.less';
@@ -30,6 +31,7 @@ export default function WorkspaceItem({
   workspace: Workspace;
 }): JSX.Element {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const configs = useSelector(selectConfigs);
 
@@ -43,7 +45,7 @@ export default function WorkspaceItem({
 
   const generateAndPlay = async () => {
     if (!configs[ConfigKeys.PlayerExecutable]?.value) {
-      message.warning('请先配置播放器');
+      message.warning(t('workspace item.ensure player'));
       dispatch(setVisible(true));
       return;
     }
@@ -157,7 +159,7 @@ export default function WorkspaceItem({
   return (
     <div className={[className, styles['workspace-item']].join(' ')}>
       <div className={styles['directories-container']}>
-        <Popover content="添加目录" placement="right">
+        <Popover content={t('import directory.title')} placement="right">
           <Button
             type="primary"
             className="add-directory"
@@ -180,9 +182,9 @@ export default function WorkspaceItem({
                   {x.path}
                   <div className={styles['directory-actions']}>
                     <Popconfirm
-                      title="从集合中删除该目录，物理文件不受影响。"
+                      title={t('delete directory')}
                       placement="bottom"
-                      okText="删除"
+                      okText={t('common.remove')}
                       okButtonProps={{ danger: true }}
                       onConfirm={() => deleteDirectory(x)}
                     >
@@ -224,7 +226,7 @@ export default function WorkspaceItem({
             loading={generating}
             onClick={generateAndPlay}
           >
-            生成并播放
+            {t('workspace item.generate and play')}
           </Button>,
         ]}
         viewMode={viewMode}

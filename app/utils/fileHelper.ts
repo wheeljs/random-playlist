@@ -6,6 +6,7 @@ import path from 'path';
 import fg from 'fast-glob';
 import { uniq } from 'lodash-es';
 import { OpenDialogReturnValue, remote } from 'electron';
+import i18n from 'i18next';
 import { ConfigKeys } from '../services';
 import { IConfig } from '../models';
 
@@ -16,9 +17,9 @@ export interface PathListed {
 
 export function openImportDialog(): Promise<OpenDialogReturnValue> {
   return remote.dialog.showOpenDialog({
-    title: '选择文件夹进行导入',
-    message: '文件夹中的视频将被递归导入',
-    buttonLabel: '导入',
+    title: i18n.t('file helper.choose directory'),
+    message: i18n.t('file helper.recursive import'),
+    buttonLabel: i18n.t('file helper.import button'),
     properties: ['openDirectory', 'multiSelections', 'dontAddToRecent'],
   });
 }
