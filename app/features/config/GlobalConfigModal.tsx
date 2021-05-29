@@ -1,5 +1,5 @@
 import { remote } from 'electron';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Form,
@@ -14,8 +14,10 @@ import {
   Anchor,
   message,
 } from 'antd';
+import AnchorLink from 'antd/lib/anchor/AnchorLink';
 import { UnorderedListOutlined, AppstoreOutlined } from '@ant-design/icons';
 import { useTranslation, Trans } from 'react-i18next';
+import Flags from 'country-flag-icons/react/3x2';
 import { RootState } from '../../store';
 import { fetchConfigs, selectConfigs, updateConfigs } from './configSlice';
 
@@ -70,6 +72,22 @@ export default function GlobalConfigModal({
       }
     }
   }, [visible, configs, dispatch, fetchStatus, form]);
+
+  const l10nCategoryAnchor = useCallback(
+    (node: AnchorLink) => {
+      if (!form.getFieldValue(ConfigKeys.Language) && node != null) {
+        message.info(t('config.language.required'));
+        setTimeout(() => {
+          node.handleClick(
+            (new MouseEvent(
+              'click'
+            ) as unknown) as React.MouseEvent<HTMLElement>
+          );
+        });
+      }
+    },
+    [t, form]
+  );
 
   const scrollContainer = useRef(null);
 
@@ -164,6 +182,11 @@ export default function GlobalConfigModal({
             <Anchor.Link href="#config-player" title={t('config.player')} />
             <Anchor.Link href="#config-match" title={t('config.match')} />
             <Anchor.Link href="#config-view" title={t('config.view')} />
+            <Anchor.Link
+              href="#config-l10n"
+              title={t('config.localization')}
+              ref={l10nCategoryAnchor}
+            />
           </Anchor>
         </Col>
         <Col
@@ -329,6 +352,24 @@ export default function GlobalConfigModal({
                 <Radio.Button value="list">
                   <UnorderedListOutlined />
                   &nbsp;{t('config.viewMode.list')}
+                </Radio.Button>
+              </Radio.Group>
+            </Form.Item>
+
+            <a className={styles['config-category']} id="config-l10n">
+              {t('config.localization')}
+            </a>
+            <Form.Item
+              label={t('config.language.label')}
+              name={ConfigKeys.Language}
+              className={styles['country-flags-radio-group']}
+            >
+              <Radio.Group>
+                <Radio.Button value="zh-CN">
+                  <Flags.CN title={t('language.zh-CN')} />
+                </Radio.Button>
+                <Radio.Button value="en">
+                  <Flags.US title={t('language.en')} />
                 </Radio.Button>
               </Radio.Group>
             </Form.Item>

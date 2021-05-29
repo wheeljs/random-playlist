@@ -2,6 +2,7 @@ declare namespace GlobalConfigModalLessNamespace {
   export interface IGlobalConfigModalLess {
     'config-category': string;
     'config-modal-scroll': string;
+    'country-flags-radio-group': string;
   }
 }
 

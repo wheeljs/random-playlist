@@ -9,6 +9,7 @@ export enum ConfigKeys {
   PlayerParameter = 'playerParameter',
   PlayerSeparateParameter = 'playerSeparateParameter',
   ViewMode = 'viewMode',
+  Language = 'language',
 }
 
 export class ConfigService {

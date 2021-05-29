@@ -7,10 +7,13 @@ import { ConfigProvider } from 'antd';
 import { Locale } from 'antd/lib/locale-provider';
 import enUS from 'antd/lib/locale/en_US';
 import zhCN from 'antd/lib/locale/zh_CN';
+import watchStore from 'redux-watch';
 
 import i18n from '../locales/i18n';
 import { Store } from '../store';
 import Routes from '../Routes';
+import { selectConfig } from '../features/config/configSlice';
+import { ConfigKeys } from '../services';
 import { SupportedLngs } from '../models';
 
 type Props = {
@@ -38,8 +41,19 @@ const Root = ({ store, history }: Props) => {
       setLocale(antdLocale);
     });
 
+    const watcher = watchStore(
+      () => selectConfig(store.getState(), ConfigKeys.Language),
+      'value'
+    );
+    const unsubscribe = store.subscribe(
+      watcher((lng: SupportedLngs) => {
+        i18n.changeLanguage(lng);
+      })
+    );
+
     return () => {
       i18n.off('languageChanged');
+      unsubscribe();
     };
   }, [store]);
 
