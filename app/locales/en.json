@@ -14,6 +14,26 @@
     "zh-CN": "Simplified Chinese"
   },
 
+  "menu": {
+    "App Name": "Generate and Play",
+    "About": "About $t(menu.App Name)",
+
+    "Global Settings": "Global Settings",
+    "Hide": "Hide $t(menu.App Name)",
+    "Hide Others": "Hide Others",
+    "Show All": "Show All",
+    "Quit": "Quit",
+
+    "View": "View",
+    "Reload": "Reload",
+    "Toggle Full Screen": "Toggle Full Screen",
+
+    "darwin Window": "Window",
+    "Minimize": "Minimize",
+    "Close": "Close",
+    "Bring All to Front": "Bring All to Front"
+  },
+
   "workspace name": "Workspace",
 
   "workspace": {

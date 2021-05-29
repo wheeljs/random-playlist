@@ -15,6 +15,26 @@
     "zh-CN": "简体中文"
   },
 
+  "menu": {
+    "App Name": "生成，播放",
+    "About": "关于$t(menu.App Name)",
+
+    "Global Settings": "全局设置",
+    "Hide": "隐藏$t(menu.App Name)",
+    "Hide Others": "隐藏其它",
+    "Show All": "显示全部",
+    "Quit": "退出",
+
+    "View": "视图",
+    "Reload": "重新加载",
+    "Toggle Full Screen": "全屏显示",
+
+    "Window": "窗口",
+    "Minimize": "最小化",
+    "Close": "关闭",
+    "Bring All to Front": "最前显示"
+  },
+
   "workspace name": "集合",
 
   "workspace": {
