@@ -24,6 +24,7 @@ import SyncingSpin from '../../components/SyncingSpin';
 import styles from './FileListCard.less';
 
 export default function FileList({
+  workspaceName,
   directory,
   fileList,
   actions,
@@ -33,6 +34,7 @@ export default function FileList({
   onClearSelectedDirectory,
   onSyncFiles,
 }: Pick<CardProps, 'actions'> & {
+  workspaceName: string;
   directory?: Directory;
   fileList: File[];
   syncing?: boolean;
@@ -123,7 +125,7 @@ export default function FileList({
                 <a onClick={onClearSelectedDirectory}>
                   <Space>
                     <FolderOpenOutlined />
-                    <span>默认空间</span>
+                    <span>{workspaceName}</span>
                   </Space>
                 </a>
               </Breadcrumb.Item>

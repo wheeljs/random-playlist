@@ -213,6 +213,7 @@ export default function WorkspaceItem({
       </div>
 
       <FileListCard
+        workspaceName={workspace.name}
         fileList={fileList}
         syncing={syncing}
         directory={selectedDir}
