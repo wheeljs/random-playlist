@@ -63,18 +63,32 @@ export class DirectoryService {
     return normalizeEntity(directory);
   }
 
-  async syncFiles(directories: SyncDirectoryFiles[]) {
-    return normalizeEntity(
-      await Directory.save(
+  async syncFiles(directories: SyncDirectoryFiles[]): Promise<void> {
+    const entityManager = getManager();
+
+    return entityManager.transaction(async (tEntityManager) => {
+      await tEntityManager
+        .createQueryBuilder()
+        .delete()
+        .from(File)
+        .where('directory.id IN (:...ids)', {
+          ids: directories.map((x) => x.directoryId),
+        })
+        .execute();
+
+      await tEntityManager.save<Directory>(
         await Promise.all(
           directories.map(async (x) => {
-            const directory = await Directory.findOne(x.directoryId);
+            const directory = await tEntityManager.findOne<Directory>(
+              Directory,
+              x.directoryId
+            );
             directory.files = x.files.map((file) => File.create(file));
             return directory;
           })
         )
-      )
-    );
+      );
+    });
   }
 
   async update(directory: UpdateDirectory) {
