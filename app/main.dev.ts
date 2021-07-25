@@ -139,7 +139,7 @@ if (process.env.E2E_BUILD === 'true') {
 } else {
   app.on('ready', async () => {
     const conn = await connection({
-      migrations: [path.join(__dirname, 'migrations/*.ts')],
+      migrations: [path.join(__dirname, 'migrations/*.js')],
     });
     await Promise.all(await conn.runMigrations({ transaction: 'all' }));
 

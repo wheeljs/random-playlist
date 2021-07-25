@@ -7,6 +7,7 @@
     "build-dll": "cross-env NODE_ENV=development webpack --config ./configs/webpack.config.renderer.dev.dll.babel.js --colors",
     "build-e2e": "cross-env E2E_BUILD=true yarn build",
     "build-main": "cross-env NODE_ENV=production webpack --config ./configs/webpack.config.main.prod.babel.js --colors",
+    "postbuild-main": "cross-env NODE_ENV=production tsc --build tsconfig.standalone.json",
     "build-renderer": "cross-env NODE_ENV=production webpack --config ./configs/webpack.config.renderer.prod.babel.js --colors",
     "electron-rebuild": "electron-rebuild --parallel --force --types prod,dev,optional --module-dir app",
     "lint": "cross-env NODE_ENV=development eslint . --cache --ext .js,.jsx,.ts,.tsx",
@@ -59,8 +60,9 @@
       "app.html",
       "main.prod.js",
       "main.prod.js.map",
+      "ormconfig.js",
       "package.json",
-      "migrations/",
+      "migrations/*.js",
       "app/node_modules/@ffmpeg-installer/",
       "app/node_modules/@ffprobe-installer/",
       "app/utils/videoFileDetails.js"

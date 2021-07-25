@@ -34,10 +34,12 @@ node_modules
 release
 app/main.prod.js
 app/main.prod.js.map
+app/ormconfig.js
 app/renderer.prod.js
 app/renderer.prod.js.map
 app/style.css
 app/style.css.map
+app/migrations/*.js
 dist
 dll
 main.js
