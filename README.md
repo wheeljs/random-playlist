@@ -51,7 +51,7 @@ Only tested on Windows 10 (Development Machine) and Windows 7(VMWare), other pla
 
 ## Contribute
 
-Welcome! I'm a frontend developer only (and never used react before), current 'Generate' is a REAL `random()` call, in my picture, 'Generate' should be more elegant and smart.
+Welcome! I'm a frontend developer only (and never used react before), current 'Generate' is a REAL `random()` call, in my "blueprint", 'Generate' should be more elegant and smart.
 
 ### Install
 
@@ -60,8 +60,8 @@ Welcome! I'm a frontend developer only (and never used react before), current 'G
 First, clone the repo via git and install dependencies:
 
 ```bash
-git clone --depth 1 --single-branch https://github.com/electron-react-boilerplate/electron-react-boilerplate.git your-project-name
-cd your-project-name
+git clone https://github.com/wheeljs/random-playlist.git
+cd random-playlist
 yarn
 ```
 
