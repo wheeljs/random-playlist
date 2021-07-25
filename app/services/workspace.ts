@@ -18,7 +18,7 @@ export class WorkspaceService {
   async list(): Promise<Workspace[]> {
     return normalizeEntity(
       await Workspace.find({
-        where: 'Workspace_directories_deleted_at IS NULL',
+        where: `${Workspace.name}_directories_deleted_at IS NULL`,
       })
     );
   }
