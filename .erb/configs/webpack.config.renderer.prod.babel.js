@@ -8,6 +8,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
+import CopyPlugin from 'copy-webpack-plugin';
 import { merge } from 'webpack-merge';
 import TerserPlugin from 'terser-webpack-plugin';
 import baseConfig from './webpack.config.base';
@@ -220,6 +221,15 @@ export default merge(baseConfig, {
       analyzerMode:
         process.env.OPEN_ANALYZER === 'true' ? 'server' : 'disabled',
       openAnalyzer: process.env.OPEN_ANALYZER === 'true',
+    }),
+
+    new CopyPlugin({
+      patterns: [
+        {
+          from: path.join(webpackPaths.srcRendererPath, 'utils/videoFileDetails.js'),
+          to: path.join(webpackPaths.distRendererPath, 'utils'),
+        }
+      ]
     }),
 
     new HtmlWebpackPlugin({
