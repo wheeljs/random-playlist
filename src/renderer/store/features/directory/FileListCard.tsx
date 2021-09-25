@@ -59,7 +59,7 @@ export default function FileList({
               fileList.map((file) => (
                 <Col span={3} key={file.path}>
                   <div className={styles['file-item']}>
-                    <img src={file.thumb} alt={file.path} />
+                    <img src={`file:///${file.thumb}`} alt={file.path} />
                     <span className={styles['file-name']}>
                       {basename(file.path)}
                     </span>
@@ -96,9 +96,9 @@ export default function FileList({
               const ceilValue = Math.ceil(value);
               const minutes = Math.floor(ceilValue / 60);
               const seconds = ceilValue % 60;
-              return `${minutes
+              return `${minutes.toString().padStart(2, '0')}:${seconds
                 .toString()
-                .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                .padStart(2, '0')}`;
             }}
           />
         </Table>
@@ -106,7 +106,7 @@ export default function FileList({
       break;
   }
 
-  // eslint-disable-next-line no-shadow
+  // eslint-disable-next-line no-shadow, @typescript-eslint/no-shadow
   const setViewMode = (viewMode: ViewMode) => {
     onViewModeChange({
       directory,
