@@ -7,6 +7,7 @@ import { Locale } from 'antd/lib/locale-provider';
 import enUS from 'antd/lib/locale/en_US';
 import zhCN from 'antd/lib/locale/zh_CN';
 import watchStore from 'redux-watch';
+import { useTranslation } from 'react-i18next';
 
 import i18n from '../../locales/i18n';
 import { Store } from '../store';
@@ -26,6 +27,8 @@ const AntdLocaleMapping = new Map<SupportedLngs, Locale>([
 ]);
 
 const Root = ({ store, history }: Props) => {
+  const { t } = useTranslation();
+
   const [locale, setLocale] = useState<Locale>(
     AntdLocaleMapping.get(
       AntdLocaleMapping.has(i18n.language) ? i18n.language : 'en'
@@ -47,6 +50,7 @@ const Root = ({ store, history }: Props) => {
     const unsubscribe = store.subscribe(
       watcher((lng: SupportedLngs) => {
         i18n.changeLanguage(lng);
+        document.title = t('appName');
       })
     );
 
@@ -54,7 +58,7 @@ const Root = ({ store, history }: Props) => {
       i18n.off('languageChanged');
       unsubscribe();
     };
-  }, [store]);
+  }, [store, t]);
 
   return (
     <Provider store={store}>
