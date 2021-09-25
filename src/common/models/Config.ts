@@ -81,9 +81,10 @@ export class Config extends BaseEntity {
       ignoreEnabled: false,
     }
   ): Promise<IConfig> {
-    const queryBuilder = this.createQueryBuilder(
-      'config'
-    ).where('config.key = :key', { key });
+    const queryBuilder = this.createQueryBuilder('config').where(
+      'config.key = :key',
+      { key }
+    );
     if (typeof specifyVersion === 'number') {
       queryBuilder.andWhere('config.version = :version', {
         verion: specifyVersion,
@@ -95,7 +96,7 @@ export class Config extends BaseEntity {
 
     try {
       const config = await queryBuilder.getOneOrFail();
-      return (classToPlain(config) as unknown) as IConfig;
+      return classToPlain(config) as unknown as IConfig;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       switch (e.name) {
@@ -118,7 +119,7 @@ export class Config extends BaseEntity {
     }
 
     const configs = await queryBuilder.getMany();
-    return keyBy((classToPlain(configs) as unknown) as IConfig[], (x) => x.key);
+    return keyBy(classToPlain(configs) as unknown as IConfig[], (x) => x.key);
   }
 
   static async saveOrUpdate(
@@ -151,7 +152,7 @@ export class Config extends BaseEntity {
     });
 
     return keyBy(
-      (classToPlain(await Config.save(toSaveConfigs)) as unknown) as IConfig[],
+      classToPlain(await Config.save(toSaveConfigs)) as unknown as IConfig[],
       (x) => x.key
     );
   }

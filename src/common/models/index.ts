@@ -9,39 +9,36 @@ import {
 } from 'typeorm';
 
 import defaultOptions from '../../ormconfig';
+import type { ViewMode } from './BaseModel';
+import { Config } from './Config';
 import type {
   IConfig,
   ConfigValueType,
   SaveOrUpdateConfig,
   SupportedLngs,
 } from './Config';
-import { Config } from './Config';
-import type { ViewMode } from './BaseModel';
 import { File } from './File';
 import { Directory } from './Directory';
 import { Workspace } from './Workspace';
 
-export {
-  Config,
+export { Config, Workspace, Directory, File };
+export type {
   IConfig,
   ConfigValueType,
   SaveOrUpdateConfig,
   SupportedLngs,
-  Workspace,
-  Directory,
-  File,
   ViewMode,
 };
 
 async function createConnection(options: Partial<ConnectionOptions> = {}) {
   const userDataPath = (app || remote.app).getPath('userData');
 
-  const opts: ConnectionOptions = ({
+  const opts: ConnectionOptions = {
     ...defaultOptions,
     ...options,
     entities: [Config, Workspace, Directory, File],
     database: join(userDataPath, 'random-playlist.db'),
-  } as unknown) as ConnectionOptions;
+  } as ConnectionOptions;
   return _createConnection(opts);
 }
 

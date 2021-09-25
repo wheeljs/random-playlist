@@ -1,5 +1,6 @@
 /* eslint-disable class-methods-use-this */
-import { Config, IConfig } from '../../common/models';
+import { Config } from '../../common/models';
+import type { IConfig } from '../../common/models';
 import { SaveOrUpdateConfig } from '../../common/models/Config';
 
 export enum ConfigKeys {

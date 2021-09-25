@@ -4,7 +4,7 @@ import directoryService from './directory';
 
 export type { SaveWorkspace, UpdateWorkspace } from './workspace';
 export type { UpdateDirectory } from './directory';
-export type { ConfigKeys } from './config';
+export { ConfigKeys } from './config';
 
 export { configService, workspaceService, directoryService };
 

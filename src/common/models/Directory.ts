@@ -1,7 +1,7 @@
 /* eslint-disable import/no-cycle */
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
-import type { ViewMode } from './BaseModel';
 import { BaseModel } from './BaseModel';
+import type { ViewMode } from './BaseModel';
 import { File } from './File';
 import { Workspace } from './Workspace';
 

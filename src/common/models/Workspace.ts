@@ -1,6 +1,7 @@
 /* eslint-disable import/no-cycle */
 import { Entity, Column, OneToMany } from 'typeorm';
-import { BaseModel, ViewMode } from './BaseModel';
+import { BaseModel } from './BaseModel';
+import type { ViewMode } from './BaseModel';
 import { Directory } from './Directory';
 
 @Entity({
