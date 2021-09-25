@@ -122,7 +122,7 @@ export default merge(baseConfig, {
               sourceMap: true,
             },
           },
-          {
+      {
             loader: 'sass-loader',
           },
         ],

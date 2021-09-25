@@ -71,6 +71,10 @@ export default merge(baseConfig, {
         use: [
           {
             loader: MiniCssExtractPlugin.loader,
+            options: {
+              // `./dist` can't be inerhited for publicPath for styles. Otherwise generated paths will be ./dist/dist
+              publicPath: './',
+            },
           },
           {
             loader: 'css-loader',

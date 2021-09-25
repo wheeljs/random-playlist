@@ -10,6 +10,7 @@
  */
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
+import 'reflect-metadata';
 import path from 'path';
 import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
