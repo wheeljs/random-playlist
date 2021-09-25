@@ -140,9 +140,10 @@ app.on('will-quit', async () => {
   (await connection()).close();
 });
 
+const MigrationExt = isDevelopment ? '.ts' : '.js';
 app.on('ready', async () => {
   const conn = await connection({
-    migrations: [path.join(__dirname, 'migrations/*.js')],
+    migrations: [path.join(__dirname, `../common/migrations/*${MigrationExt}`)],
   });
   await Promise.all(await conn.runMigrations({ transaction: 'all' }));
 
