@@ -5,6 +5,8 @@ import {
   BrowserWindow,
   MenuItemConstructorOptions,
 } from 'electron';
+import { Config } from '../common/models';
+import i18n from '../locales/i18n';
 
 interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
   selector?: string;
@@ -18,12 +20,17 @@ export default class MenuBuilder {
     this.mainWindow = mainWindow;
   }
 
-  buildMenu(): Menu {
+  async buildMenu(): Promise<Menu> {
     if (
       process.env.NODE_ENV === 'development' ||
       process.env.DEBUG_PROD === 'true'
     ) {
       this.setupDevelopmentEnvironment();
+    }
+
+    const languageConfig = await Config.get('language');
+    if (languageConfig.value !== i18n.language) {
+      i18n.changeLanguage(languageConfig.value as string);
     }
 
     const template =
@@ -52,31 +59,43 @@ export default class MenuBuilder {
     });
   }
 
+  private openGlobalSettings() {
+    this.mainWindow.webContents.send('dispatch', {
+      type: 'config/setVisible',
+      payload: true,
+    });
+  }
+
   buildDarwinTemplate(): MenuItemConstructorOptions[] {
     const subMenuAbout: DarwinMenuItemConstructorOptions = {
-      label: 'Electron',
+      label: i18n.t('menu.App NAme'),
       submenu: [
         {
-          label: 'About ElectronReact',
+          label: i18n.t('menu.About'),
           selector: 'orderFrontStandardAboutPanel:',
         },
         { type: 'separator' },
-        { label: 'Services', submenu: [] },
+        { label: i18n.t('menu.Services'), submenu: [] },
+        {
+          label: i18n.t('menu.Global Settings'),
+          accelerator: 'Command+S',
+          click: () => this.openGlobalSettings(),
+        },
         { type: 'separator' },
         {
-          label: 'Hide ElectronReact',
+          label: i18n.t('menu.Hide'),
           accelerator: 'Command+H',
           selector: 'hide:',
         },
         {
-          label: 'Hide Others',
+          label: i18n.t('menu.Hide Others'),
           accelerator: 'Command+Shift+H',
           selector: 'hideOtherApplications:',
         },
-        { label: 'Show All', selector: 'unhideAllApplications:' },
+        { label: i18n.t('menu.Show All'), selector: 'unhideAllApplications:' },
         { type: 'separator' },
         {
-          label: 'Quit',
+          label: i18n.t('menu.Quit'),
           accelerator: 'Command+Q',
           click: () => {
             app.quit();
@@ -101,17 +120,17 @@ export default class MenuBuilder {
       ],
     };
     const subMenuViewDev: MenuItemConstructorOptions = {
-      label: 'View',
+      label: i18n.t('menu.View'),
       submenu: [
         {
-          label: 'Reload',
+          label: i18n.t('menu.Reload'),
           accelerator: 'Command+R',
           click: () => {
             this.mainWindow.webContents.reload();
           },
         },
         {
-          label: 'Toggle Full Screen',
+          label: i18n.t('menu.Toggle Full Screen'),
           accelerator: 'Ctrl+Command+F',
           click: () => {
             this.mainWindow.setFullScreen(!this.mainWindow.isFullScreen());
@@ -127,10 +146,10 @@ export default class MenuBuilder {
       ],
     };
     const subMenuViewProd: MenuItemConstructorOptions = {
-      label: 'View',
+      label: i18n.t('menu.View'),
       submenu: [
         {
-          label: 'Toggle Full Screen',
+          label: i18n.t('menu.Toggle Full Screen'),
           accelerator: 'Ctrl+Command+F',
           click: () => {
             this.mainWindow.setFullScreen(!this.mainWindow.isFullScreen());
@@ -139,18 +158,26 @@ export default class MenuBuilder {
       ],
     };
     const subMenuWindow: DarwinMenuItemConstructorOptions = {
-      label: 'Window',
+      label: i18n.t('menu.Window'),
       submenu: [
         {
-          label: 'Minimize',
+          label: i18n.t('menu.Minimize'),
           accelerator: 'Command+M',
           selector: 'performMiniaturize:',
         },
-        { label: 'Close', accelerator: 'Command+W', selector: 'performClose:' },
+        {
+          label: i18n.t('menu.Close'),
+          accelerator: 'Command+W',
+          selector: 'performClose:',
+        },
         { type: 'separator' },
-        { label: 'Bring All to Front', selector: 'arrangeInFront:' },
+        {
+          label: i18n.t('menu.Bring All to Front'),
+          selector: 'arrangeInFront:',
+        },
       ],
     };
+
     const subMenuHelp: MenuItemConstructorOptions = {
       label: 'Help',
       submenu: [
@@ -195,42 +222,36 @@ export default class MenuBuilder {
   buildDefaultTemplate() {
     const templateDefault = [
       {
-        label: '&File',
+        label: i18n.t('menu.App Name'),
         submenu: [
           {
-            label: '&Open',
-            accelerator: 'Ctrl+O',
+            label: i18n.t('menu.Global Settings'),
+            accelerator: 'Ctrl+S',
+            click: () => this.openGlobalSettings(),
           },
           {
-            label: '&Close',
-            accelerator: 'Ctrl+W',
-            click: () => {
-              this.mainWindow.close();
-            },
+            label: i18n.t('menu.Close'),
+            role: 'close',
           },
         ],
       },
       {
-        label: '&View',
+        label: i18n.t('menu.View'),
         submenu:
           process.env.NODE_ENV === 'development' ||
           process.env.DEBUG_PROD === 'true'
             ? [
                 {
-                  label: '&Reload',
+                  label: i18n.t('menu.Reload'),
                   accelerator: 'Ctrl+R',
                   click: () => {
                     this.mainWindow.webContents.reload();
                   },
                 },
                 {
-                  label: 'Toggle &Full Screen',
+                  label: i18n.t('menu.Toggle Full Screen'),
+                  role: 'togglefullscreen',
                   accelerator: 'F11',
-                  click: () => {
-                    this.mainWindow.setFullScreen(
-                      !this.mainWindow.isFullScreen()
-                    );
-                  },
                 },
                 {
                   label: 'Toggle &Developer Tools',
@@ -242,13 +263,9 @@ export default class MenuBuilder {
               ]
             : [
                 {
-                  label: 'Toggle &Full Screen',
+                  label: i18n.t('menu.Toggle Full Screen'),
+                  role: 'togglefullscreen',
                   accelerator: 'F11',
-                  click: () => {
-                    this.mainWindow.setFullScreen(
-                      !this.mainWindow.isFullScreen()
-                    );
-                  },
                 },
               ],
       },
