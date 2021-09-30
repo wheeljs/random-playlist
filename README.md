@@ -7,8 +7,9 @@ Import your videos like 'Friends' and anything else, then random play them.
 > Forked from [`electron-react-boilerplate@1.4.0`](//electron-react-boilerplate.js.org/), Thanks for their working.
 
 >  <p>
->    Electron React Boilerplate uses <a href="https://electron.atom.io/">Electron</a>, <a href="https://facebook.github.io/react/">React</a>, <a href="https://github.com/reactjs/redux">Redux</a>, <a href="https://github.com/reactjs/react-router">React Router</a>, <a href="https://webpack.github.io/docs/">Webpack</a> and <a href="https://github.com/gaearon/react-hot-loader">React Hot Loader</a> for rapid application development (HMR).
+>    Electron React Boilerplate uses <a href="https://electron.atom.io/">Electron</a>, <a href="https://facebook.github.io/react/">React</a>, <a href="https://github.com/reactjs/redux">Redux</a>, <a href="https://github.com/reactjs/react-router">React Router</a>, <a href="https://webpack.js.org/">Webpack</a> and <a href="https://www.npmjs.com/package/react-refresh">React Fast Refresh</a>.
 >  </p>
+
 
 > 从[`electron-react-boilerplate@1.4.0`](//electron-react-boilerplate.js.org/) Fork 而来，感谢大佬们的辛勤工作。
 
@@ -62,7 +63,7 @@ First, clone the repo via git and install dependencies:
 ```bash
 git clone https://github.com/wheeljs/random-playlist.git
 cd random-playlist
-yarn
+npm install
 ```
 
 ### Starting Development
@@ -70,7 +71,7 @@ yarn
 Start the app in the `dev` environment. This starts the renderer process in [**hot-module-replacement**](https://webpack.js.org/guides/hmr-react/) mode and starts a webpack dev server that sends hot updates to the renderer process:
 
 ```bash
-yarn start
+npm start
 ```
 
 ### Packaging for Production
@@ -78,7 +79,7 @@ yarn start
 To package apps for the local platform:
 
 ```bash
-yarn package
+npm run package
 ```
 
 ## Maintainers
@@ -87,7 +88,7 @@ yarn package
 
 ## License
 
-MIT
+MITMIT © [Generate, Play](https://github.com/wheeljs/random-playlist)
 
 [github-actions-status]: https://github.com/wheeljs/random-playlist/workflows/Test/badge.svg
 [github-actions-url]: https://github.com/wheeljs/random-playlist/actions

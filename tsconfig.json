@@ -1,11 +1,10 @@
 {
   "compilerOptions": {
-    "target": "ES2018",
+    "target": "ES2019",
     "module": "CommonJS",
     "lib": ["dom", "esnext"],
     "declaration": true,
     "declarationMap": true,
-    "noEmit": true,
     "jsx": "react",
     "strict": false,
     "pretty": true,
@@ -22,8 +21,9 @@
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "allowJs": true,
+    "outDir": "release/app/dist",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true
   },
-  "exclude": ["test", "build/release", "build/app/dist", ".erb/dll"]
+  "exclude": ["test", "release/build", "release/app/dist", ".erb/dll"]
 }

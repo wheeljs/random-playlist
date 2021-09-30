@@ -1,38 +1,52 @@
-/**
- * Build config for electron renderer process
- */
-
 import path from 'path';
+import fs from 'fs';
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
+import chalk from 'chalk';
 import { merge } from 'webpack-merge';
-import TerserPlugin from 'terser-webpack-plugin';
+import { spawn, execSync } from 'child_process';
 import baseConfig from './webpack.config.base';
-import webpackPaths from './webpack.paths.js';
+import webpackPaths from './webpack.paths';
 import checkNodeEnv from '../scripts/check-node-env';
-import deleteSourceMaps from '../scripts/delete-source-maps';
+import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 
-checkNodeEnv('production');
-deleteSourceMaps();
+// When an ESLint server is running, we can't set the NODE_ENV so we'll check if it's
+// at the dev webpack config is not accidentally run in a production environment
+if (process.env.NODE_ENV === 'production') {
+  checkNodeEnv('development');
+}
 
-const devtoolsConfig =
-  process.env.DEBUG_PROD === 'true'
-    ? {
-        devtool: 'source-map',
-      }
-    : {};
+const port = process.env.PORT || 1212;
+const manifest = path.resolve(webpackPaths.dllPath, 'renderer.json');
+const requiredByDLLConfig = module.parent.filename.includes(
+  'webpack.config.renderer.dev.dll'
+);
+
+/**
+ * Warn if the DLL is not built
+ */
+if (
+  !requiredByDLLConfig &&
+  !(fs.existsSync(webpackPaths.dllPath) && fs.existsSync(manifest))
+) {
+  console.log(
+    chalk.black.bgYellow.bold(
+      'The DLL files are missing. Sit back while we build them for you with "npm run build-dll"'
+    )
+  );
+  execSync('npm run postinstall');
+}
 
 export default merge(baseConfig, {
-  ...devtoolsConfig,
+  devtool: 'inline-source-map',
 
-  mode: 'production',
+  mode: 'development',
 
   target: 'electron-renderer',
 
   entry: [
+    `webpack-dev-server/client?http://localhost:${port}/dist`,
+    'webpack/hot/only-dev-server',
     'core-js',
     'regenerator-runtime/runtime',
     'reflect-metadata',
@@ -41,21 +55,17 @@ export default merge(baseConfig, {
 
   output: {
     path: webpackPaths.distRendererPath,
-    publicPath: './',
-    filename: 'renderer.js',
+    publicPath: '/',
+    filename: 'renderer.dev.js',
   },
 
   module: {
     rules: [
-      // Extract all .global.css to style.css as is
       {
         test: /\.global\.css$/,
         use: [
           {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              publicPath: './',
-            },
+            loader: 'style-loader',
           },
           {
             loader: 'css-loader',
@@ -65,12 +75,11 @@ export default merge(baseConfig, {
           },
         ],
       },
-      // Pipe other styles through css modules and append to style.css
       {
         test: /^((?!\.global).)*\.css$/,
         use: [
           {
-            loader: MiniCssExtractPlugin.loader,
+            loader: 'style-loader',
           },
           {
             loader: 'css-loader',
@@ -79,38 +88,38 @@ export default merge(baseConfig, {
                 localIdentName: '[name]__[local]__[hash:base64:5]',
               },
               sourceMap: true,
+              importLoaders: 1,
             },
           },
         ],
       },
-      // Add SASS support  - compile all .global.scss files and pipe it to style.css
+      // SASS support - compile all .global.scss files and pipe it to style.css
       {
         test: /\.global\.(scss|sass)$/,
         use: [
           {
-            loader: MiniCssExtractPlugin.loader,
+            loader: 'style-loader',
           },
           {
             loader: 'css-loader',
             options: {
               sourceMap: true,
-              importLoaders: 1,
             },
           },
           {
             loader: 'sass-loader',
-            options: {
-              sourceMap: true,
-            },
           },
         ],
       },
-      // Add SASS support  - compile all other .scss files and pipe it to style.css
+      // SASS support - compile all other .scss files and pipe it to style.css
       {
         test: /^((?!\.global).)*\.(scss|sass)$/,
         use: [
           {
-            loader: MiniCssExtractPlugin.loader,
+            loader: 'style-loader',
+          },
+          {
+            loader: '@teamsupercell/typings-for-css-modules-loader',
           },
           {
             loader: 'css-loader',
@@ -118,15 +127,12 @@ export default merge(baseConfig, {
               modules: {
                 localIdentName: '[name]__[local]__[hash:base64:5]',
               },
-              importLoaders: 1,
               sourceMap: true,
+              importLoaders: 1,
             },
           },
           {
             loader: 'sass-loader',
-            options: {
-              sourceMap: true,
-            },
           },
         ],
       },
@@ -141,13 +147,11 @@ export default merge(baseConfig, {
             loader: 'css-loader',
             options: {
               sourceMap: true,
-              importLoaders: 1,
             }
           },
           {
             loader: 'less-loader',
             options: {
-              sourceMap: true,
               lessOptions: {
                 javascriptEnabled: true,
               },
@@ -155,24 +159,22 @@ export default merge(baseConfig, {
           },
         ]
       },
-      // Add LESS support  - compile all .global.less files and pipe it to style.css
+      // LESS support - compile all .global.less files and pipe it to style.css
       {
         test: /\.global\.less$/,
         use: [
           {
-            loader: MiniCssExtractPlugin.loader,
+            loader: 'style-loader',
           },
           {
             loader: 'css-loader',
             options: {
               sourceMap: true,
-              importLoaders: 1,
             },
           },
           {
             loader: 'less-loader',
             options: {
-              sourceMap: true,
               lessOptions: {
                 javascriptEnabled: true,
               },
@@ -180,13 +182,16 @@ export default merge(baseConfig, {
           },
         ],
       },
-      // Add LESS support  - compile all other .less files and pipe it to style.css
+      // LESS support - compile all other .less files and pipe it to style.css
       {
         test: /^((?!\.global).)*\.less$/,
         exclude: /\.theme\.less$/i,
         use: [
           {
-            loader: MiniCssExtractPlugin.loader,
+            loader: 'style-loader',
+          },
+          {
+            loader: '@teamsupercell/typings-for-css-modules-loader',
           },
           {
             loader: 'css-loader',
@@ -194,14 +199,13 @@ export default merge(baseConfig, {
               modules: {
                 localIdentName: '[name]__[local]__[hash:base64:5]',
               },
-              importLoaders: 1,
               sourceMap: true,
+              importLoaders: 1,
             },
           },
           {
             loader: 'less-loader',
             options: {
-              sourceMap: true,
               lessOptions: {
                 javascriptEnabled: true,
               },
@@ -276,18 +280,17 @@ export default merge(baseConfig, {
       },
     ],
   },
-
-  optimization: {
-    minimize: true,
-    minimizer: [
-      new TerserPlugin({
-        parallel: true,
-      }),
-      new CssMinimizerPlugin(),
-    ],
-  },
-
   plugins: [
+    requiredByDLLConfig
+      ? null
+      : new webpack.DllReferencePlugin({
+          context: webpackPaths.dllPath,
+          manifest: require(manifest),
+          sourceType: 'var',
+        }),
+
+    new webpack.NoEmitOnErrorsPlugin(),
+
     /**
      * Create global constants which can be configured at compile time.
      *
@@ -296,24 +299,22 @@ export default merge(baseConfig, {
      *
      * NODE_ENV should be production so that modules do not perform certain
      * development checks
+     *
+     * By default, use 'development' as NODE_ENV. This can be overriden with
+     * 'staging', for example, by changing the ENV variables in the npm scripts
      */
     new webpack.EnvironmentPlugin({
-      NODE_ENV: 'production',
-      DEBUG_PROD: false,
+      NODE_ENV: 'development',
     }),
 
-    new MiniCssExtractPlugin({
-      filename: 'style.css',
+    new webpack.LoaderOptionsPlugin({
+      debug: true,
     }),
 
-    new BundleAnalyzerPlugin({
-      analyzerMode:
-        process.env.OPEN_ANALYZER === 'true' ? 'server' : 'disabled',
-      openAnalyzer: process.env.OPEN_ANALYZER === 'true',
-    }),
+    new ReactRefreshWebpackPlugin(),
 
     new HtmlWebpackPlugin({
-      filename: 'index.html',
+      filename: path.join('index.html'),
       template: path.join(webpackPaths.srcRendererPath, 'index.ejs'),
       minify: {
         collapseWhitespace: true,
@@ -321,7 +322,38 @@ export default merge(baseConfig, {
         removeComments: true,
       },
       isBrowser: false,
+      env: process.env.NODE_ENV,
       isDevelopment: process.env.NODE_ENV !== 'production',
+      nodeModules: webpackPaths.appNodeModulesPath,
     }),
   ],
+
+  node: {
+    __dirname: false,
+    __filename: false,
+  },
+
+  devServer: {
+    port,
+    compress: true,
+    hot: true,
+    headers: { 'Access-Control-Allow-Origin': '*' },
+    static: {
+      publicPath: '/',
+    },
+    historyApiFallback: {
+      verbose: true,
+      disableDotRule: false,
+    },
+    onBeforeSetupMiddleware() {
+      console.log('Starting Main Process...');
+      spawn('npm', ['run', 'start:main'], {
+        shell: true,
+        env: process.env,
+        stdio: 'inherit',
+      })
+        .on('close', (code) => process.exit(code))
+        .on('error', (spawnError) => console.error(spawnError));
+    },
+  },
 });
