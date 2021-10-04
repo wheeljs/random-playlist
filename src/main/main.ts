@@ -1,4 +1,4 @@
-/* eslint global-require: off, no-console: off */
+/* eslint global-require: off, no-console: off, promise/always-return: off */
 
 /**
  * This module executes inside of electron's main process. You can start
@@ -97,9 +97,7 @@ const createWindow = async (theme: NativeThemeSource = 'system') => {
 
   mainWindow.loadURL(resolveHtmlPath('index.html'));
 
-  // @TODO: Use 'ready-to-show' event
-  //        https://github.com/electron/electron/blob/main/docs/api/browser-window.md#using-ready-to-show-event
-  mainWindow.webContents.on('did-finish-load', () => {
+  mainWindow.on('ready-to-show', () => {
     if (!mainWindow) {
       throw new Error('"mainWindow" is not defined');
     }
@@ -111,7 +109,6 @@ const createWindow = async (theme: NativeThemeSource = 'system') => {
         payload: nativeTheme.shouldUseDarkColors,
       });
       mainWindow.show();
-      mainWindow.focus();
     }
   });
 

@@ -16,11 +16,8 @@ Import your videos like 'Friends' and anything else, then random play them.
 <div align="center">
 
 [![Build Status][github-actions-status]][github-actions-url]
-[![Dependency Status][david-image]][david-url]
-[![DevDependency Status][david-dev-image]][david-dev-url]
 [![Github Tag][github-tag-image]][github-tag-url]
 
-[![Good first issues open][good-first-issue-image]][good-first-issue-url]
 
 </div>
 
@@ -56,9 +53,7 @@ Welcome! I'm a frontend developer only (and never used react before), current 'G
 
 ### Install
 
-- **If you have installation or compilation issues with this project, please see [our debugging guide](https://github.com/electron-react-boilerplate/electron-react-boilerplate/issues/400)**
-
-First, clone the repo via git and install dependencies:
+Clone the repo and install dependencies:
 
 ```bash
 git clone https://github.com/wheeljs/random-playlist.git
@@ -66,9 +61,11 @@ cd random-playlist
 npm install
 ```
 
+**Having issues installing? See our [debugging guide](https://github.com/electron-react-boilerplate/electron-react-boilerplate/issues/400)**
+
 ### Starting Development
 
-Start the app in the `dev` environment. This starts the renderer process in [**hot-module-replacement**](https://webpack.js.org/guides/hmr-react/) mode and starts a webpack dev server that sends hot updates to the renderer process:
+Start the app in the `dev` environment:
 
 ```bash
 npm start
@@ -88,7 +85,7 @@ npm run package
 
 ## License
 
-MITMIT © [Generate, Play](https://github.com/wheeljs/random-playlist)
+MIT © [Generate, Play](https://github.com/wheeljs/random-playlist)
 
 [github-actions-status]: https://github.com/wheeljs/random-playlist/workflows/Test/badge.svg
 [github-actions-url]: https://github.com/wheeljs/random-playlist/actions
@@ -96,7 +93,3 @@ MITMIT © [Generate, Play](https://github.com/wheeljs/random-playlist)
 [github-tag-url]: https://github.com/wheeljs/random-playlist/releases/latest
 [david-image]: https://img.shields.io/david/wheeljs/random-playlist.svg
 [david-url]: https://david-dm.org/wheeljs/random-playlist
-[david-dev-image]: https://img.shields.io/david/dev/wheeljs/random-playlist.svg?label=devDependencies
-[david-dev-url]: https://david-dm.org/wheeljs/random-playlist?type=dev
-[good-first-issue-image]: https://img.shields.io/github/issues/wheeljs/random-playlist/good%20first%20issue.svg?label=good%20first%20issues
-[good-first-issue-url]: https://github.com/wheeljs/random-playlist/issues?q=is%3Aopen+is%3Aissue+label%3A"good+first+issue"

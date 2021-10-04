@@ -1,10 +1,9 @@
-import React from 'react';
 import { render } from 'react-dom';
 import { ipcRenderer } from 'electron';
 import { Channel } from '../common/constants';
 import { history, configuredStore } from './store/store';
 import App from './App';
-import './app.global.less';
+import './app.less';
 
 const store = configuredStore();
 
