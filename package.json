@@ -44,9 +44,7 @@
       "app/node_modules/@ffprobe-installer/",
       "app/utils/videoFileDetails.js"
     ],
-    "extraFiles": [
-      "app/migrations/*.js"
-    ],
+    "extraFiles": ["app/migrations/*.js"],
     "afterSign": ".erb/scripts/notarize.js",
     "mac": {
       "type": "distribution",
@@ -85,7 +83,7 @@
     "publish": {
       "provider": "github",
       "owner": "wheeljs",
-      "repo": "random-playlist",
+      "repo": "random-playlist"
     }
   },
   "repository": {
@@ -178,7 +176,6 @@
     "@types/react-router": "^5.1.14",
     "@types/react-redux": "^7.1.9",
     "@types/react-router-dom": "^5.1.6",
-    "@types/react-router": "^5.1.8",
     "@types/react-test-renderer": "^17.0.1",
     "@types/webpack-env": "^1.16.0",
     "@typescript-eslint/eslint-plugin": "^4.22.1",
@@ -276,10 +273,10 @@
     "react-redux": "^7.2.1",
     "react-router-dom": "^5.2.0",
     "redux": "^4.0.5",
-    "regenerator-runtime": "^0.13.5"
+    "regenerator-runtime": "^0.13.5",
     "redux-thunk": "^2.3.0",
     "redux-watch": "^1.2.0",
-    "reflect-metadata": "^0.1.13",
+    "reflect-metadata": "^0.1.13"
   },
   "devEngines": {
     "node": ">=10.x",
