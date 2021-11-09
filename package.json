@@ -37,14 +37,10 @@
     "files": [
       "dist",
       "node_modules",
-      "ormconfig.js",
+      "main/ormconfig.js",
       "package.json",
-      "migrations/*.js",
-      "app/node_modules/@ffmpeg-installer/",
-      "app/node_modules/@ffprobe-installer/",
-      "app/utils/videoFileDetails.js"
+      "render/utils/videoFileDetails.js"
     ],
-    "extraFiles": ["app/migrations/*.js"],
     "afterSign": ".erb/scripts/notarize.js",
     "mac": {
       "type": "distribution",
