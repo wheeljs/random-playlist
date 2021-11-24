@@ -1,10 +1,17 @@
-import configService from './config';
-import workspaceService from './workspace';
-import directoryService from './directory';
+import type { ConfigService } from './config';
+import type { WorkspaceService } from './workspace';
+import type { DirectoryService } from './directory';
+import { rendererService } from './util';
 
-export type { SaveWorkspace, UpdateWorkspace } from './workspace';
-export type { UpdateDirectory } from './directory';
-export { ConfigKeys } from './config';
+export * from './config';
+export * from './workspace';
+export * from './directory';
+
+const configService = rendererService<ConfigService>('configService');
+
+const workspaceService = rendererService<WorkspaceService>('workspaceService');
+
+const directoryService = rendererService<DirectoryService>('directoryService');
 
 export { configService, workspaceService, directoryService };
 
