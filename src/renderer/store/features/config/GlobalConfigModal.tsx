@@ -1,4 +1,4 @@
-import { remote } from 'electron';
+import * as remote from '@electron/remote';
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -39,12 +39,8 @@ export default function GlobalConfigModal({
   const [form] = Form.useForm();
   const { t } = useTranslation();
 
-  const [
-    playerParameterRequired,
-    setPlayerParameterRequired,
-  ] = useState<boolean>(
-    form.getFieldValue(ConfigKeys.PlayerPassMode) === 'list'
-  );
+  const [playerParameterRequired, setPlayerParameterRequired] =
+    useState<boolean>(form.getFieldValue(ConfigKeys.PlayerPassMode) === 'list');
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -79,9 +75,7 @@ export default function GlobalConfigModal({
         message.info(t('config.language.required'));
         setTimeout(() => {
           node.handleClick(
-            (new MouseEvent(
-              'click'
-            ) as unknown) as React.MouseEvent<HTMLElement>
+            new MouseEvent('click') as unknown as React.MouseEvent<HTMLElement>
           );
         });
       }
@@ -123,6 +117,7 @@ export default function GlobalConfigModal({
     });
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const saveConfig = async (values: any) => {
     const saveParams: SaveOrUpdateConfig[] = Object.keys(values).map(
       (configKey) => {

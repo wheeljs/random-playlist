@@ -15,11 +15,14 @@ import path from 'path';
 import { app, BrowserWindow, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
+import * as remote from '@electron/remote/main';
 import './setupIpcMain';
 import { connection } from '../common/models';
 
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+
+remote.initialize();
 
 export default class AppUpdater {
   constructor() {
@@ -86,6 +89,7 @@ const createWindow = async () => {
       // preload: path.join(__dirname, 'preload.js'),
     },
   });
+  remote.enable(mainWindow.webContents);
 
   mainWindow.loadURL(resolveHtmlPath('index.html'));
 
