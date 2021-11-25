@@ -1,15 +1,12 @@
 /* eslint-disable import/prefer-default-export */
-import { exec, execFile } from 'child_process';
-import { access, mkdir, constants } from 'fs-extra';
-import os from 'os';
-import path from 'path';
-import fg from 'fast-glob';
 import { uniq } from 'lodash-es';
-import { OpenDialogReturnValue } from 'electron';
+import { ipcRenderer } from 'electron';
+import type { OpenDialogReturnValue } from 'electron';
 import * as remote from '@electron/remote';
 import i18n from 'i18next';
+import { Channel } from '../../common/constants';
 import { ConfigKeys } from '../services';
-import { IConfig } from '../../common/models';
+import type { IConfig } from '../../common/models';
 
 export interface PathListed {
   files: string[];
@@ -32,11 +29,11 @@ export async function listFilesAndDirectories({
   patterns: string | string[];
   root: string;
 }): Promise<PathListed> {
-  const files = await fg(patterns, {
+  const files = (await ipcRenderer.invoke(Channel.FastGlob, patterns, {
     cwd: root,
     baseNameMatch: true,
     caseSensitiveMatch: false,
-  });
+  })) as string[];
 
   // extra directories from matched files
   const directoryNameMatcher = /(.*)\/.*$/;
@@ -60,34 +57,7 @@ export function ensureThumbDir(
   thumbDir: string,
   fallbackDirectory?: string
 ): Promise<string> {
-  return access(thumbDir, constants.W_OK)
-    .catch((err) => {
-      if (err.code === 'ENOENT') {
-        /* eslint-disable consistent-return, default-case, promise/always-return, promise/no-nesting */
-        return mkdir(thumbDir).then(() => {
-          switch (os.platform()) {
-            case 'win32':
-              return new Promise<void>((resolve) => {
-                exec(`attrib +H "${thumbDir}"`, { windowsHide: true }, () => {
-                  resolve();
-                });
-              });
-          }
-        });
-        /* eslint-enable consistent-return, default-case, promise/always-return, promise/no-nesting */
-      }
-
-      throw err;
-    })
-    .then(() => thumbDir)
-    .catch(() => {
-      const fallbackPaths = [remote.app.getPath('cache'), 'random-playlist/'];
-      if (fallbackDirectory) {
-        fallbackPaths.push(fallbackDirectory);
-      }
-
-      return path.join(...fallbackPaths);
-    }) as Promise<string>;
+  return ipcRenderer.invoke(Channel.EnsureDir, thumbDir, fallbackDirectory);
 }
 
 export interface VideoFile {
@@ -149,10 +119,9 @@ export function play({
       break;
   }
 
-  // TODO exit app but not player
-  execFile(
+  ipcRenderer.invoke(
+    Channel.Play,
     playerExecutable,
     args.filter((x) => x)
   );
-  remote.getCurrentWindow().minimize();
 }
