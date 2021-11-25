@@ -1,5 +1,5 @@
 /* eslint-disable class-methods-use-this */
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export default class FileThumb1621095620847 implements MigrationInterface {
   up(qr: QueryRunner) {

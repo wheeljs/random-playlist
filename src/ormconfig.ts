@@ -1,4 +1,4 @@
-import { ConnectionOptions } from 'typeorm';
+import type { ConnectionOptions } from 'typeorm';
 
 export default {
   type: 'better-sqlite3',

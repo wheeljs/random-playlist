@@ -2,12 +2,13 @@ import {
   createAsyncThunk,
   createSelector,
   createSlice,
-  SliceCaseReducers,
 } from '@reduxjs/toolkit';
-import { IConfig, SaveOrUpdateConfig } from '../../../../common/models';
-import { ConfigKeys, configService } from '../../../services';
-// eslint-disable-next-line import/no-cycle
-import { RootState } from '../../store';
+import type { SliceCaseReducers } from '@reduxjs/toolkit';
+
+import type { IConfig, SaveOrUpdateConfig } from '../../../../common/models';
+import { configService } from '../../../services';
+import type { ConfigKeys } from '../../../services';
+import type { RootState } from '../../store';
 
 export interface ConfigState {
   showing: boolean;

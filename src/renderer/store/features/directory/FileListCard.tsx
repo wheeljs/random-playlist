@@ -4,7 +4,6 @@ import {
   Breadcrumb,
   Button,
   Card,
-  CardProps,
   Col,
   Popover,
   Row,
@@ -12,6 +11,7 @@ import {
   Table,
   Tooltip,
 } from 'antd';
+import type { CardProps } from 'antd';
 import {
   FolderOpenOutlined,
   ReloadOutlined,
@@ -19,7 +19,7 @@ import {
   AppstoreOutlined,
 } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
-import { Directory, File, ViewMode } from '../../../../common/models';
+import type { Directory, File, ViewMode } from '../../../../common/models';
 
 import SyncingSpin from '../../../components/SyncingSpin';
 import styles from './FileListCard.less';

@@ -1,6 +1,7 @@
 /* eslint-disable import/no-cycle */
 import { Entity, Column, OneToMany } from 'typeorm';
 import { BaseModel } from './BaseModel';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import type { ViewMode } from './BaseModel';
 import { Directory } from './Directory';
 

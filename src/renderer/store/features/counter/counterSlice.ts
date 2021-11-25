@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 // eslint-disable-next-line import/no-cycle
-import { AppThunk, RootState } from '../../store';
+import type { AppThunk, RootState } from '../../store';
 
 const counterSlice = createSlice({
   name: 'counter',
@@ -27,11 +27,13 @@ export const incrementIfOdd = (): AppThunk => {
   };
 };
 
-export const incrementAsync = (delay = 1000): AppThunk => (dispatch) => {
-  setTimeout(() => {
-    dispatch(increment());
-  }, delay);
-};
+export const incrementAsync =
+  (delay = 1000): AppThunk =>
+  (dispatch) => {
+    setTimeout(() => {
+      dispatch(increment());
+    }, delay);
+  };
 
 export default counterSlice.reducer;
 

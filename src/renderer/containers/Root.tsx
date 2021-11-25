@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
-import { History } from 'history';
+import type { History } from 'history';
 import { ConfigProvider } from 'antd';
-import { Locale } from 'antd/lib/locale-provider';
+import type { Locale } from 'antd/lib/locale-provider';
 import enUS from 'antd/lib/locale/en_US';
 import zhCN from 'antd/lib/locale/zh_CN';
 import watchStore from 'redux-watch';
 import { useTranslation } from 'react-i18next';
 
 import i18n from '../../locales/i18n';
-import { Store } from '../store';
+import type { Store } from '../store';
 import Routes from '../Routes';
 import { selectConfig } from '../store/features/config/configSlice';
 import { ConfigKeys } from '../services';
-import { SupportedLngs } from '../../common/models';
+import type { SupportedLngs } from '../../common/models';
 
 type Props = {
   store: Store;

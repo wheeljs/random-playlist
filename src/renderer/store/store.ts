@@ -1,9 +1,10 @@
-import { configureStore, getDefaultMiddleware, Action } from '@reduxjs/toolkit';
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
+import type { Action } from '@reduxjs/toolkit';
 import { createHashHistory } from 'history';
 import { routerMiddleware } from 'connected-react-router';
 import { createLogger } from 'redux-logger';
-import { ThunkAction } from 'redux-thunk';
-// eslint-disable-next-line import/no-cycle
+import type { ThunkAction } from 'redux-thunk';
+
 import createRootReducer from './rootReducer';
 
 export const history = createHashHistory();

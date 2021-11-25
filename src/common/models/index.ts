@@ -1,12 +1,8 @@
 /* eslint-disable import/prefer-default-export */
 import { join } from 'path';
 import { app, remote } from 'electron';
-import {
-  Connection,
-  ConnectionOptions,
-  createConnection as _createConnection,
-  getConnection,
-} from 'typeorm';
+import { createConnection as _createConnection, getConnection } from 'typeorm';
+import type { Connection, ConnectionOptions } from 'typeorm';
 
 import defaultOptions from '../../ormconfig';
 import type { ViewMode } from './BaseModel';

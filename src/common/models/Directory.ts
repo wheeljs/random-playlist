@@ -1,6 +1,7 @@
 /* eslint-disable import/no-cycle */
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { BaseModel } from './BaseModel';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import type { ViewMode } from './BaseModel';
 import { File } from './File';
 import { Workspace } from './Workspace';

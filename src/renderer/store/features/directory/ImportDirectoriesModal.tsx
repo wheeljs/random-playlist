@@ -1,22 +1,23 @@
 import path from 'path';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Button, Form, Input, message, Modal, ModalProps, Popover } from 'antd';
+import { Button, Form, Input, message, Modal, Popover } from 'antd';
+import type { ModalProps } from 'antd';
 import { CloseCircleOutlined, FolderOpenOutlined } from '@ant-design/icons';
 import { uniqBy } from 'lodash-es';
 import { useTranslation, Trans } from 'react-i18next';
 
+import type { PathListed } from '../../../utils/fileHelper';
 import {
   listFilesAndDirectories,
   openImportDialog,
-  PathListed,
   videoFileDetails,
 } from '../../../utils/fileHelper';
-import { Workspace } from '../../../../common/models';
+import type { Workspace } from '../../../../common/models';
 import { configService, directoryService } from '../../../services';
 
 import styles from './ImportDirectoriesModal.less';
-import { ImportDirectoriesToWorkspace } from '../../../services/directory';
+import type { ImportDirectoriesToWorkspace } from '../../../services/directory';
 import { fetchWorkspaces } from '../workspace/workspaceSlice';
 import SyncingSpin from '../../../components/SyncingSpin';
 
@@ -132,6 +133,7 @@ export default function ImportDirectoriesModal({
       await directoryService.importToWorkspace(importParams);
       dispatch(fetchWorkspaces());
       beforeClose();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       message.warn(`${t('import directory.failed')}：${err.message}`);
     } finally {

@@ -1,19 +1,13 @@
 import React, { useState } from 'react';
-import {
-  Form,
-  FormItemProps,
-  Input,
-  InputNumber,
-  message,
-  Modal,
-  ModalProps,
-} from 'antd';
+import { Form, Input, InputNumber, message, Modal } from 'antd';
+import type { FormItemProps, ModalProps } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
 import { Trans, useTranslation } from 'react-i18next';
-import { SaveWorkspace } from '../../../services';
+
+import type { SaveWorkspace } from '../../../services';
 import { addWorkspace } from './workspaceSlice';
-import { Workspace } from '../../../../common/models';
+import type { Workspace } from '../../../../common/models';
 
 export default function CreateWorkspaceModal({
   visible,

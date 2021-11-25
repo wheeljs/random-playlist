@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this */
 import { Config } from '../../common/models';
 import type { IConfig } from '../../common/models';
-import { SaveOrUpdateConfig } from '../../common/models/Config';
+import type { SaveOrUpdateConfig } from '../../common/models/Config';
 
 export class ConfigService {
   get(

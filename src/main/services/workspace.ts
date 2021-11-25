@@ -1,6 +1,7 @@
 /* eslint-disable class-methods-use-this */
 import { omit } from 'lodash';
-import { ViewMode, Workspace } from '../../common/models';
+import { Workspace } from '../../common/models';
+import type { ViewMode } from '../../common/models';
 
 import { normalizeEntity } from './util';
 

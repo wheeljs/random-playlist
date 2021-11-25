@@ -5,7 +5,7 @@ import { Button, message, Popconfirm, Popover } from 'antd';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { shuffle } from 'lodash-es';
 import { useTranslation } from 'react-i18next';
-import { Directory, Workspace, ViewMode } from '../../../../common/models';
+import type { Directory, Workspace, ViewMode } from '../../../../common/models';
 
 import styles from './WorkspaceItem.less';
 import ImportDirectoriesModal from '../directory/ImportDirectoriesModal';

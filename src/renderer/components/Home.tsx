@@ -5,8 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 import styles from './Home.less';
-import { RootState } from '../store';
-import { Workspace } from '../../common/models';
+import type { RootState } from '../store';
+import type { Workspace } from '../../common/models';
 import {
   fetchWorkspaces,
   selectLastWorkspace,

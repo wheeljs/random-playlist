@@ -4,6 +4,7 @@ module.exports = {
     // A temporary hack related to IDE not resolving correct package.json
     'import/no-extraneous-dependencies': 'off',
     'react/jsx-no-target-blank': 'off',
+    '@typescript-eslint/consistent-type-imports': 'error',
   },
   parserOptions: {
     ecmaVersion: 2020,

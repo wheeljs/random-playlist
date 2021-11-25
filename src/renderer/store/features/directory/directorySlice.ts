@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { directoryService, UpdateDirectory } from '../../../services';
+import { directoryService } from '../../../services';
+import type { UpdateDirectory } from '../../../services';
 // eslint-disable-next-line import/no-cycle
 import { fetchWorkspaces } from '../workspace/workspaceSlice';
 

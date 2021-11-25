@@ -1,10 +1,5 @@
-import {
-  app,
-  Menu,
-  shell,
-  BrowserWindow,
-  MenuItemConstructorOptions,
-} from 'electron';
+import { app, Menu, shell } from 'electron';
+import type { BrowserWindow, MenuItemConstructorOptions } from 'electron';
 import { Channel } from '../common/constants';
 import { Config } from '../common/models';
 import i18n from '../locales/i18n';

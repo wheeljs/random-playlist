@@ -1,6 +1,8 @@
 /* eslint-disable react/destructuring-assignment */
-import React, { useState, useEffect, PropsWithChildren } from 'react';
-import { Spin, SpinProps } from 'antd';
+import React, { useState, useEffect } from 'react';
+import type { PropsWithChildren } from 'react';
+import { Spin } from 'antd';
+import type { SpinProps } from 'antd';
 import { random } from 'lodash-es';
 import { useTranslation } from 'react-i18next';
 
@@ -59,7 +61,9 @@ export default function SyncingSpin(
         }
       };
     }
-  }, [props.spinning, props.tip]);
+
+    return () => {};
+  }, [props.spinning, props.tip, nextSyncingTip]);
 
   // eslint-disable-next-line react/jsx-props-no-spreading
   return <Spin {...props} tip={props.tip ?? syncingTip} />;

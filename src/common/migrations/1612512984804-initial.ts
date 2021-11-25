@@ -1,5 +1,5 @@
 /* eslint-disable class-methods-use-this */
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export default class Initial1612512984804 implements MigrationInterface {
   async up(qr: QueryRunner): Promise<void> {

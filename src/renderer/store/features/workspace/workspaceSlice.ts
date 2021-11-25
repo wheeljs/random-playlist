@@ -4,15 +4,12 @@ import {
   createSlice,
 } from '@reduxjs/toolkit';
 import { omit } from 'lodash-es';
-import { Workspace } from '../../../../common/models';
+import type { Workspace } from '../../../../common/models';
 
-import {
-  workspaceService,
-  SaveWorkspace,
-  UpdateWorkspace,
-} from '../../../services';
+import { workspaceService } from '../../../services';
+import type { SaveWorkspace, UpdateWorkspace } from '../../../services';
 // eslint-disable-next-line import/no-cycle
-import { RootState } from '../../store';
+import type { RootState } from '../../store';
 // eslint-disable-next-line import/no-cycle
 import { updateDirectory } from '../directory/directorySlice';
 
@@ -141,10 +138,8 @@ export const { setSelectedId } = workspaceSlice.actions;
 
 export default workspaceSlice.reducer;
 
-export const {
-  selectAll: selectWorkspaces,
-  selectById: selectWorkspace,
-} = workspaceAdapter.getSelectors<RootState>((state) => state.workspace);
+export const { selectAll: selectWorkspaces, selectById: selectWorkspace } =
+  workspaceAdapter.getSelectors<RootState>((state) => state.workspace);
 
 export const selectWorkspaceOrDefault = (state: RootState) =>
   selectWorkspace(

@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   Form,
   Modal,
-  ModalProps,
   Row,
   Col,
   Input,
@@ -14,15 +13,16 @@ import {
   Anchor,
   message,
 } from 'antd';
-import AnchorLink from 'antd/lib/anchor/AnchorLink';
+import type { ModalProps } from 'antd';
+import type AnchorLink from 'antd/lib/anchor/AnchorLink';
 import { UnorderedListOutlined, AppstoreOutlined } from '@ant-design/icons';
 import { useTranslation, Trans } from 'react-i18next';
 import Flags from 'country-flag-icons/react/3x2';
-import { RootState } from '../../store';
+import type { RootState } from '../../store';
 import { fetchConfigs, selectConfigs, updateConfigs } from './configSlice';
 
 import styles from './GlobalConfigModal.less';
-import { SaveOrUpdateConfig } from '../../../../common/models';
+import type { SaveOrUpdateConfig } from '../../../../common/models';
 import { ConfigKeys } from '../../../services';
 
 export default function GlobalConfigModal({

@@ -6,16 +6,16 @@ import {
   InputNumber,
   message,
   Modal,
-  ModalProps,
   Popconfirm,
 } from 'antd';
+import type { ModalProps } from 'antd';
 import { InfoCircleOutlined, CloseOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 import { removeWorkspace, updateWorkspace } from './workspaceSlice';
-import { Workspace } from '../../../../common/models';
-import { UpdateWorkspace } from '../../../services';
+import type { Workspace } from '../../../../common/models';
+import type { UpdateWorkspace } from '../../../services';
 
 export default function EditWorkspaceModal({
   visible,
