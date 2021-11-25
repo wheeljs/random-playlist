@@ -12,7 +12,6 @@ import {
   PathListed,
   videoFileDetails,
 } from '../../../utils/fileHelper';
-import NativeAnchor from '../../../components/NativeAnchor';
 import { Workspace } from '../../../../common/models';
 import { configService, directoryService } from '../../../services';
 
@@ -163,9 +162,12 @@ export default function ImportDirectoriesModal({
               <>
                 <Trans i18nKey="config.glob.tooltip">
                   使用
-                  <NativeAnchor href="https://en.wikipedia.org/wiki/Glob_(programming)">
+                  <a
+                    href="https://en.wikipedia.org/wiki/Glob_(programming)"
+                    target="_blank"
+                  >
                     glob
-                  </NativeAnchor>{' '}
+                  </a>{' '}
                   匹配选中目录的内容，不要改动除非你明确知道结果
                   <br />
                 </Trans>

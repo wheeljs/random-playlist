@@ -24,7 +24,6 @@ import { fetchConfigs, selectConfigs, updateConfigs } from './configSlice';
 import styles from './GlobalConfigModal.less';
 import { SaveOrUpdateConfig } from '../../../../common/models';
 import { ConfigKeys } from '../../../services';
-import NativeAnchor from '../../../components/NativeAnchor';
 
 export default function GlobalConfigModal({
   visible,
@@ -321,9 +320,12 @@ export default function GlobalConfigModal({
               tooltip={
                 <Trans i18nKey="config.glob.tooltip">
                   使用
-                  <NativeAnchor href="https://en.wikipedia.org/wiki/Glob_(programming)">
+                  <a
+                    href="https://en.wikipedia.org/wiki/Glob_(programming)"
+                    target="_blank"
+                  >
                     glob
-                  </NativeAnchor>{' '}
+                  </a>{' '}
                   匹配选中目录的内容，不要改动除非你明确知道结果
                 </Trans>
               }
