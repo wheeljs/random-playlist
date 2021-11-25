@@ -171,9 +171,9 @@ export default function ImportDirectoriesModal({
                     glob
                   </a>{' '}
                   匹配选中目录的内容，不要改动除非你明确知道结果
-                  <br />
                 </Trans>
-                {t('import directory.extra')}
+                <br />
+                {t('import directory.glob extra')}
               </>
             }
           >
