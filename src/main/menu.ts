@@ -5,6 +5,7 @@ import {
   BrowserWindow,
   MenuItemConstructorOptions,
 } from 'electron';
+import { Channel } from '../common/constants';
 import { Config } from '../common/models';
 import i18n from '../locales/i18n';
 
@@ -60,7 +61,7 @@ export default class MenuBuilder {
   }
 
   private openGlobalSettings() {
-    this.mainWindow.webContents.send('dispatch', {
+    this.mainWindow.webContents.send(Channel.Dispatch, {
       type: 'config/setVisible',
       payload: true,
     });
