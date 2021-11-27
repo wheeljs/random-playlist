@@ -39,7 +39,8 @@
       "node_modules",
       "main/ormconfig.js",
       "package.json",
-      "render/utils/videoFileDetails.js"
+      "render/utils/videoFileDetails.js",
+      "render/utils/test.js"
     ],
     "afterSign": ".erb/scripts/notarize.js",
     "mac": {
@@ -162,6 +163,7 @@
     "@types/country-flag-icons": "^1.2.0",
     "@types/enzyme": "^3.10.9",
     "@types/enzyme-adapter-react-16": "^1.0.6",
+    "@types/fluent-ffmpeg": "^2.1.20",
     "@types/history": "4.7.8",
     "@types/html-minifier-terser": "^6.0.0",
     "@types/jest": "^26.0.24",

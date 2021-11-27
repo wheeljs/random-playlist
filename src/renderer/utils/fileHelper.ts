@@ -5,6 +5,7 @@ import type { OpenDialogReturnValue } from 'electron';
 import * as remote from '@electron/remote';
 import i18n from 'i18next';
 import { Channel } from '../../common/constants';
+import type { VideoFile } from '../../common/types';
 import { ConfigKeys } from '../services';
 import type { IConfig } from '../../common/models';
 
@@ -60,13 +61,6 @@ export function ensureThumbDir(
   return ipcRenderer.invoke(Channel.EnsureDir, thumbDir, fallbackDirectory);
 }
 
-export interface VideoFile {
-  path: string;
-  extension: string;
-  thumb?: string;
-  duration: number;
-}
-
 export async function videoFileDetails({
   filePaths,
   thumbDir,
@@ -78,20 +72,10 @@ export async function videoFileDetails({
 }): Promise<VideoFile[]> {
   const ensuredThumbDir = await ensureThumbDir(thumbDir, fallbackDirectory);
 
-  let worker = new Worker('utils/videoFileDetails.js');
-  const promise = new Promise<VideoFile[]>((resolve) => {
-    worker.onmessage = (event: MessageEvent<VideoFile[]>) => {
-      worker.terminate();
-      worker = null;
-      resolve(event.data);
-    };
-  });
-  worker.postMessage({
+  return ipcRenderer.invoke(Channel.VideoFileDetails, {
     filePaths,
     thumbDir: ensuredThumbDir,
   });
-
-  return promise;
 }
 
 export function play({

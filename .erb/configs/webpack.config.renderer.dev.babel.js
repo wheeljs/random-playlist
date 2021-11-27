@@ -2,7 +2,6 @@ import path from 'path';
 import fs from 'fs';
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import CopyPlugin from 'copy-webpack-plugin';
 import chalk from 'chalk';
 import { merge } from 'webpack-merge';
 import { spawn, execSync } from 'child_process';
@@ -302,15 +301,6 @@ export default merge(baseConfig, {
     }),
 
     new ReactRefreshWebpackPlugin(),
-
-    new CopyPlugin({
-      patterns: [
-        {
-          from: path.join(webpackPaths.srcRendererPath, 'utils/videoFileDetails.js'),
-          to: path.join(webpackPaths.distRendererPath, 'utils'),
-        }
-      ]
-    }),
 
     new HtmlWebpackPlugin({
       filename: path.join('index.html'),

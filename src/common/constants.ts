@@ -4,6 +4,7 @@ export const Channel = {
   FastGlob: 'fg',
   EnsureDir: 'ensureDir',
   Play: 'play',
+  VideoFileDetails: 'videoFileDetails',
 };
 
 export default {
