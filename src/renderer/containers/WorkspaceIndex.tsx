@@ -4,7 +4,7 @@ import { PlusOutlined, EditOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import styles from './Home.less';
+import styles from './WorkspaceIndex.less';
 import type { RootState } from '../store';
 import type { Workspace } from '../../common/models';
 import {
@@ -26,7 +26,7 @@ import {
 
 const { TabPane } = Tabs;
 
-export default function Home(): JSX.Element {
+export default function WorkspaceIndex(): JSX.Element {
   const dispatch = useDispatch();
   const selectedWorkspace = useSelector(selectWorkspaceOrDefault);
   const workspaces = useSelector(selectWorkspaces);
@@ -65,7 +65,7 @@ export default function Home(): JSX.Element {
 
   return (
     <div
-      className={[styles['home-container'], 'h-100p'].join(' ')}
+      className={[styles['workspace-index-container'], 'h-100p'].join(' ')}
       data-tid="container"
     >
       <Spin
