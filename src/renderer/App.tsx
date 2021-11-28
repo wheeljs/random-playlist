@@ -15,6 +15,7 @@ import Routes from './Routes';
 import { selectConfig } from './store/features/config/configSlice';
 import { ConfigKeys } from './services';
 import type { SupportedLngs } from '../common/models';
+import darkModeStyles from './antd-dark-mode.theme.less';
 
 type Props = {
   store: Store;
@@ -34,6 +35,32 @@ const Root = ({ store, history }: Props) => {
       AntdLocaleMapping.has(i18n.language) ? i18n.language : 'en'
     )
   );
+
+  const [useDarkTheme, setUseDarkTheme] = useState<boolean>(
+    store.getState().config.useDarkTheme
+  );
+
+  useEffect(() => {
+    const watcher = watchStore(() => store.getState().config.useDarkTheme);
+    const unsubcribe = store.subscribe(
+      watcher((storeUseDarkTheme) => {
+        setUseDarkTheme(storeUseDarkTheme);
+        if (storeUseDarkTheme) {
+          /* eslint-disable @typescript-eslint/ban-ts-comment */
+          /* @ts-ignore */
+          darkModeStyles.use();
+        } else {
+          /* @ts-ignore */
+          darkModeStyles.unuse();
+          /* eslint-enable @typescript-eslint/ban-ts-comment */
+        }
+      })
+    );
+
+    return () => {
+      unsubcribe();
+    };
+  }, [store]);
 
   useEffect(() => {
     i18n.on('languageChanged', (lng: string) => {
@@ -60,10 +87,12 @@ const Root = ({ store, history }: Props) => {
     };
   }, [store, t]);
 
+  const antdPrefix = useDarkTheme ? 'dark-ant' : 'ant';
+
   return (
     <Provider store={store}>
       <ConnectedRouter history={history}>
-        <ConfigProvider locale={locale}>
+        <ConfigProvider locale={locale} prefixCls={antdPrefix}>
           <Routes />
         </ConfigProvider>
       </ConnectedRouter>

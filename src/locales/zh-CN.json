@@ -87,6 +87,15 @@
   },
 
   "config": {
+    "appearance": "外观",
+
+    "theme": {
+      "label": "主题",
+      "system": "跟随系统",
+      "light": "明亮",
+      "dark": "暗黑"
+    },
+
     "player": "播放器设置",
 
     "select player": {

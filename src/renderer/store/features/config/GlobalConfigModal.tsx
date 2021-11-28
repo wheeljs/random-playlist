@@ -11,6 +11,7 @@ import {
   Typography,
   Radio,
   Anchor,
+  Select,
   message,
 } from 'antd';
 import type { ModalProps } from 'antd';
@@ -19,7 +20,12 @@ import { UnorderedListOutlined, AppstoreOutlined } from '@ant-design/icons';
 import { useTranslation, Trans } from 'react-i18next';
 import Flags from 'country-flag-icons/react/3x2';
 import type { RootState } from '../../store';
-import { fetchConfigs, selectConfigs, updateConfigs } from './configSlice';
+import {
+  fetchConfigs,
+  selectConfigs,
+  updateConfigs,
+  updateContainerTheme,
+} from './configSlice';
 
 import styles from './GlobalConfigModal.less';
 import type { SaveOrUpdateConfig } from '../../../../common/models';
@@ -140,6 +146,7 @@ export default function GlobalConfigModal({
 
       await dispatch(updateConfigs(saveParams));
 
+      dispatch(updateContainerTheme(form.getFieldValue('theme')));
       message.success(t('global config.save success'));
       onClose();
     } catch (e) {
@@ -173,6 +180,10 @@ export default function GlobalConfigModal({
               window
             }
           >
+            <Anchor.Link
+              href="#config-appearance"
+              title={t('config.appearance')}
+            />
             <Anchor.Link href="#config-player" title={t('config.player')} />
             <Anchor.Link href="#config-match" title={t('config.match')} />
             <Anchor.Link href="#config-view" title={t('config.view')} />
@@ -196,6 +207,22 @@ export default function GlobalConfigModal({
             onFieldsChange={handleFieldsChange}
             onFinish={saveConfig}
           >
+            <a className={styles['config-category']} id="config-appearance">
+              {t('config.appearance')}
+            </a>
+            <Form.Item name={ConfigKeys.Theme} label={t('config.theme.label')}>
+              <Select>
+                <Select.Option value="system">
+                  {t('config.theme.system')}
+                </Select.Option>
+                <Select.Option value="light">
+                  {t('config.theme.light')}
+                </Select.Option>
+                <Select.Option value="dark">
+                  {t('config.theme.dark')}
+                </Select.Option>
+              </Select>
+            </Form.Item>
             <a className={styles['config-category']} id="config-player">
               {t('config.player')}
             </a>

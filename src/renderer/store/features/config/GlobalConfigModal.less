@@ -24,10 +24,13 @@
   overflow: auto;
 }
 
-.country-flags-radio-group :global .ant-radio-button-wrapper > span:not(.ant-radio-button) {
-  vertical-align: -0.225em;
+.country-flags-radio-group :global {
+  .ant-radio-button-wrapper > span:not(.ant-radio-button),
+  .dark-ant-radio-button-wrapper > span:not(.dark-ant-radio-button) {
+    vertical-align: -0.225em;
 
-  svg {
-    width: 25px;
+    svg {
+      width: 25px;
+    }
   }
 }

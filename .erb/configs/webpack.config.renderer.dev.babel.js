@@ -149,6 +149,29 @@ export default merge(baseConfig, {
           },
         ],
       },
+      {
+        test: /\.theme\.less$/i,
+        use: [
+          {
+            loader: 'style-loader',
+            options: { injectType: 'lazyStyleTag' }
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
+            }
+          },
+          {
+            loader: 'less-loader',
+            options: {
+              lessOptions: {
+                javascriptEnabled: true,
+              },
+            },
+          },
+        ]
+      },
       // LESS support - compile all .global.less files and pipe it to style.css
       {
         test: /\.global\.less$/,
@@ -175,6 +198,7 @@ export default merge(baseConfig, {
       // LESS support - compile all other .less files and pipe it to style.css
       {
         test: /^((?!\.global).)*\.less$/,
+        exclude: /\.theme\.less$/i,
         use: [
           {
             loader: 'style-loader',

@@ -90,6 +90,15 @@
   },
 
   "config": {
+    "appearance": "Appearance",
+
+    "theme": {
+      "label": "Theme",
+      "system": "System",
+      "light": "Light",
+      "dark": "Dark"
+    },
+
     "player": "Player",
 
     "select player": {

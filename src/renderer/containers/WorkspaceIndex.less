@@ -1,23 +1,27 @@
 @import (reference) '~antd/lib/style/themes/default.less';
 
 .workspace-index-container :global {
-  .ant-tabs {
+  .ant-tabs, .dark-ant-tabs {
     padding: 0 @padding-md;
-    > .ant-tabs-nav .ant-tabs-nav-wrap {
+    > .ant-tabs-nav .ant-tabs-nav-wrap,
+    > .dark-ant-tabs-nav .dark-ant-tabs-nav-wrap {
       flex: initial;
     }
-    .ant-tabs-tab .anticon:last-child {
+    .ant-tabs-tab .anticon:last-child,
+    .dark-ant-tabs-tab .dark-anticon:last-child {
       margin-right: 0;
     }
     .ant-tabs-tab-btn .ant-typography-secondary:hover {
       color: @primary-color;
     }
-    .ant-tabs-nav-list .ant-tabs-tab:nth-last-child(2) {
+    .ant-tabs-nav-list .ant-tabs-tab:nth-last-child(2),
+    .dark-ant-tabs-nav-list .dark-ant-tabs-tab:nth-last-child(2) {
       margin-right: @margin-md;
     }
   }
 
-  .ant-popconfirm.widthed-popconfirm .ant-popover-message {
+  .ant-popconfirm.widthed-popconfirm .ant-popover-message,
+  .dark-ant-popconfirm.widthed-popconfirm .dark-ant-popover-message {
     width: 220px;
   }
 }

@@ -5,6 +5,7 @@ export const Channel = {
   EnsureDir: 'ensureDir',
   Play: 'play',
   VideoFileDetails: 'videoFileDetails',
+  DarkMode: 'setDarkMode',
 };
 
 export default {

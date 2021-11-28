@@ -3,7 +3,13 @@ import path from 'path';
 import { exec, spawn } from 'child_process';
 import fg from 'fast-glob';
 import type { Options } from 'fast-glob';
-import { app, ipcMain, nativeImage, BrowserWindow } from 'electron';
+import {
+  app,
+  ipcMain,
+  nativeImage,
+  nativeTheme,
+  BrowserWindow,
+} from 'electron';
 import ffmpeg from 'fluent-ffmpeg';
 import { path as ffmpegPath } from '@ffmpeg-installer/ffmpeg';
 import { path as ffprobePath } from '@ffprobe-installer/ffprobe';
@@ -201,5 +207,19 @@ ipcMain.handle(
         });
       })
     );
+  }
+);
+
+ipcMain.handle(
+  Channel.DarkMode,
+  (_event, darkMode?: 'light' | 'dark' | 'system') => {
+    if (
+      typeof darkMode !== 'undefined' &&
+      nativeTheme.themeSource !== darkMode
+    ) {
+      nativeTheme.themeSource = darkMode;
+    }
+
+    return nativeTheme.shouldUseDarkColors;
   }
 );

@@ -12,15 +12,18 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import 'reflect-metadata';
 import path from 'path';
-import { app, BrowserWindow, shell } from 'electron';
+import { app, BrowserWindow, nativeTheme, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import * as remote from '@electron/remote/main';
 import './setupIpcMain';
 import { connection } from '../common/models';
+import { Channel } from '../common/constants';
 
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+import { configService, ConfigKeys } from './services';
+import type { NativeThemeSource } from './services';
 
 remote.initialize();
 
@@ -59,12 +62,16 @@ const installExtensions = async () => {
     .catch(console.log);
 };
 
-const createWindow = async () => {
+const createWindow = async (theme: NativeThemeSource = 'system') => {
   if (
     process.env.NODE_ENV === 'development' ||
     process.env.DEBUG_PROD === 'true'
   ) {
     await installExtensions();
+  }
+
+  if (theme !== nativeTheme.themeSource) {
+    nativeTheme.themeSource = theme;
   }
 
   const RESOURCES_PATH = app.isPackaged
@@ -102,6 +109,10 @@ const createWindow = async () => {
     if (process.env.START_MINIMIZED) {
       mainWindow.minimize();
     } else {
+      mainWindow.webContents.send(Channel.Dispatch, {
+        type: 'config/setUseDarkTheme',
+        payload: nativeTheme.shouldUseDarkColors,
+      });
       mainWindow.show();
       mainWindow.focus();
     }
@@ -148,11 +159,28 @@ app.on('ready', async () => {
   });
   await Promise.all(await conn.runMigrations({ transaction: 'all' }));
 
-  createWindow();
+  let theme: NativeThemeSource = 'system';
+  try {
+    theme =
+      ((await configService.get(ConfigKeys.Theme))
+        .value as NativeThemeSource) ?? 'system';
+  } catch (err) {
+    console.log(err);
+  }
+  createWindow(theme);
 });
 
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) createWindow();
+});
+
+nativeTheme.on('updated', () => {
+  if (mainWindow != null) {
+    mainWindow.webContents.send(Channel.Dispatch, {
+      type: 'config/setUseDarkTheme',
+      payload: nativeTheme.shouldUseDarkColors,
+    });
+  }
 });

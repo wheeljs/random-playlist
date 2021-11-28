@@ -1,3 +1,4 @@
+import { ipcRenderer } from 'electron';
 import {
   createAsyncThunk,
   createSelector,
@@ -6,11 +7,13 @@ import {
 import type { SliceCaseReducers } from '@reduxjs/toolkit';
 
 import type { IConfig, SaveOrUpdateConfig } from '../../../../common/models';
+import { Channel } from '../../../../common/constants';
 import { configService } from '../../../services';
-import type { ConfigKeys } from '../../../services';
+import type { ConfigKeys, NativeThemeSource } from '../../../services';
 import type { RootState } from '../../store';
 
 export interface ConfigState {
+  useDarkTheme?: boolean;
   showing: boolean;
   configs: Record<string, IConfig>;
   status: string;
@@ -28,9 +31,17 @@ export const updateConfigs = createAsyncThunk(
   }
 );
 
+export const updateContainerTheme = createAsyncThunk(
+  'config/update-container-theme',
+  async (theme: NativeThemeSource) => {
+    return ipcRenderer.invoke(Channel.DarkMode, theme);
+  }
+);
+
 const configSlice = createSlice<ConfigState, SliceCaseReducers<ConfigState>>({
   name: 'config',
   initialState: {
+    useDarkTheme: false,
     showing: false,
     configs: {},
     status: 'idle',
@@ -39,6 +50,9 @@ const configSlice = createSlice<ConfigState, SliceCaseReducers<ConfigState>>({
   reducers: {
     setVisible(state, { payload }) {
       state.showing = payload;
+    },
+    setUseDarkTheme(state, { payload }: { payload: boolean }) {
+      state.useDarkTheme = payload;
     },
     setConfigs(state, { payload }: { payload: Record<string, IConfig> }) {
       state.configs = payload;
@@ -68,11 +82,15 @@ const configSlice = createSlice<ConfigState, SliceCaseReducers<ConfigState>>({
           ...state.configs,
           ...payload,
         };
+      })
+
+      .addCase(updateContainerTheme.fulfilled, (state, { payload }) => {
+        state.useDarkTheme = payload;
       });
   },
 });
 
-export const { setVisible } = configSlice.actions;
+export const { setVisible, setUseDarkTheme } = configSlice.actions;
 
 export default configSlice.reducer;
 
