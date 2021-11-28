@@ -1,4 +1,5 @@
 @import (reference) '~antd/lib/style/themes/default.less';
+@import '../../../utils/dark-mode.less';
 
 :global {
   .ant-btn.add-directory,
@@ -52,3 +53,15 @@
 .directory-actions {
   margin-top: @margin-sm;
 }
+
+.dark-mode({
+  @import (reference) '~antd/lib/style/themes/dark.less';
+  .directory-item {
+    border-color: @border-color-split;
+
+    &:hover,
+    &.selected {
+      border-color: @primary-color;
+    }
+  }
+});

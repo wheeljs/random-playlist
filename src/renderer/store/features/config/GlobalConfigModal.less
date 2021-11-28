@@ -1,4 +1,5 @@
 @import (reference) '~antd/lib/style/themes/default.less';
+@import '../../../utils/dark-mode.less';
 
 .config-category {
   display: block;
@@ -34,3 +35,15 @@
     }
   }
 }
+
+.dark-mode({
+  @import (reference) '~antd/lib/style/themes/dark.less';
+  .config-category {
+    border-bottom-color: @border-color-split;
+    color: @text-color;
+
+    &::before {
+      background: @primary-color;
+    }
+  }
+});

@@ -1,4 +1,5 @@
 @import (reference) '~antd/lib/style/themes/default.less';
+@import '../../../utils/dark-mode.less';
 
 :global {
   .file-list-card {
@@ -50,3 +51,10 @@
     box-shadow: @box-shadow-base;
   }
 }
+
+.dark-mode({
+  @import (reference) '~antd/lib/style/themes/dark.less';
+  .file-item:hover {
+    box-shadow: @box-shadow-base;
+  }
+});
