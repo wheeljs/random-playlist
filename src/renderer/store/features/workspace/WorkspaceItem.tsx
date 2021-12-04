@@ -219,16 +219,18 @@ export default function WorkspaceItem({
         fileList={fileList}
         syncing={syncing}
         directory={selectedDir}
-        actions={[
-          <Button
-            type="primary"
-            key="generate"
-            loading={generating}
-            onClick={generateAndPlay}
-          >
-            {t('workspace item.generate and play')}
-          </Button>,
-        ]}
+        actions={
+          fileList.length > 0 && [
+            <Button
+              type="primary"
+              key="generate"
+              loading={generating}
+              onClick={generateAndPlay}
+            >
+              {t('workspace item.generate and play')}
+            </Button>,
+          ]
+        }
         viewMode={viewMode}
         onViewModeChange={setViewMode}
         onClearSelectedDirectory={() => setSelectedDirId(null)}
