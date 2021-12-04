@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { basename } from 'path';
 import {
   Breadcrumb,
@@ -49,62 +49,62 @@ export default function FileList({
 }): JSX.Element {
   const { t } = useTranslation();
 
-  let listView: JSX.Element;
-  switch (viewMode) {
-    case 'thumb':
-      listView = (
-        <SyncingSpin spinning={syncing}>
-          <Row gutter={12}>
-            {Array.isArray(fileList) &&
-              fileList.map((file) => (
-                <Col span={3} key={file.path}>
-                  <div className={styles['file-item']}>
-                    <img src={`file:///${file.thumb}`} alt={file.path} />
-                    <span className={styles['file-name']}>
-                      {basename(file.path)}
-                    </span>
-                  </div>
-                </Col>
-              ))}
-          </Row>
-        </SyncingSpin>
-      );
-      break;
-    case 'list':
-    default:
-      listView = (
-        <Table<File>
-          rowKey={(row) => row.id}
-          dataSource={fileList}
-          pagination={false}
-          loading={{
-            spinning: syncing,
-            tip: t('syncing.0'),
-          }}
-        >
-          <Table.Column<File>
-            title={t('file list.file name')}
-            dataIndex="path"
-            render={(value) => basename(value)}
-          />
-          <Table.Column<File>
-            title={t('file list.duration')}
-            dataIndex="duration"
-            width={150}
-            align="center"
-            render={(value: number) => {
-              const ceilValue = Math.ceil(value);
-              const minutes = Math.floor(ceilValue / 60);
-              const seconds = ceilValue % 60;
-              return `${minutes.toString().padStart(2, '0')}:${seconds
-                .toString()
-                .padStart(2, '0')}`;
+  const listView: JSX.Element = useMemo(() => {
+    const now = Date.now();
+    switch (viewMode) {
+      case 'thumb':
+        return (
+          <SyncingSpin spinning={syncing}>
+            <Row gutter={12}>
+              {Array.isArray(fileList) &&
+                fileList.map((file) => (
+                  <Col span={3} key={`${now}_${file.path}`}>
+                    <div className={styles['file-item']}>
+                      <img src={`file:///${file.thumb}`} alt={file.path} />
+                      <span className={styles['file-name']}>
+                        {basename(file.path)}
+                      </span>
+                    </div>
+                  </Col>
+                ))}
+            </Row>
+          </SyncingSpin>
+        );
+      case 'list':
+      default:
+        return (
+          <Table<File>
+            rowKey={(row) => `${now}_${row.id}`}
+            dataSource={fileList}
+            pagination={false}
+            loading={{
+              spinning: syncing,
+              tip: t('syncing.0'),
             }}
-          />
-        </Table>
-      );
-      break;
-  }
+          >
+            <Table.Column<File>
+              title={t('file list.file name')}
+              dataIndex="path"
+              render={(value) => basename(value)}
+            />
+            <Table.Column<File>
+              title={t('file list.duration')}
+              dataIndex="duration"
+              width={150}
+              align="center"
+              render={(value: number) => {
+                const ceilValue = Math.ceil(value);
+                const minutes = Math.floor(ceilValue / 60);
+                const seconds = ceilValue % 60;
+                return `${minutes.toString().padStart(2, '0')}:${seconds
+                  .toString()
+                  .padStart(2, '0')}`;
+              }}
+            />
+          </Table>
+        );
+    }
+  }, [t, viewMode, fileList, syncing]);
 
   // eslint-disable-next-line no-shadow, @typescript-eslint/no-shadow
   const setViewMode = (viewMode: ViewMode) => {
