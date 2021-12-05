@@ -1,5 +1,5 @@
 /* eslint-disable react/destructuring-assignment */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import type { PropsWithChildren } from 'react';
 import { Spin } from 'antd';
 import type { SpinProps } from 'antd';
@@ -25,7 +25,7 @@ export default function SyncingSpin(
   const SyncingTips = t('syncing', { returnObjects: true });
   const [syncingTip, setSyncingTip] = useState<string>();
 
-  const nextSyncingTip = () => {
+  const nextSyncingTip = useCallback(() => {
     const nextTipIndex = random(SyncingTips.length - 1);
     let nextTip = SyncingTips[nextTipIndex];
     if (TipsContainsVariablesExp.test(nextTip)) {
@@ -40,7 +40,8 @@ export default function SyncingSpin(
     }
 
     setSyncingTip(nextTip);
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // eslint-disable-next-line consistent-return
   useEffect(() => {
