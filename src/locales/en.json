@@ -52,7 +52,9 @@
   "workspace item": {
     "ensure player": "Please configure the player first",
 
-    "generate and play": "Generate and Play"
+    "generate and play": "Generate and Play",
+    "direct play": "Direct play {{count}} video",
+    "direct play_plural": "Direct play {{count}} videos"
   },
 
   "create workspace": {

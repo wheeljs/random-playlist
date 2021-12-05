@@ -17,6 +17,13 @@ export const dateTransformer = ({ value }: TransformFnParams) => {
 
 export type ViewMode = 'list' | 'thumb';
 
+export interface IModel {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date;
+}
+
 export abstract class BaseModel extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;

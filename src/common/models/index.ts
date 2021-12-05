@@ -14,11 +14,13 @@ import type {
   SupportedLngs,
 } from './Config';
 import { File } from './File';
+import type { IFile } from './File';
 import { Directory } from './Directory';
 import { Workspace } from './Workspace';
 
 export { Config, Workspace, Directory, File };
 export type {
+  IFile,
   IConfig,
   ConfigValueType,
   SaveOrUpdateConfig,

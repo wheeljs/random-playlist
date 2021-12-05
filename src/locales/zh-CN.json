@@ -53,7 +53,8 @@
   "workspace item": {
     "ensure player": "请先配置播放器",
 
-    "generate and play": "生成并播放"
+    "generate and play": "生成并播放",
+    "direct play": "播放 {{count}} 个视频"
   },
 
   "create workspace": {

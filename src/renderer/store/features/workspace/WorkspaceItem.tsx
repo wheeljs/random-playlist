@@ -5,7 +5,12 @@ import { Button, message, Popconfirm, Popover } from 'antd';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { shuffle } from 'lodash-es';
 import { useTranslation } from 'react-i18next';
-import type { Directory, Workspace, ViewMode } from '../../../../common/models';
+import type {
+  Directory,
+  Workspace,
+  ViewMode,
+  IFile,
+} from '../../../../common/models';
 
 import styles from './WorkspaceItem.less';
 import ImportDirectoriesModal from '../directory/ImportDirectoriesModal';
@@ -43,10 +48,18 @@ export default function WorkspaceItem({
   const openImportModal = () => setShowImportModal(true);
   const onImportModalClose = () => setShowImportModal(false);
 
-  const generateAndPlay = async () => {
+  const ensurePlayerExecutable = () => {
     if (!configs[ConfigKeys.PlayerExecutable]?.value) {
       message.warning(t('workspace item.ensure player'));
       dispatch(setVisible(true));
+      return false;
+    }
+
+    return true;
+  };
+
+  const generateAndPlay = async () => {
+    if (!ensurePlayerExecutable()) {
       return;
     }
 
@@ -60,6 +73,17 @@ export default function WorkspaceItem({
       fileList: shuffle(files).splice(0, 10),
     });
     setGenerating(false);
+  };
+
+  const directPlay = async (fileList: IFile[]) => {
+    if (!ensurePlayerExecutable()) {
+      return;
+    }
+
+    play({
+      configs,
+      fileList: fileList.map((x) => x.path),
+    });
   };
 
   const deleteDirectory = async (directory: Directory) => {
@@ -220,21 +244,24 @@ export default function WorkspaceItem({
         syncing={syncing}
         directory={selectedDir}
         actions={
-          fileList.length > 0 && [
-            <Button
-              type="primary"
-              key="generate"
-              loading={generating}
-              onClick={generateAndPlay}
-            >
-              {t('workspace item.generate and play')}
-            </Button>,
-          ]
+          fileList.length > 0
+            ? [
+                <Button
+                  type="primary"
+                  key="generate"
+                  loading={generating}
+                  onClick={generateAndPlay}
+                >
+                  {t('workspace item.generate and play')}
+                </Button>,
+              ]
+            : []
         }
         viewMode={viewMode}
         onViewModeChange={setViewMode}
         onClearSelectedDirectory={() => setSelectedDirId(null)}
         onSyncFiles={syncFiles}
+        onDirectPlay={directPlay}
       />
     </div>
   );

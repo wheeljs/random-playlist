@@ -24,6 +24,19 @@
       flex: auto;
       overflow: auto;
     }
+
+    .ant-card-actions,
+    .dark-ant-card-actions {
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: center;
+
+      li {
+        margin-right: @margin-xs;
+        margin-left: @margin-xs;
+        width: auto !important;
+      }
+    }
   }
 
   .file-list-card > .ant-card > .ant-card-body > .ant-spin-nested-loading .ant-spin,
@@ -33,6 +46,7 @@
 }
 
 .file-item {
+  position: relative;
   height: 100%;
   padding: @padding-xs;
   transition: box-shadow @animation-duration-base;
@@ -51,6 +65,21 @@
 
   &:hover {
     box-shadow: @box-shadow-base;
+  }
+
+  :global(label.ant-checkbox-wrapper),
+  :global(label.dark-ant-checkbox-wrapper) {
+    position: absolute;
+    top: -3px;
+    left: 0;
+    display: none;
+  }
+
+  &:hover :global(label.ant-checkbox-wrapper),
+  &:hover :global(label.dark-ant-checkbox-wrapper),
+  :global(label.ant-checkbox-wrapper-checked),
+  :global(label.dark-ant-checkbox-wrapper-checked) {
+    display: inline-flex;
   }
 }
 
