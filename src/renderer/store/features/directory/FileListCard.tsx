@@ -6,6 +6,7 @@ import {
   Card,
   Checkbox,
   Col,
+  Empty,
   Popover,
   Row,
   Space,
@@ -132,9 +133,9 @@ export default function FileList({
       case 'thumb':
         return (
           <SyncingSpin spinning={syncing}>
-            <Row gutter={12}>
-              {Array.isArray(selectableFileList) &&
-                selectableFileList.map((file) => (
+            {selectableFileList.length > 0 ? (
+              <Row gutter={12}>
+                {selectableFileList.map((file) => (
                   <ThumbFileListItem
                     key={file.path}
                     now={now}
@@ -142,7 +143,10 @@ export default function FileList({
                     onClick={(f) => selectFile(f)}
                   />
                 ))}
-            </Row>
+              </Row>
+            ) : (
+              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+            )}
           </SyncingSpin>
         );
       case 'list':
