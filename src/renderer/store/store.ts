@@ -1,4 +1,4 @@
-import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import type { Action } from '@reduxjs/toolkit';
 import { createHashHistory } from 'history';
 import { routerMiddleware } from 'connected-react-router';
@@ -12,7 +12,7 @@ const rootReducer = createRootReducer(history);
 export type RootState = ReturnType<typeof rootReducer>;
 
 const router = routerMiddleware(history);
-const middleware = [...getDefaultMiddleware(), router];
+const customMiddlewares = [router];
 
 const excludeLoggerEnvs = ['test', 'production'];
 const shouldIncludeLogger = !excludeLoggerEnvs.includes(
@@ -24,15 +24,18 @@ if (shouldIncludeLogger) {
     level: 'info',
     collapsed: true,
   });
-  middleware.push(logger);
+  customMiddlewares.push(logger);
 }
 
 export const configuredStore = (initialState?: RootState) => {
   // Create Store
   const store = configureStore({
     reducer: rootReducer,
-    middleware,
-    preloadedState: initialState,
+    middleware: (getDefaultMiddleware) => [
+      ...getDefaultMiddleware(),
+      ...customMiddlewares,
+    ],
+    preloadedState: initialState as unknown,
   });
 
   if (process.env.NODE_ENV === 'development' && module.hot) {

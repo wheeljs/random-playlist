@@ -215,7 +215,7 @@ export default class MenuBuilder {
     return [subMenuAbout, subMenuEdit, subMenuView, subMenuWindow, subMenuHelp];
   }
 
-  buildDefaultTemplate() {
+  buildDefaultTemplate(): MenuItemConstructorOptions[] {
     const templateDefault = [
       {
         label: i18n.t('menu.App Name'),
@@ -227,7 +227,7 @@ export default class MenuBuilder {
           },
           {
             label: i18n.t('menu.Close'),
-            role: 'close',
+            role: 'close' as MenuItemConstructorOptions['role'],
           },
         ],
       },
@@ -246,7 +246,7 @@ export default class MenuBuilder {
                 },
                 {
                   label: i18n.t('menu.Toggle Full Screen'),
-                  role: 'togglefullscreen',
+                  role: 'togglefullscreen' as MenuItemConstructorOptions['role'],
                   accelerator: 'F11',
                 },
                 {
@@ -260,7 +260,7 @@ export default class MenuBuilder {
             : [
                 {
                   label: i18n.t('menu.Toggle Full Screen'),
-                  role: 'togglefullscreen',
+                  role: 'togglefullscreen' as MenuItemConstructorOptions['role'],
                   accelerator: 'F11',
                 },
               ],

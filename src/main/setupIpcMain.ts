@@ -63,6 +63,8 @@ ipcMain.handle(
                     resolve()
                   );
                 });
+              default:
+                return undefined;
             }
           });
           /* eslint-enable consistent-return, default-case, promise/always-return, promise/no-nesting */
