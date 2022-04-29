@@ -16,7 +16,7 @@ import {
 import type { Workspace } from '../../../../common/models';
 import { configService, directoryService } from '../../../services';
 
-import styles from './ImportDirectoriesModal.less';
+import styles from './ImportDirectoriesModal.module.less';
 import type { ImportDirectoriesToWorkspace } from '../../../services/directory';
 import { fetchWorkspaces } from '../workspace/workspaceSlice';
 import SyncingSpin from '../../../components/SyncingSpin';

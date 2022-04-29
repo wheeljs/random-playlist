@@ -12,7 +12,7 @@ import type {
   IFile,
 } from '../../../../common/models';
 
-import styles from './WorkspaceItem.less';
+import styles from './WorkspaceItem.module.less';
 import ImportDirectoriesModal from '../directory/ImportDirectoriesModal';
 import FileListCard from '../directory/FileListCard';
 import { selectConfigs, setVisible } from '../config/configSlice';

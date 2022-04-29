@@ -24,7 +24,7 @@ import { Trans, useTranslation } from 'react-i18next';
 import type { Directory, IFile, ViewMode } from '../../../../common/models';
 
 import SyncingSpin from '../../../components/SyncingSpin';
-import styles from './FileListCard.less';
+import styles from './FileListCard.module.less';
 
 type SelectableFile = IFile & {
   selected?: boolean;

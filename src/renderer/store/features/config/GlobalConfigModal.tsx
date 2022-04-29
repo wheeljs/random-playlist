@@ -27,7 +27,7 @@ import {
   updateContainerTheme,
 } from './configSlice';
 
-import styles from './GlobalConfigModal.less';
+import styles from './GlobalConfigModal.module.less';
 import type { SaveOrUpdateConfig } from '../../../../common/models';
 import { ConfigKeys } from '../../../services';
 

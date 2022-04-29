@@ -22,7 +22,6 @@ release/app/dist
 release/build
 .erb/dll
 
-build/release
 app/ormconfig.js
 app/main.prod.js
 app/main.prod.js.map
@@ -34,3 +33,4 @@ npm-debug.log.*
 *.css.d.ts
 *.sass.d.ts
 *.scss.d.ts
+*.less.d.ts

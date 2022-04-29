@@ -4,7 +4,7 @@ import { PlusOutlined, EditOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import styles from './WorkspaceIndex.less';
+import styles from './WorkspaceIndex.module.less';
 import type { RootState } from '../store';
 import type { Workspace } from '../../common/models';
 import {
