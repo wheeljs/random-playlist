@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, memo, useState } from 'react';
+import { useEffect, useMemo, memo, useState } from 'react';
 import { basename } from 'path';
 import {
   Breadcrumb,

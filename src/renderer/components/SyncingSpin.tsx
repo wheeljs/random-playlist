@@ -1,5 +1,5 @@
 /* eslint-disable react/destructuring-assignment */
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import type { PropsWithChildren } from 'react';
 import { Spin } from 'antd';
 import type { SpinProps } from 'antd';

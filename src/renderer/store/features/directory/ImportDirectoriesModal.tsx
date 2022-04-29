@@ -1,5 +1,5 @@
 import path from 'path';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Button, Form, Input, message, Modal, Popover } from 'antd';
 import type { ModalProps } from 'antd';
