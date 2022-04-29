@@ -1,19 +1,24 @@
 @import (reference) '~antd/lib/style/themes/default.less';
 
 .workspace-index-container :global {
-  .ant-tabs, .dark-ant-tabs {
+  .ant-tabs,
+  .dark-ant-tabs {
     padding: 0 @padding-md;
+
     > .ant-tabs-nav .ant-tabs-nav-wrap,
     > .dark-ant-tabs-nav .dark-ant-tabs-nav-wrap {
       flex: initial;
     }
+
     .ant-tabs-tab .anticon:last-child,
     .dark-ant-tabs-tab .dark-anticon:last-child {
       margin-right: 0;
     }
+
     .ant-tabs-tab-btn .ant-typography-secondary:hover {
       color: @primary-color;
     }
+
     .ant-tabs-nav-list .ant-tabs-tab:nth-last-child(2),
     .dark-ant-tabs-nav-list .dark-ant-tabs-tab:nth-last-child(2) {
       margin-right: @margin-md;

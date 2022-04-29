@@ -13,8 +13,10 @@
     display: flex;
     flex-flow: column nowrap;
 
-    .ant-card-head, .ant-card-actions,
-    .dark-ant-card-head, .dark-ant-card-actions {
+    .ant-card-head,
+    .ant-card-actions,
+    .dark-ant-card-head,
+    .dark-ant-card-actions {
       flex-shrink: 0;
       z-index: 1;
     }
@@ -39,8 +41,16 @@
     }
   }
 
-  .file-list-card > .ant-card > .ant-card-body > .ant-spin-nested-loading .ant-spin,
-  .file-list-card > .dark-ant-card > .dark-ant-card-body > .dark-ant-spin-nested-loading .dark-ant-spin {
+  .file-list-card
+    > .ant-card
+    > .ant-card-body
+    > .ant-spin-nested-loading
+    .ant-spin,
+  .file-list-card
+    > .dark-ant-card
+    > .dark-ant-card-body
+    > .dark-ant-spin-nested-loading
+    .dark-ant-spin {
     min-height: 100px;
   }
 }
@@ -75,10 +85,10 @@
     display: none;
   }
 
-  &:hover :global(label.ant-checkbox-wrapper),
-  &:hover :global(label.dark-ant-checkbox-wrapper),
   :global(label.ant-checkbox-wrapper-checked),
-  :global(label.dark-ant-checkbox-wrapper-checked) {
+  :global(label.dark-ant-checkbox-wrapper-checked),
+  &:hover :global(label.ant-checkbox-wrapper),
+  &:hover :global(label.dark-ant-checkbox-wrapper) {
     display: inline-flex;
   }
 }
