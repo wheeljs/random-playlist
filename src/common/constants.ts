@@ -6,6 +6,7 @@ export const Channel = {
   Play: 'play',
   VideoFileDetails: 'videoFileDetails',
   DarkMode: 'setDarkMode',
+  ShowOpenDialog: 'showOpenDialog',
 };
 
 export default {

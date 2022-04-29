@@ -1,8 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import { uniq } from 'lodash-es';
 import { ipcRenderer } from 'electron';
-import type { OpenDialogReturnValue } from 'electron';
-import * as remote from '@electron/remote';
+import type { OpenDialogOptions, OpenDialogReturnValue } from 'electron';
 import i18n from 'i18next';
 import { Channel } from '../../common/constants';
 import type { VideoFile } from '../../common/types';
@@ -14,8 +13,28 @@ export interface PathListed {
   directories: string[];
 }
 
+export function showOpenDialog(
+  options: OpenDialogOptions
+): Promise<OpenDialogReturnValue> {
+  return ipcRenderer.invoke(Channel.ShowOpenDialog, options);
+}
+
+export function openSelectPlayerDialog(
+  args: OpenDialogOptions
+): Promise<OpenDialogReturnValue> {
+  return showOpenDialog({
+    ...args,
+    title: i18n.t('config.select player.title'),
+    message: i18n.t('config.playerExecutable.placeholder'),
+    properties: ['openFile', 'dontAddToRecent'],
+    filters: [
+      { name: i18n.t('config.select player.exe filter'), extensions: ['exe'] },
+    ],
+  });
+}
+
 export function openImportDialog(): Promise<OpenDialogReturnValue> {
-  return remote.dialog.showOpenDialog({
+  return showOpenDialog({
     title: i18n.t('file helper.choose directory'),
     message: i18n.t('file helper.recursive import'),
     buttonLabel: i18n.t('file helper.import button'),

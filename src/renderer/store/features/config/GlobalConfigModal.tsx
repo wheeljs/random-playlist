@@ -1,4 +1,3 @@
-import * as remote from '@electron/remote';
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -19,6 +18,7 @@ import type AnchorLink from 'antd/lib/anchor/AnchorLink';
 import { UnorderedListOutlined, AppstoreOutlined } from '@ant-design/icons';
 import { useTranslation, Trans } from 'react-i18next';
 import Flags from 'country-flag-icons/react/3x2';
+
 import type { RootState } from '../../store';
 import {
   fetchConfigs,
@@ -26,6 +26,7 @@ import {
   updateConfigs,
   updateContainerTheme,
 } from './configSlice';
+import { openSelectPlayerDialog } from '../../../utils/fileHelper';
 
 import styles from './GlobalConfigModal.module.less';
 import type { SaveOrUpdateConfig } from '../../../../common/models';
@@ -101,16 +102,8 @@ export default function GlobalConfigModal({
   };
 
   const selectPlayerExecutable = async () => {
-    const dialogResult = await remote.dialog.showOpenDialog({
-      defaultPath:
-        form.getFieldValue(ConfigKeys.PlayerExecutable) ||
-        remote.app.getPath('home'),
-      title: t('config.select player.title'),
-      message: t('config.playerExecutable.placeholder'),
-      properties: ['openFile', 'dontAddToRecent'],
-      filters: [
-        { name: t('config.select player.exe filter'), extensions: ['exe'] },
-      ],
+    const dialogResult = await openSelectPlayerDialog({
+      defaultPath: form.getFieldValue(ConfigKeys.PlayerExecutable),
     });
     if (dialogResult.canceled) {
       return;

@@ -9,7 +9,9 @@ import {
   nativeImage,
   nativeTheme,
   BrowserWindow,
+  dialog,
 } from 'electron';
+import type { OpenDialogOptions } from 'electron';
 import ffmpeg from 'fluent-ffmpeg';
 import { path as ffmpegPath } from '@ffmpeg-installer/ffmpeg';
 import { path as ffprobePath } from '@ffprobe-installer/ffprobe';
@@ -47,6 +49,16 @@ ipcMain.handle(
     return fg(...args);
   }
 );
+
+ipcMain.handle(Channel.ShowOpenDialog, (_event, args: OpenDialogOptions) => {
+  if (
+    Object.hasOwnProperty.call(args, 'defaultPath') &&
+    typeof args.defaultPath === 'undefined'
+  ) {
+    args.defaultPath = app.getPath('home');
+  }
+  return dialog.showOpenDialog(args);
+});
 
 ipcMain.handle(
   Channel.EnsureDir,

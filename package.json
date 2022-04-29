@@ -237,7 +237,6 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
-    "@electron/remote": "^2.0.1",
     "@fortawesome/fontawesome-free": "^5.15.0",
     "@reduxjs/toolkit": "^1.4.0",
     "antd": "^4.12.2",

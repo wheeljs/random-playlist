@@ -15,7 +15,6 @@ import path from 'path';
 import { app, BrowserWindow, nativeTheme, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
-import * as remote from '@electron/remote/main';
 import './setupIpcMain';
 import { connection } from '../common/models';
 import { Channel } from '../common/constants';
@@ -24,8 +23,6 @@ import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import { configService, ConfigKeys } from './services';
 import type { NativeThemeSource } from './services';
-
-remote.initialize();
 
 export default class AppUpdater {
   constructor() {
@@ -85,7 +82,6 @@ const createWindow = async (theme: NativeThemeSource = 'system') => {
     height: 860,
     icon: getAssetPath('icon.png'),
     webPreferences: {
-      enableRemoteModule: true,
       nodeIntegration: true,
       nodeIntegrationInWorker: true,
       contextIsolation: false,
@@ -93,7 +89,6 @@ const createWindow = async (theme: NativeThemeSource = 'system') => {
       // preload: path.join(__dirname, 'preload.js'),
     },
   });
-  remote.enable(mainWindow.webContents);
 
   mainWindow.loadURL(resolveHtmlPath('index.html'));
 
