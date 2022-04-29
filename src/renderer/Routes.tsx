@@ -1,12 +1,12 @@
-/* eslint react/jsx-props-no-spreading: off */
-import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import WorkspaceIndex from './containers/WorkspaceIndex';
 
-export default function Routes() {
+export default function AppRoutes() {
   return (
-    <Switch>
-      <Route path="/:workspaceId?" component={WorkspaceIndex} />
-    </Switch>
+    <HashRouter>
+      <Routes>
+        <Route path="/" element={<WorkspaceIndex />} />
+      </Routes>
+    </HashRouter>
   );
 }

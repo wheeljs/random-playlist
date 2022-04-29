@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Provider } from 'react-redux';
-import { ConnectedRouter } from 'connected-react-router';
-import type { History } from 'history';
 import { ConfigProvider } from 'antd';
 import type { Locale } from 'antd/lib/locale-provider';
 import enUS from 'antd/lib/locale/en_US';
@@ -11,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 
 import i18n from '../locales/i18n';
 import type { Store } from './store';
-import Routes from './Routes';
+import AppRoutes from './Routes';
 import { selectConfig } from './store/features/config/configSlice';
 import { ConfigKeys } from './services';
 import type { SupportedLngs } from '../common/models';
@@ -19,7 +17,6 @@ import darkModeStyles from './antd-dark-mode.theme.less';
 
 type Props = {
   store: Store;
-  history: History;
 };
 
 const AntdLocaleMapping = new Map<SupportedLngs, Locale>([
@@ -27,7 +24,7 @@ const AntdLocaleMapping = new Map<SupportedLngs, Locale>([
   ['en', enUS],
 ]);
 
-const Root = ({ store, history }: Props) => {
+const Root = ({ store }: Props) => {
   const { t } = useTranslation();
 
   const [locale, setLocale] = useState<Locale>(
@@ -91,11 +88,9 @@ const Root = ({ store, history }: Props) => {
 
   return (
     <Provider store={store}>
-      <ConnectedRouter history={history}>
-        <ConfigProvider locale={locale} prefixCls={antdPrefix}>
-          <Routes />
-        </ConfigProvider>
-      </ConnectedRouter>
+      <ConfigProvider locale={locale} prefixCls={antdPrefix}>
+        <AppRoutes />
+      </ConfigProvider>
     </Provider>
   );
 };

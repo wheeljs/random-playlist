@@ -1,7 +1,7 @@
 import { render } from 'react-dom';
 import { ipcRenderer } from 'electron';
 import { Channel } from '../common/constants';
-import { history, configuredStore } from './store/store';
+import { configuredStore } from './store/store';
 import App from './App';
 import './app.less';
 
@@ -12,8 +12,5 @@ document.addEventListener('DOMContentLoaded', async () => {
     store.dispatch(action);
   });
 
-  render(
-    <App store={store} history={history} />,
-    document.getElementById('root')
-  );
+  render(<App store={store} />, document.getElementById('root'));
 });

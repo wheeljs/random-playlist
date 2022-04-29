@@ -1,18 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 import type { Action } from '@reduxjs/toolkit';
-import { createHashHistory } from 'history';
-import { routerMiddleware } from 'connected-react-router';
 import { createLogger } from 'redux-logger';
 import type { ThunkAction } from 'redux-thunk';
 
 import createRootReducer from './rootReducer';
 
-export const history = createHashHistory();
-const rootReducer = createRootReducer(history);
+const rootReducer = createRootReducer();
 export type RootState = ReturnType<typeof rootReducer>;
 
-const router = routerMiddleware(history);
-const customMiddlewares = [router];
+const customMiddlewares = [];
 
 const excludeLoggerEnvs = ['test', 'production'];
 const shouldIncludeLogger = !excludeLoggerEnvs.includes(
