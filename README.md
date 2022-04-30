@@ -12,12 +12,14 @@ Import your videos like 'Friends' and anything else, then random play them.
 
 > 从[`electron-react-boilerplate@1.4.0`](//electron-react-boilerplate.js.org/) Fork 而来，感谢大佬们的辛勤工作。
 
+<!--
 <div align="center">
 
 [![Build Status][github-actions-status]][github-actions-url]
 [![Github Tag][github-tag-image]][github-tag-url]
 
 </div>
+-->
 
 <hr />
 
