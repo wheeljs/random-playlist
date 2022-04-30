@@ -10,14 +10,12 @@ Import your videos like 'Friends' and anything else, then random play them.
 >    Electron React Boilerplate uses <a href="https://electron.atom.io/">Electron</a>, <a href="https://facebook.github.io/react/">React</a>, <a href="https://github.com/reactjs/redux">Redux</a>, <a href="https://github.com/reactjs/react-router">React Router</a>, <a href="https://webpack.js.org/">Webpack</a> and <a href="https://www.npmjs.com/package/react-refresh">React Fast Refresh</a>.
 >  </p>
 
-
 > 从[`electron-react-boilerplate@1.4.0`](//electron-react-boilerplate.js.org/) Fork 而来，感谢大佬们的辛勤工作。
 
 <div align="center">
 
 [![Build Status][github-actions-status]][github-actions-url]
 [![Github Tag][github-tag-image]][github-tag-url]
-
 
 </div>
 
@@ -37,9 +35,9 @@ Only tested on Windows 10 (Development Machine) and Windows 7(VMWare), other pla
 
 ## Roadmap
 
-- Update to latest `electron-react-boilerplate`
+- Update to latest `electron-react-boilerplate` :white_check_mark:
 
-- Directly play
+- Directly play :white_check_mark:
 
 - Videos' tag
 
