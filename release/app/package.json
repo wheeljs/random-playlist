@@ -1,7 +1,7 @@
 {
   "name": "random-playlist",
   "productName": "RandomPlaylist",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Import your videos, random play them.",
   "main": "./dist/main/main.js",
   "author": {
