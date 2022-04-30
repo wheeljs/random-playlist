@@ -1,4 +1,3 @@
-import path from 'path';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, message, Popconfirm, Popover } from 'antd';
@@ -24,6 +23,8 @@ import {
 } from '../../../utils/fileHelper';
 import { fetchWorkspaces, updateWorkspace } from './workspaceSlice';
 import { updateDirectory } from '../directory/directorySlice';
+
+const { path } = rpHost;
 
 export default function WorkspaceItem({
   className,

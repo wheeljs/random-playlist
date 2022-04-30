@@ -1,9 +1,10 @@
 import { render } from 'react-dom';
-import { ipcRenderer } from 'electron';
 import { Channel } from '../common/constants';
 import { configuredStore } from './store/store';
 import App from './App';
 import './app.less';
+
+const { ipcRenderer } = rpHost;
 
 const store = configuredStore();
 

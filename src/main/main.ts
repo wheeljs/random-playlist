@@ -82,11 +82,9 @@ const createWindow = async (theme: NativeThemeSource = 'system') => {
     height: 860,
     icon: getAssetPath('icon.png'),
     webPreferences: {
-      nodeIntegration: true,
-      nodeIntegrationInWorker: true,
-      contextIsolation: false,
+      // for loading local thumbnails
       webSecurity: false,
-      // preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, 'preload.js'),
     },
   });
 

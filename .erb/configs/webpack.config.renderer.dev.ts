@@ -42,7 +42,7 @@ const configuration: webpack.Configuration = {
 
   mode: 'development',
 
-  target: 'electron-renderer',
+  target: ['web', 'electron-renderer'],
 
   entry: [
     `webpack-dev-server/client?http://localhost:${port}/dist`,
@@ -57,6 +57,9 @@ const configuration: webpack.Configuration = {
     path: webpackPaths.distRendererPath,
     publicPath: '/',
     filename: 'renderer.dev.js',
+    library: {
+      type: 'umd',
+    },
   },
 
   module: {

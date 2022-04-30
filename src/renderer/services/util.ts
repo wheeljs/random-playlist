@@ -1,6 +1,6 @@
-import { ipcRenderer } from 'electron';
-
 import { Channel } from '../../common/constants';
+
+const { ipcRenderer } = rpHost;
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export function rendererService<T extends object>(

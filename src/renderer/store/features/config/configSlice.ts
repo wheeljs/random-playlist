@@ -1,4 +1,3 @@
-import { ipcRenderer } from 'electron';
 import {
   createAsyncThunk,
   createSelector,
@@ -11,6 +10,8 @@ import { Channel } from '../../../../common/constants';
 import { configService } from '../../../services';
 import type { ConfigKeys, NativeThemeSource } from '../../../services';
 import type { RootState } from '../../store';
+
+const { ipcRenderer } = rpHost;
 
 export interface ConfigState {
   useDarkTheme?: boolean;

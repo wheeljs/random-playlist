@@ -1,23 +1,27 @@
+const path = require('path');
 const { contextBridge, ipcRenderer } = require('electron');
 
-contextBridge.exposeInMainWorld('electron', {
-  ipcRenderer: {
-    myPing() {
-      ipcRenderer.send('ipc-example', 'ping');
-    },
-    on(channel, func) {
-      const validChannels = ['ipc-example'];
-      if (validChannels.includes(channel)) {
-        // Deliberately strip event as it includes `sender`
-        ipcRenderer.on(channel, (event, ...args) => func(...args));
-      }
-    },
-    once(channel, func) {
-      const validChannels = ['ipc-example'];
-      if (validChannels.includes(channel)) {
-        // Deliberately strip event as it includes `sender`
-        ipcRenderer.once(channel, (event, ...args) => func(...args));
-      }
-    },
+const ipcRendererWrapper = {
+  invoke(...args) {
+    return ipcRenderer.invoke(...args);
+  },
+  on(channel, func) {
+    const validChannels = ['dispatch'];
+    if (validChannels.includes(channel)) {
+      ipcRenderer.on(channel, func);
+    }
+  },
+};
+
+let exposePath = path.posix;
+if (process.platform === 'win32') {
+  exposePath = path.win32;
+}
+
+contextBridge.exposeInMainWorld('rpHost', {
+  ipcRenderer: ipcRendererWrapper,
+  path: {
+    basename: exposePath.basename,
+    join: exposePath.join,
   },
 });

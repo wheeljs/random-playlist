@@ -1,12 +1,13 @@
 /* eslint-disable import/prefer-default-export */
 import { uniq } from 'lodash-es';
-import { ipcRenderer } from 'electron';
 import type { OpenDialogOptions, OpenDialogReturnValue } from 'electron';
 import i18n from 'i18next';
 import { Channel } from '../../common/constants';
 import type { VideoFile } from '../../common/types';
 import { ConfigKeys } from '../services';
 import type { IConfig } from '../../common/models';
+
+const { ipcRenderer } = rpHost;
 
 export interface PathListed {
   files: string[];

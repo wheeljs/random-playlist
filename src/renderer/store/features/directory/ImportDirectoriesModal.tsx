@@ -1,4 +1,3 @@
-import path from 'path';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Button, Form, Input, message, Modal, Popover } from 'antd';
@@ -20,6 +19,8 @@ import styles from './ImportDirectoriesModal.module.less';
 import type { ImportDirectoriesToWorkspace } from '../../../services/directory';
 import { fetchWorkspaces } from '../workspace/workspaceSlice';
 import SyncingSpin from '../../../components/SyncingSpin';
+
+const { path } = rpHost;
 
 interface ImportPath {
   path: string;

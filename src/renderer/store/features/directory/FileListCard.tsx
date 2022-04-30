@@ -1,5 +1,4 @@
 import { useEffect, useMemo, memo, useState } from 'react';
-import { basename } from 'path';
 import {
   Breadcrumb,
   Button,
@@ -25,6 +24,8 @@ import type { Directory, IFile, ViewMode } from '../../../../common/models';
 
 import SyncingSpin from '../../../components/SyncingSpin';
 import styles from './FileListCard.module.less';
+
+const { basename } = rpHost.path;
 
 type SelectableFile = IFile & {
   selected?: boolean;
