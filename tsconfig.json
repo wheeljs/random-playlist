@@ -21,8 +21,7 @@
     "allowJs": true,
     "outDir": "release/app/dist",
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "typeRoots": ["./node_modules/*"]
+    "experimentalDecorators": true
   },
   "exclude": ["test", "release/build", "release/app/dist", ".erb/dll"]
 }
