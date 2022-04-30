@@ -27,7 +27,7 @@ Download your platform's installer in [**Releases**](releases/latest).
 
 在[**Releases**](releases/latest) 中下载对应操作系统的安装程序。
 
-Only tested on Windows 10 (Development Machine) and Windows 7(VMWare), other platforms now can only clone this repo, install and `yarn start`.
+Only tested on Windows 10 (Development Machine) and Windows 7(VMWare).
 
 **Note: You should set a video player in _Global Settings_ before changing the language or importing videos.** I will add a `scrollIntoView()` in next release.
 
