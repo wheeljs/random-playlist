@@ -90,7 +90,13 @@ export class DirectoryService {
   }
 
   async update(directory: UpdateDirectory) {
-    const dir = await Directory.findOne(directory.id);
+    const dir = await Directory.getRepository()
+      .createQueryBuilder('directory')
+      .leftJoinAndSelect('directory.workspace', 'workspace')
+      .where({
+        id: directory.id,
+      })
+      .getOne();
     if (dir == null) {
       return dir;
     }
