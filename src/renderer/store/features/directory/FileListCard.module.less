@@ -62,8 +62,12 @@
   transition: box-shadow @animation-duration-base;
   text-align: center;
 
-  img {
+  img,
+  .file-item-thumb-none {
     margin-bottom: @margin-xs;
+  }
+
+  img {
     width: 100%;
     aspect-ratio: 1920 / 1080;
     object-fit: contain;
@@ -90,6 +94,16 @@
   &:hover :global(label.ant-checkbox-wrapper),
   &:hover :global(label.dark-ant-checkbox-wrapper) {
     display: inline-flex;
+  }
+
+  .file-item-thumb-none {
+    padding: 14px 0;
+
+    /* stylelint-disable-next-line no-descending-specificity */
+    :global(.anticon) {
+      font-size: 48px;
+      color: @border-color-base;
+    }
   }
 }
 

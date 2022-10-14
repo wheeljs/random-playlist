@@ -15,6 +15,7 @@ import {
 import type { CardProps, TableProps } from 'antd';
 import {
   FolderOpenOutlined,
+  FileUnknownOutlined,
   ReloadOutlined,
   UnorderedListOutlined,
   AppstoreOutlined,
@@ -42,16 +43,29 @@ const ThumbFileListItem = memo(
     file: SelectableFile;
     onClick: (file: SelectableFile) => void;
   }) {
+    let fileThumb: JSX.Element;
+    if (file.thumb) {
+      fileThumb = (
+        <img
+          key={`${now}_${file.path}`}
+          src={`file:///${file.thumb}`}
+          alt={file.path}
+        />
+      );
+    } else {
+      fileThumb = (
+        <div className={styles['file-item-thumb-none']}>
+          <FileUnknownOutlined />
+        </div>
+      );
+    }
+
     return (
       <Col span={3}>
         {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */}
         <div className={styles['file-item']} onClick={() => onClick(file)}>
           <Checkbox checked={file.selected} />
-          <img
-            key={`${now}_${file.path}`}
-            src={`file:///${file.thumb}`}
-            alt={file.path}
-          />
+          {fileThumb}
           <span className={styles['file-name']}>{basename(file.path)}</span>
         </div>
       </Col>
