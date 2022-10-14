@@ -1,29 +1,15 @@
-import { access, mkdir, constants, writeFile } from 'fs-extra';
+import { access, mkdir, constants } from 'fs-extra';
 import path from 'path';
 import { exec, spawn } from 'child_process';
 import fg from 'fast-glob';
 import type { Options } from 'fast-glob';
-import {
-  app,
-  ipcMain,
-  nativeImage,
-  nativeTheme,
-  BrowserWindow,
-  dialog,
-} from 'electron';
+import { app, ipcMain, nativeTheme, BrowserWindow, dialog } from 'electron';
 import type { OpenDialogOptions } from 'electron';
-import ffmpeg from 'fluent-ffmpeg';
-import { path as ffmpegPath } from '@ffmpeg-installer/ffmpeg';
-import { path as ffprobePath } from '@ffprobe-installer/ffprobe';
-import type { FfprobeData } from 'fluent-ffmpeg';
 
 import { Channel } from '../common/constants';
 import type { VideoFile } from '../common/types';
 import * as service from './services/available';
-
-ffmpeg.setFfmpegPath(ffmpegPath);
-ffmpeg.setFfprobePath(ffprobePath);
-
+import { startBackgroundWindowForResult } from './util';
 // Model Operation
 ipcMain.handle(
   Channel.Model,
@@ -113,114 +99,12 @@ ipcMain.handle(
   Channel.VideoFileDetails,
   async (
     _event,
-    { filePaths, thumbDir }: { filePaths: string[]; thumbDir: string }
-  ) => {
-    return Promise.all(
-      filePaths.map(async (filePath) => {
-        const ext = path.extname(filePath);
-        try {
-          // video file cannot read, skip generating thumbnail and duration
-          await access(filePath, constants.R_OK);
-        } catch {
-          return {
-            path: filePath,
-            extension: ext,
-          };
-        }
-
-        const ffmpegInstance = ffmpeg(filePath);
-
-        let thumbPending: Promise<string>;
-        const thumbPath = path.join(
-          thumbDir,
-          `${path.basename(filePath, ext)}_thumb.png`
-        );
-        try {
-          // thumbnail already exists, reuse
-          await access(thumbPath, constants.R_OK);
-          thumbPending = Promise.resolve(thumbPath);
-        } catch {
-          thumbPending = nativeImage
-            // use electron api to get thumbnail
-            .createThumbnailFromPath(filePath, {
-              width: 128,
-              height: 128,
-            })
-            .then(async (thumb) => {
-              if (thumb.isEmpty()) {
-                return null;
-              }
-              const resizedThumb = thumb
-                .resize({
-                  width: 128,
-                  quality: 'good',
-                })
-                .toPNG();
-
-              return writeFile(thumbPath, resizedThumb).then(() => thumbPath);
-            })
-            .catch(() => {
-              // failed to get thumbnail from local thumbnail cache reference, fallback to ffmpeg
-              const ffmpegThumbPending = new Promise<string>(
-                (resolve, reject) => {
-                  ffmpegInstance.on('filenames', (filename) => {
-                    ffmpegInstance
-                      .on('end', () => resolve(filename[0]))
-                      .on('error', (err) => reject(err));
-                  });
-                }
-              ).then((thumbFilePath) => path.join(thumbDir, thumbFilePath));
-
-              ffmpegInstance.screenshots({
-                folder: thumbDir,
-                filename: '%b_thumb.png',
-                timemarks: ['33%'],
-                size: '128x?',
-              });
-
-              return ffmpegThumbPending;
-            });
-        }
-
-        return Promise.allSettled([
-          thumbPending,
-          new Promise<FfprobeData>((resolve, reject) => {
-            ffmpegInstance
-              .on('error', (err) => reject(err))
-              .ffprobe((err, metadata) => {
-                if (err) {
-                  reject(err);
-                  return;
-                }
-                resolve(metadata);
-              });
-          }),
-        ]).then(([thumbPathResult, metadataResult]) => {
-          const file: VideoFile = {
-            path: filePath,
-            extension: ext,
-            duration: null,
-          };
-
-          if (thumbPathResult.status === 'fulfilled') {
-            file.thumb = thumbPathResult.value;
-          } else {
-            // TODO log
-            console.log(`---${filePath} thumb---`);
-            console.log(thumbPathResult.reason);
-          }
-          if (metadataResult.status === 'fulfilled') {
-            file.duration = metadataResult.value.format.duration;
-          } else {
-            // TODO log
-            console.log(`---${filePath} metadata---`);
-            console.log(metadataResult.reason);
-          }
-
-          return file;
-        });
-      })
-    );
+    params: { filePaths: string[]; thumbDir: string }
+  ): Promise<VideoFile[]> => {
+    return startBackgroundWindowForResult({
+      workerFile: './videoDetails.js',
+      params,
+    });
   }
 );
 
