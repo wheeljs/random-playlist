@@ -1,3 +1,9 @@
+# [1.1.1](https://github.com/wheeljs/random-playlist/compare/v1.1.0...v1.1.1) (2022-10-15)
+
+### Bug Fixes
+
+- **workspace/files:** show placeholder icon for file without thumbnail ([f71a421](https://github.com/wheeljs/random-playlist/commit/f71a421fdc09bc7f7c18e5d1ea9918cb44c56d9f))
+
 # [1.1.0](https://github.com/wheeljs/random-playlist/compare/v1.0.0...v1.1.0) (2022-04-30)
 
 ### Bug Fixes
